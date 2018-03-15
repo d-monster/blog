@@ -1,0 +1,584 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>CCNP路由IGP | dmonster&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="静态配置网络管理员手动添加  小型规模网络  维护成本高  不能灵活变通 路由表连接方式     连接网段/网络位位数 [管理距离/metric值] via 下一跳地址, 已连接时间, 本地出接口  管理距离：路由的可信度 值越小，越可信 metric值：开销/成本 以跳数计算  配置语句ip route 目的地网段 目的地的子网掩码 下一跳地址 ip route 目的地网段 目的地的子网掩码 本">
+<meta name="keywords" content="CCNP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CCNP路由IGP">
+<meta property="og:url" content="http://dmonster.top/2017/07/16/CCNP--路由IGP/index.html">
+<meta property="og:site_name" content="dmonster&#39;s blog">
+<meta property="og:description" content="静态配置网络管理员手动添加  小型规模网络  维护成本高  不能灵活变通 路由表连接方式     连接网段/网络位位数 [管理距离/metric值] via 下一跳地址, 已连接时间, 本地出接口  管理距离：路由的可信度 值越小，越可信 metric值：开销/成本 以跳数计算  配置语句ip route 目的地网段 目的地的子网掩码 下一跳地址 ip route 目的地网段 目的地的子网掩码 本">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-03-15T02:02:26.002Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CCNP路由IGP">
+<meta name="twitter:description" content="静态配置网络管理员手动添加  小型规模网络  维护成本高  不能灵活变通 路由表连接方式     连接网段/网络位位数 [管理距离/metric值] via 下一跳地址, 已连接时间, 本地出接口  管理距离：路由的可信度 值越小，越可信 metric值：开销/成本 以跳数计算  配置语句ip route 目的地网段 目的地的子网掩码 下一跳地址 ip route 目的地网段 目的地的子网掩码 本">
+  
+    <link rel="alternative" href="/atom.xml" title="dmonster&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">dmonster&#39;s blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Hello my world!</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/sitemap.xml">sitemap</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="dmonster.top">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-CCNP--路由IGP" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/07/16/CCNP--路由IGP/" class="article-date">
+  <time datetime="2017-07-16T08:05:35.000Z" itemprop="datePublished">2017-07-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/笔记/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      CCNP路由IGP
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <!-- Table of Contents -->
+      
+        <div id="toc" class="toc-article">
+          <strong class="toc-title">文章目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#静态配置"><span class="toc-number">1.</span> <span class="toc-text">静态配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#路由表"><span class="toc-number">1.0.1.</span> <span class="toc-text">路由表</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置语句"><span class="toc-number">1.1.</span> <span class="toc-text">配置语句</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#源ip与目的ip"><span class="toc-number">1.2.</span> <span class="toc-text">源ip与目的ip</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#动态配置"><span class="toc-number">2.</span> <span class="toc-text">动态配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#路由环路解决方法"><span class="toc-number">2.1.</span> <span class="toc-text">路由环路解决方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#汇总机制"><span class="toc-number">2.2.</span> <span class="toc-text">汇总机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#被动接口-passive-interfacce-："><span class="toc-number">2.3.</span> <span class="toc-text">被动接口(passive-interfacce)：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#单播更新"><span class="toc-number">2.4.</span> <span class="toc-text">单播更新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#路由选择原则："><span class="toc-number">2.5.</span> <span class="toc-text">路由选择原则：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5k值（metric值）"><span class="toc-number">2.6.</span> <span class="toc-text">5k值（metric值）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#router-id"><span class="toc-number">2.7.</span> <span class="toc-text">router-id</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#协议"><span class="toc-number">2.8.</span> <span class="toc-text">协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#rip协议"><span class="toc-number">2.8.1.</span> <span class="toc-text">rip协议</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#配置"><span class="toc-number">2.8.1.1.</span> <span class="toc-text">配置</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#eigrp协议"><span class="toc-number">2.8.2.</span> <span class="toc-text">eigrp协议</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#配置-1"><span class="toc-number">2.8.2.1.</span> <span class="toc-text">配置</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ospf协议"><span class="toc-number">2.8.3.</span> <span class="toc-text">ospf协议</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#配置-2"><span class="toc-number">2.8.3.1.</span> <span class="toc-text">配置</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#重分发"><span class="toc-number">2.8.4.</span> <span class="toc-text">重分发</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#用路由器模拟pc机"><span class="toc-number">3.</span> <span class="toc-text">用路由器模拟pc机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#配置网关"><span class="toc-number">4.</span> <span class="toc-text">配置网关</span></a></li></ol>
+        </div>
+      
+        <h1 id="静态配置"><a href="#静态配置" class="headerlink" title="静态配置"></a>静态配置</h1><p>网络管理员手动添加  小型规模网络  维护成本高  不能灵活变通</p>
+<h3 id="路由表"><a href="#路由表" class="headerlink" title="路由表"></a>路由表</h3><p>连接方式     连接网段/网络位位数 [管理距离/metric值] via 下一跳地址, 已连接时间, 本地出接口</p>
+<ul>
+<li>管理距离：路由的可信度 值越小，越可信</li>
+<li>metric值：开销/成本 以跳数计算</li>
+</ul>
+<h2 id="配置语句"><a href="#配置语句" class="headerlink" title="配置语句"></a>配置语句</h2><pre><code>ip route 目的地网段 目的地的子网掩码 下一跳地址
+ip route 目的地网段 目的地的子网掩码 本地出接口
+</code></pre><p>两种方式同时配置，接口方式优先生效</p>
+<h2 id="源ip与目的ip"><a href="#源ip与目的ip" class="headerlink" title="源ip与目的ip"></a>源ip与目的ip</h2><p>默认情况下路由器会选择到达该目的地流量发出的接口ip为数据包的源ip<br>回复时源ip为发送数据的目的ip 目的ip为发送数据的源ip</p>
+<h1 id="动态配置"><a href="#动态配置" class="headerlink" title="动态配置"></a>动态配置</h1><h2 id="路由环路解决方法"><a href="#路由环路解决方法" class="headerlink" title="路由环路解决方法"></a>路由环路解决方法</h2><p>（所有路由器上默认开启）</p>
+<ol>
+<li>水平分割 路由条目从本地路由器端口发出去，本地路由器的这个端口不会再接收该路由条目</li>
+<li>路由毒化 将网络跳数设置成16  （跳数限制：数据在网络中最多经过16跳）</li>
+<li>毒性反转 （不遵守水平分割原则）将毒性发给本地路由器发送的路由条目</li>
+<li>hold-down倒计时 240s</li>
+</ol>
+<h2 id="汇总机制"><a href="#汇总机制" class="headerlink" title="汇总机制"></a>汇总机制</h2><p>简化路由表<br>172.16.1.0/24 - 172.16.100.0/24 -&gt;172.16.0.0/16<br>所有的路由器会自动将子网汇总成主类网络向外发</p>
+<h2 id="被动接口-passive-interfacce-："><a href="#被动接口-passive-interfacce-：" class="headerlink" title="被动接口(passive-interfacce)："></a>被动接口(passive-interfacce)：</h2><p>只接受更新，不发送</p>
+<pre><code>router rip
+pas 接口
+</code></pre><h2 id="单播更新"><a href="#单播更新" class="headerlink" title="单播更新"></a>单播更新</h2><p>指定更新的接受者</p>
+<pre><code>router rip
+ne 接口地址
+</code></pre><h2 id="路由选择原则："><a href="#路由选择原则：" class="headerlink" title="路由选择原则："></a>路由选择原则：</h2><ol>
+<li>最长匹配原则：网络位最长</li>
+<li>若到达同一目的地通过不同的协议收到路径，优选管理距离小的</li>
+<li>若到达同意目的地通过相同的协议收到路径，优选metric值小的</li>
+</ol>
+<h2 id="5k值（metric值）"><a href="#5k值（metric值）" class="headerlink" title="5k值（metric值）"></a>5k值（metric值）</h2><ol>
+<li>带宽 ：物理接口的最大传输速率 =10^7/所经路径中最小带宽*256 kbit/s</li>
+<li>负载 ：所能承载最大数据量</li>
+<li>延迟 ：延迟 =所经路径产生的延迟总和/10*256 us</li>
+<li>有效性 ：有效性（保质期，TTL值：最大能够经过多少台路由器，毎经过一台路由器ttl值-1）</li>
+<li>mtu值 ：mtu值：每一个数据包中最大能包含多少字节</li>
+</ol>
+<h2 id="router-id"><a href="#router-id" class="headerlink" title="router-id"></a>router-id</h2><p>在本网络中对本台设备的标识</p>
+<ol>
+<li>若本地无环回接口则比较物理地址的大小，大的作为本地路由器的router-id</li>
+<li>若本地有环回接口有限选用环回接口地址最为本台路由器的router-id<br>若有多个环回接口选取地址大的</li>
+</ol>
+<h2 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h2><ul>
+<li>自制系统（as）：处于同一管理机制下的路由器</li>
+<li>lgp： 内部网管路由选择协议（管理距离） rip（120） eigrp（内部路由90 外部路由170） ospf（110）</li>
+<li>egp： 边界网管路由选择协议（管理距离） bgp（内部200 外部20）</li>
+</ul>
+<h3 id="rip协议"><a href="#rip协议" class="headerlink" title="rip协议"></a>rip协议</h3><ul>
+<li>最多16台路由器，只适用于小型</li>
+<li>网络中</li>
+<li>距离矢量路由选择协议</li>
+<li>版本v1（ipv4，不支持vlsm子网掩码，不支持认证，不支持手动汇总），v2（ipv4，支持vlsm子网掩码，支持认证，支持手动汇总），ng（ipv6）</li>
+<li>毎30s发一次路由更新，v1以广播形式广播地址发送   v2加进一组，组播地址224.0.0.9（组播更新）</li>
+<li>rip路由更新线路不通时，先敬如180s等待，若之后的240s后还没恢复，则删除路由条目</li>
+<li>rip认证<ul>
+<li>明文：向外发送密钥时，只会发送编号最小的密码</li>
+<li>密文：将所有编号的密码都向外发送</li>
+</ul>
+</li>
+</ul>
+<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><ul>
+<li>在全局模式下输入 router rip 进入协议进程配置模式</li>
+<li>输入 net 本地直连网络（有类网络） 1.0.0.0  宣告本地直连的网段</li>
+<li>deb ip rip 显示rip动态信息</li>
+<li>router rip ？ 配置rip版本</li>
+<li><p>在接口下</p>
+<pre><code>ip rip send version 1/2 发送什么类型的更新
+ip rip receieve version 1/2 接收什么类型的更新
+</code></pre></li>
+</ul>
+<h3 id="eigrp协议"><a href="#eigrp协议" class="headerlink" title="eigrp协议"></a>eigrp协议</h3><ol>
+<li>工作类型：高级距离矢量路由选择协议</li>
+<li>思科私有协议</li>
+<li>能保证路由选择100%无环（DUAL算法）</li>
+<li>支持vlsm</li>
+<li>支持组播和单播更新</li>
+<li>支持自动汇总和手动汇总</li>
+<li>快速收敛（路由表的更新）</li>
+<li>支持认证</li>
+<li>eigrp中一个路由器可以属于多个as，但每个接口只能属于一个as</li>
+<li>eigrp消息类型：<ul>
+<li>hello信息</li>
+<li>更新信息</li>
+<li>ack确认信息</li>
+<li>查询信息<br>-查询恢复</li>
+</ul>
+</li>
+<li>汇总<ul>
+<li>自动汇总</li>
+<li>手动汇总</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>邻居表 :毎5s以组播地址（224.0.0.10）向外发送hello包询问当前网络是否有同伴存在建立邻居关系<ul>
+<li>前提条件：1.能互相收到hello包（直连），2.处于同一AS之内  3. 5k值要匹配（eigrp 5k值默认10100）</li>
+</ul>
+</li>
+<li>拓扑表 ：包含邻居发给我的所有更新条目<ul>
+<li>ad 通告距离 ：下一跳路由器到达目的地的距离</li>
+<li>fd 可行距离 ：本地路由器到达目的地的距离</li>
+<li>fs 可行条件 ：能被路由器选为可行路径需要符合的条件 ad &lt; 最小fd</li>
+<li>sus 后继者 ：最优路径 （满足可行条件）</li>
+<li>fsus 可行后继者 ：次优路径  （也必须满足可行条件）</li>
+</ul>
+</li>
+<li>路由表</li>
+</ul>
+<h4 id="配置-1"><a href="#配置-1" class="headerlink" title="配置"></a>配置</h4><pre><code>router ei ?(as号)
+net 1.0.0.0
+</code></pre><ul>
+<li><p>精确宣告</p>
+<ul>
+<li><p>通配符（反掩码）： 0精确匹配，1不匹配 </p>
+<p>  net 172.16.1.0 0.0.0.255</p>
+</li>
+</ul>
+</li>
+<li><p>手动汇总</p>
+<pre><code>no auto  //关闭自动汇总
+</code></pre></li>
+<li><p>负载均衡    </p>
+<ul>
+<li>等价负载均衡：metric值一样</li>
+<li><p>不等价负载均衡 ：将可行后继放进路由表中</p>
+<pre><code>router ei 1
+va X    //修改倍数因子
+</code></pre></li>
+</ul>
+</li>
+<li><p>末结区域</p>
+<pre><code>不接受查询信息，
+不连接其他任何网段，末结区域的路由器只关心本地是否能够向外通信
+
+router ei 1
+eigrp stub
+</code></pre></li>
+</ul>
+<h3 id="ospf协议"><a href="#ospf协议" class="headerlink" title="ospf协议"></a>ospf协议</h3><p>开放最短路径优先</p>
+<ul>
+<li>链路状态路由选择协议</li>
+<li>lsa数据包（11种）</li>
+<li>邻接关系：逻辑上连接（在同一网络中）</li>
+<li>骨干区域，非骨干区域 ： 非骨干区域之间的通信必须经过骨干区域（非骨干区域必须跟骨干狳直接相连）</li>
+<li><p>DR指定路由器/BDR备份指定路由器/DRother其他路由器：（只有在刚播网络中才会竞选）</p>
+<ul>
+<li><p>优先级：越大越好 默认1  -255   设为0不称为DR/BDR</p>
+<pre><code>int e0/1
+ip os pr X  //修改优先级值
+</code></pre></li>
+<li>接口ip：大—DR</li>
+<li>所有的路由器与DR与BDR之间建立邻接关系，DRother之间不建立任何邻接关系，他们一直处于two-way状态，DRother将所有更新条目发送给DR和BDR，DR和BDR汇总完成后再下发给DRother</li>
+</ul>
+</li>
+<li><p>虚链路 中间只能横跨一个区域 一条骨干上虚链路只能有一个</p>
+<pre><code>router os 1
+ar X（需要穿过的区域） vir X（对方router-id）
+</code></pre></li>
+<li>邻居表</li>
+<li>lsdb链路状态数据库 dbd数据库描述 sh ip os databse </li>
+<li><p>cost开销值（受带宽影响）在接口下ip os cost X在接受方向上改变</p>
+<pre><code>带宽          cost=metric 
+10            100
+100            19
+1000        4
+10000        2
+</code></pre></li>
+<li><p>消息类型</p>
+<ul>
+<li>hello</li>
+<li>bdb</li>
+<li>lsr链路状态查询</li>
+<li>lsu链路状态更新</li>
+<li>lsack链路状态确认</li>
+</ul>
+</li>
+<li><p>lsa链路状态通告</p>
+<ul>
+<li>1类：router lsa （路由器lsa）区域内所有路由器都会自行产生一条，其中包含本地所有参与ospf的接口，ip，开销链路类型，等物理信息。只会在本区域内传递，不能穿过ABR</li>
+<li>2类：network lsa （网络lsa）由DR产生，在本区域内传递，通告本段链路所能到达的所有路径。  O</li>
+<li>3类：network summary lsa（网络汇总lsa）由ABR产生，向其他区域通告本区域的路径信息。通告范围：AS，即所有启用ospl的其他区域（本区域和特殊区域除外）   O IA</li>
+<li>4类：ASBR汇总lsa 由ABR产生，向其他区域通告本区域中的ASBR是谁</li>
+<li>5类：外部路径lsa 由ASBR产生，向ospf自制系统中通告外部路径 产生的路由类型O E2：在ospf自制系统中的传递开销值不会叠加 默认20 ； O E1: 在ospf自制系统中传递叠加开销值 ，若同时有OE1和OE2的路由存在优选OE1</li>
+<li>7类：NSSA区域中的外部路径lsa ON2不叠加开销值；ON1叠加开销值</li>
+</ul>
+</li>
+<li><p>特殊区域   </p>
+<ul>
+<li>stub 末结区域 ：身后不连接其他任何自制系统，但可以正常接收        ospf中其他区域的路由条目。123传递，457不传递</li>
+<li><p>totally stup 完全末结区域：身后不连接其他任何自制系统，也不接               收ospf中其他区域路由条目。</p>
+<pre><code>area X stub //末结
+area X stub no-summary //完全末结
+</code></pre><ul>
+<li>由ABR向末结和完全末结区域内下发一条缺省路由以作通信（下一跳为ABR）</li>
+</ul>
+</li>
+<li>nssa    末梢区域：可以传递外部路由（7类lsa））（缺省路由）</li>
+<li><p>totally nssa 完全末梢区域：可以传递外部路由（7类lsa））（缺省路由）</p>
+<pre><code>area X nssa //末梢
+area X nssa no-summary //完全末梢
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>ospf中接口网络类型    sh ip os int X（接口编号）</p>
+<ol>
+<li>广播：所有的以太网默认都是广播类型的</li>
+<li>点到点：只有一个邻居的存在（串口默认）   接口下 ip os net point-to-point</li>
+<li>NBMA ：非广播型多链路访问 （帧中继）</li>
+<li>点到多点</li>
+</ol>
+</li>
+<li><p>ospf默认所有环回口地址都为主机地址/32  —-改成点到点变正常</p>
+</li>
+</ul>
+<h4 id="配置-2"><a href="#配置-2" class="headerlink" title="配置"></a>配置</h4><ul>
+<li><p>接口下</p>
+<pre><code>ospf X area 区域号
+</code></pre></li>
+<li><p>ospf进程下</p>
+<pre><code>router ospf X（进程号）
+net 12.12.12.0 0.0.0.255 area X（区域号0为骨干区域，其他都为非骨干区域）宣告必须携带反掩码
+</code></pre></li>
+<li><p>重置ospf</p>
+<pre><code>clear os pr
+</code></pre></li>
+<li><p>汇总（针对区域，外部汇总）</p>
+<ol>
+<li><p>ospf自制系统内的区域汇总（ABR上）</p>
+<pre><code>router ospf ？（进程id）
+area ？ range 汇总后的网段 汇总后网段的子网掩码
+</code></pre></li>
+<li><p>ospf外部路由的汇总（ASBR上）</p>
+<pre><code>summary-address 汇总后的网段 汇总后网段的子网掩码
+router os 1
+re co su
+</code></pre></li>
+</ol>
+</li>
+<li><p>认证</p>
+<ol>
+<li><p>区域认证</p>
+<pre><code>router os X
+明文 area 1 au        
+密文 area 1 au message 
+</code></pre><p>到该区域的接口下配置密码</p>
+</li>
+<li><p>接口认证</p>
+<pre><code>明文 ip ospf au-key key X(密码)
+密文 ip ospf au message
+    ip ospf messsafe key X(密码) md5
+</code></pre></li>
+</ol>
+</li>
+</ul>
+<h3 id="重分发"><a href="#重分发" class="headerlink" title="重分发"></a>重分发</h3><ul>
+<li><p>其他路由选择协议进rip</p>
+<pre><code>router rip
+redistribute 协议 metric X（metric值，默认为0 ）
+</code></pre></li>
+<li><p>其他路由选择协议进erigrp</p>
+<pre><code>router ei ?
+re 协议 metric 10000带宽 100延迟 255可靠值 1负载 150mtu
+</code></pre></li>
+<li><p>其他路由选择协议进ospf</p>
+<pre><code>router os 1
+red 协议 sub （metric-type X）（metric ？）
+</code></pre></li>
+<li><p>connected：直连</p>
+</li>
+<li>双向重分发：两个协议都能收到互相的路由信息</li>
+</ul>
+<h1 id="用路由器模拟pc机"><a href="#用路由器模拟pc机" class="headerlink" title="用路由器模拟pc机"></a>用路由器模拟pc机</h1><pre><code>接口下no ip route
+</code></pre><h1 id="配置网关"><a href="#配置网关" class="headerlink" title="配置网关"></a>配置网关</h1><pre><code>ip de-ga 网关地址    
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://dmonster.top/2017/07/16/CCNP--路由IGP/" data-id="cjescjkec000h9ougrjcc14de" class="article-share-link" data-share="baidu" data-title="CCNP路由IGP">分享到</a>
+      
+
+      
+        <a href="http://dmonster.top/2017/07/16/CCNP--路由IGP/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CCNP/">CCNP</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/07/16/CCNP--路由IGP(1)/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          CCNP路由IGP
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/07/15/CCNP--命令行/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">CISCO CCNP PT命令行</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2017/07/16/CCNP--路由IGP/" data-title="CCNP路由IGP" data-url="http://dmonster.top/2017/07/16/CCNP--路由IGP/"></div>
+  </section>
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/实验/">实验</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/笔记/">笔记</a><span class="category-list-count">18</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCIE/">CCIE</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/">CCNA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/">CCNP</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/学习笔记/">学习笔记</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络安全/">网络安全</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">8</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/12/02/网络安全/">网络安全</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/02/网络安全(1)/">网络安全</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/25/ISIS/">ISIS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/25/多播/">多播</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/24/MPLS/">MPLS</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+     
+	<div class="widget-wrap"> 
+		<h3 class="widget-title">Weibo show</h3> 
+		<div class="widget-weibo"> 
+			<iframe width="100%" height="550" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=2&ptype=1&speed=0&skin=5&isTitle=1&noborder=1&isWeibo=1&isFans=1&uid=5753916666&verifier=c645597d&dpc=1"></iframe>
+		</div> 
+	</div> 
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 dmonster<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/sitemap.xml" class="mobile-nav-link">sitemap</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 多说公共js代码 start -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"reqianduan"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共js代码 end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>

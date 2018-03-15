@@ -1,0 +1,500 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>BeautifulSoup库 | dmonster&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="若有如下html： html = &amp;quot;&amp;quot;&amp;quot; &amp;lt;html&amp;gt;&amp;lt;head&amp;gt;&amp;lt;title&amp;gt;The Dormouse&amp;apos;s story&amp;lt;/title&amp;gt;&amp;lt;/head&amp;gt; &amp;lt;body&amp;gt; &amp;lt;p class=&amp;quot;title&amp;quot; name=&amp;quot;dromouse&amp;quot;&amp;gt;&amp;l">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BeautifulSoup库">
+<meta property="og:url" content="http://dmonster.top/2017/04/23/BeautifulSoup库(1)/index.html">
+<meta property="og:site_name" content="dmonster&#39;s blog">
+<meta property="og:description" content="若有如下html： html = &amp;quot;&amp;quot;&amp;quot; &amp;lt;html&amp;gt;&amp;lt;head&amp;gt;&amp;lt;title&amp;gt;The Dormouse&amp;apos;s story&amp;lt;/title&amp;gt;&amp;lt;/head&amp;gt; &amp;lt;body&amp;gt; &amp;lt;p class=&amp;quot;title&amp;quot; name=&amp;quot;dromouse&amp;quot;&amp;gt;&amp;l">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-03-15T02:02:32.249Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="BeautifulSoup库">
+<meta name="twitter:description" content="若有如下html： html = &amp;quot;&amp;quot;&amp;quot; &amp;lt;html&amp;gt;&amp;lt;head&amp;gt;&amp;lt;title&amp;gt;The Dormouse&amp;apos;s story&amp;lt;/title&amp;gt;&amp;lt;/head&amp;gt; &amp;lt;body&amp;gt; &amp;lt;p class=&amp;quot;title&amp;quot; name=&amp;quot;dromouse&amp;quot;&amp;gt;&amp;l">
+  
+    <link rel="alternative" href="/atom.xml" title="dmonster&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">dmonster&#39;s blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Hello my world!</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/sitemap.xml">sitemap</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="dmonster.top">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-BeautifulSoup库(1)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/23/BeautifulSoup库(1)/" class="article-date">
+  <time datetime="2017-04-23T02:33:44.000Z" itemprop="datePublished">2017-04-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/笔记/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      BeautifulSoup库
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <!-- Table of Contents -->
+      
+        <div id="toc" class="toc-article">
+          <strong class="toc-title">文章目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#四大对象种类"><span class="toc-number">1.</span> <span class="toc-text">四大对象种类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Tag"><span class="toc-number">1.1.</span> <span class="toc-text">Tag</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NavigableString"><span class="toc-number">1.2.</span> <span class="toc-text">NavigableString</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Comment"><span class="toc-number">1.3.</span> <span class="toc-text">Comment</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#搜索文档树"><span class="toc-number">2.</span> <span class="toc-text">搜索文档树</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#css选择器"><span class="toc-number">3.</span> <span class="toc-text">css选择器</span></a></li></ol>
+        </div>
+      
+        <p>若有如下html：</p>
+<pre><code>html = &quot;&quot;&quot;
+&lt;html&gt;&lt;head&gt;&lt;title&gt;The Dormouse&apos;s story&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;p class=&quot;title&quot; name=&quot;dromouse&quot;&gt;&lt;b&gt;The Dormouse&apos;s story&lt;/b&gt;&lt;/p&gt;
+&lt;p class=&quot;story&quot;&gt;Once upon a time there were three little sisters; and their names were
+&lt;a href=&quot;http://example.com/elsie&quot; class=&quot;sister&quot; id=&quot;link1&quot;&gt;&lt;!-- Elsie --&gt;&lt;/a&gt;,
+&lt;a href=&quot;http://example.com/lacie&quot; class=&quot;sister&quot; id=&quot;link2&quot;&gt;Lacie&lt;/a&gt; and
+&lt;a href=&quot;http://example.com/tillie&quot; class=&quot;sister&quot; id=&quot;link3&quot;&gt;Tillie&lt;/a&gt;;
+and they lived at the bottom of a well.&lt;/p&gt;
+&lt;p class=&quot;story&quot;&gt;...&lt;/p&gt;
+&quot;&quot;&quot;
+</code></pre><h1 id="四大对象种类"><a href="#四大对象种类" class="headerlink" title="四大对象种类"></a>四大对象种类</h1><p>Beautiful Soup将复杂HTML文档转换成一个复杂的树形结构,每个节点都是Python对象,所有对象可以归纳为4种</p>
+<pre><code>soup = BeautifulSoup(open(&apos;index.html&apos;))
+print soup.prettify() //格式化输出
+</code></pre><h2 id="Tag"><a href="#Tag" class="headerlink" title="Tag"></a>Tag</h2><p>注释为输出结果</p>
+<ul>
+<li><p>.descendants<br>descendants 属性可以对所有tag的子孙节点进行递归循环</p>
+<pre><code>for child in soup.descendants:
+    print child
+//返回所有子孙节点
+</code></pre></li>
+<li><p>.content</p>
+<pre><code>print soup.head.content
+[&lt;title&gt;The Dormouse&apos;s story&lt;/title&gt;]
+</code></pre><p>  返回的是一个list，用列表索引来获取它的摸一个元素：</p>
+<pre><code>&gt;&gt;&gt;print soup.head.contents[0]
+&lt;title&gt;The Dormouse&apos;s story&lt;/title&gt;
+</code></pre></li>
+<li><p>.children</p>
+<pre><code>print soup.body.children
+&lt;listiterator object at 0x7f71457f5710&gt;
+</code></pre><p>  返回的是一个list生成器对象，循环遍历：</p>
+<pre><code>&gt;&gt;&gt;print soup.body.children:
+    print child
+
+&lt;p class=&quot;title&quot; name=&quot;dromouse&quot;&gt;&lt;b&gt;The Dormouse&apos;s story&lt;/b&gt;&lt;/p&gt;
+
+&lt;p class=&quot;story&quot;&gt;Once upon a time there were three little sisters; and their names were
+&lt;a class=&quot;sister&quot; href=&quot;http://example.com/elsie&quot; id=&quot;link1&quot;&gt;&lt;!-- Elsie --&gt;&lt;/a&gt;,
+&lt;a class=&quot;sister&quot; href=&quot;http://example.com/lacie&quot; id=&quot;link2&quot;&gt;Lacie&lt;/a&gt; and
+&lt;a class=&quot;sister&quot; href=&quot;http://example.com/tillie&quot; id=&quot;link3&quot;&gt;Tillie&lt;/a&gt;;
+and they lived at the bottom of a well.&lt;/p&gt;
+
+&lt;p class=&quot;story&quot;&gt;...&lt;/p&gt;
+</code></pre></li>
+<li><p>.patents</p>
+<pre><code>content = soup.head.title.string
+for parent in  content.parents:
+    print parent.name
+
+title
+head
+html
+[document]
+</code></pre></li>
+<li><p>.next_sibling<br>  后一个兄弟节点</p>
+</li>
+<li><p>.previous_sibling</p>
+<p>  前一个兄弟节点</p>
+</li>
+<li><p>print soup.title</p>
+<pre><code>&lt;title&gt;The Dormouse&apos;s story&lt;/title&gt;
+</code></pre></li>
+<li><p>print soup.head</p>
+<pre><code>&lt;head&gt;&lt;title&gt;The Dormouse&apos;s story&lt;/title&gt;&lt;/head&gt;
+</code></pre></li>
+<li><p>print soup.a</p>
+<pre><code>&lt;a class=&quot;sister&quot; href=&quot;http://example.com/elsie&quot; id=&quot;link1&quot;&gt;&lt;!-- Elsie --&gt;&lt;/a&gt;
+</code></pre></li>
+<li><p>print soup.p</p>
+<pre><code>&lt;p class=&quot;title&quot; name=&quot;dromouse&quot;&gt;&lt;b&gt;The Dormouse&apos;s story&lt;/b&gt;&lt;/p&gt;
+</code></pre><ul>
+<li><p>print soup.p.attrs    // 得到字典</p>
+<pre><code>{&apos;class&apos;: [&apos;title&apos;], &apos;name&apos;: &apos;dromouse&apos;}
+</code></pre></li>
+<li><p>print soup.p[‘class’] 或 print soup.p.get(‘class’)</p>
+<pre><code>[&apos;title&apos;]
+</code></pre><h2 id="NavigableString"><a href="#NavigableString" class="headerlink" title="NavigableString"></a>NavigableString</h2></li>
+</ul>
+</li>
+<li><p>.string</p>
+<pre><code>print soup.p.string   // 得到内容但只有第一条
+The Dormouse&apos;s story
+</code></pre></li>
+<li><p>.strings</p>
+<pre><code>&gt;&gt;&gt;for string in soup.strings:
+       print(repr(string))
+
+u&quot;The Dormouse&apos;s story&quot;
+u&apos;\n\n&apos;
+u&quot;The Dormouse&apos;s story&quot;
+u&apos;\n\n&apos;
+u&apos;Once upon a time there were three little sisters; and their names were\n&apos;
+u&apos;Elsie&apos;
+....
+</code></pre></li>
+<li><p>.stripped_strings</p>
+<pre><code>&gt;&gt;&gt;for string in soup.stripped_strings:
+        print(repr(string))
+
+// 作用和 .strings一样但是不输出空白行和空格
+</code></pre><p>BeautifulSoup 对象表示的是一个文档的全部内容.大部分时候,可以把它当作 Tag 对象，是一个特殊的 Tag，我们可以分别获取它的类型，名称，以及属性来感受一下</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>print type(soup.name)<br>   <type 'unicode'=""><br>print soup.name<br>   [document]<br>print soup.attrs<br>   {} 空字典</type></p>
+</blockquote>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+<h2 id="Comment"><a href="#Comment" class="headerlink" title="Comment"></a>Comment</h2><p>Comment 对象是一个特殊类型的 NavigableString 对象，其实输出的内容仍然不包括注释符号，但是如果不好好处理它，可能会对我们的文本处理造成意想不到的麻烦。</p>
+<h1 id="搜索文档树"><a href="#搜索文档树" class="headerlink" title="搜索文档树"></a>搜索文档树</h1><ul>
+<li><p>find_all( name , attrs , recursive , text , keyword )</p>
+<p>  find_all() 方法搜索当前tag的所有tag子节点,并判断是否符合过滤器的条件</p>
+<ul>
+<li><p>name参数</p>
+<p>  name 参数可以查找所有名字为 name 的tag,字符串对象会被自动忽略掉</p>
+<ol>
+<li><p>字符串</p>
+<pre><code>&gt;&gt;&gt;soup.find_all(&apos;b&apos;)
+ [&lt;b&gt;The Dormouse&apos;s story&lt;/b&gt;]
+</code></pre></li>
+<li><p>正则表达式</p>
+<pre><code>for tag in soup.find_all(re.compile(&quot;^b&quot;)):
+    print(tag.name)
+
+body
+b
+</code></pre></li>
+<li><p>传列表</p>
+<p> 返回列表</p>
+</li>
+<li><p>传True</p>
+<p> True 可以匹配任何值,查找到所有的tag</p>
+</li>
+<li><p>传方法</p>
+<p> 如果没有合适过滤器,那么还可以定义一个方法,方法只接受一个元素参数 ,如果这个方法返回 True 表示当前元素匹配并且被找到,如果不是则反回 False</p>
+</li>
+</ol>
+</li>
+<li><p>keyword参数</p>
+<pre><code>&gt;&gt;&gt;soup.find_all(id=&apos;link2&apos;)
+ [&lt;a class=&quot;sister&quot; href=&quot;http://example.com/lacie&quot; id=&quot;link2&quot;&gt;Lacie&lt;/a&gt;]
+</code></pre><p>  在这里我们想用 class 过滤，不过 class 是 python 的关键词，这怎么办？加个下划线就可以</p>
+<pre><code>&gt;&gt;&gt;soup.find_all(&quot;a&quot;, class_=&quot;sister&quot;)
+ [&lt;a class=&quot;sister&quot; href=&quot;http://example.com/elsie&quot; id=&quot;link1&quot;&gt;Elsie&lt;/a&gt;,
+ &lt;a class=&quot;sister&quot; href=&quot;http://example.com/lacie&quot; id=&quot;link2&quot;&gt;Lacie&lt;/a&gt;,
+ &lt;a class=&quot;sister&quot; href=&quot;http://example.com/tillie&quot; id=&quot;link3&quot;&gt;Tillie&lt;/a&gt;]
+</code></pre></li>
+<li><p>text参数</p>
+<p>  通过 text 参数可以搜搜文档中的字符串内容.与 name 参数的可选值一样, text 参数接受 字符串 , 正则表达式 , 列表, True</p>
+<pre><code>&gt;&gt;&gt;soup.find_all(text=&quot;Elsie&quot;)
+ [u&apos;Elsie&apos;]
+</code></pre></li>
+<li><p>limit参数</p>
+<p>  find_all() 方法返回全部的搜索结构,如果文档树很大那么搜索会很慢.如果我们不需要全部结果,可以使用 limit 参数限制返回结果的数量.效果与SQL中的limit关键字类似,当搜索到的结果数量达到 limit 的限制时,就停止搜索返回结果.</p>
+<pre><code>&gt;&gt;&gt;soup.find_all(&quot;a&quot;, limit=2)
+[&lt;a class=&quot;sister&quot; href=&quot;http://example.com/elsie&quot; id=&quot;link1&quot;&gt;Elsie&lt;/a&gt;,
+&lt;a class=&quot;sister&quot; href=&quot;http://example.com/lacie&quot; id=&quot;link2&quot;&gt;Lacie&lt;/a&gt;]
+</code></pre></li>
+<li><p>recursive参数</p>
+<p>  调用tag的 find_all() 方法时,Beautiful Soup会检索当前tag的所有子孙节点,如果只想搜索tag的直接子节点,可以使用参数 recursive=False .</p>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="css选择器"><a href="#css选择器" class="headerlink" title="css选择器"></a>css选择器</h1><p>我们在写 CSS 时，标签名不加任何修饰，类名前加点，id名前加 #，在这里我们也可以利用类似的方法来筛选元素，用到的方法是 soup.select()，返回类型是 list</p>
+<ul>
+<li><p>通过标签名查找</p>
+<pre><code>print soup.select(&apos;title&apos;)
+print soup.select(&apos;a&apos;)
+</code></pre></li>
+<li><p>通过类名查找</p>
+<pre><code>print soup.select(&apos;.sister&apos;)
+print soup.select(&apos;#link1&apos;)
+</code></pre></li>
+<li><p>组合查找</p>
+<pre><code>print soup.select(&apos;p #link1&apos;)
+</code></pre></li>
+<li><p>直接子标签查找</p>
+<pre><code>print soup.select(&apos;head &gt; title&apos;)
+</code></pre></li>
+<li><p>属性查找</p>
+<p>  查找时还可以加入属性元素，属性需要用中括号括起来，注意属性和标签属于同一节点，所以中间不能加空格，否则会无法匹配到。</p>
+<pre><code>print soup.select(&apos;a[href=&quot;http://example.com/elsie&quot;]&apos;)
+print soup.select(&apos;a[class=&quot;sister&quot;]&apos;)
+</code></pre></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://dmonster.top/2017/04/23/BeautifulSoup库(1)/" data-id="cjescjkcu00009ougbc8d3noc" class="article-share-link" data-share="baidu" data-title="BeautifulSoup库">分享到</a>
+      
+
+      
+        <a href="http://dmonster.top/2017/04/23/BeautifulSoup库(1)/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/23/BeautifulSoup库/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          BeautifulSoup库
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/19/python学习笔记/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">pyhon学习笔记</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2017/04/23/BeautifulSoup库(1)/" data-title="BeautifulSoup库" data-url="http://dmonster.top/2017/04/23/BeautifulSoup库(1)/"></div>
+  </section>
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/实验/">实验</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/笔记/">笔记</a><span class="category-list-count">18</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCIE/">CCIE</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/">CCNA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/">CCNP</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/学习笔记/">学习笔记</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络安全/">网络安全</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">8</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/12/02/网络安全/">网络安全</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/02/网络安全(1)/">网络安全</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/25/ISIS/">ISIS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/25/多播/">多播</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/24/MPLS/">MPLS</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+     
+	<div class="widget-wrap"> 
+		<h3 class="widget-title">Weibo show</h3> 
+		<div class="widget-weibo"> 
+			<iframe width="100%" height="550" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=2&ptype=1&speed=0&skin=5&isTitle=1&noborder=1&isWeibo=1&isFans=1&uid=5753916666&verifier=c645597d&dpc=1"></iframe>
+		</div> 
+	</div> 
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 dmonster<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/sitemap.xml" class="mobile-nav-link">sitemap</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 多说公共js代码 start -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"reqianduan"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共js代码 end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>

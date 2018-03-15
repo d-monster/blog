@@ -1,0 +1,664 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>多播 | dmonster&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="多播 数据传播方式  单播 ： unicast          1对1，源和目的都是已知的  广播 ： broadcast  1对all 源已知，目的通常未知  多播 ： mutiplecast（iphone iptv ipmeet）  1对many或者many对1 源已知，目的通常未知    设备处理  router  单播 广播 路由器默认阻止广播流穿越，除非有特殊的进程或协议 多播 默认不">
+<meta name="keywords" content="CCIE">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多播">
+<meta property="og:url" content="http://dmonster.top/2017/11/25/多播/index.html">
+<meta property="og:site_name" content="dmonster&#39;s blog">
+<meta property="og:description" content="多播 数据传播方式  单播 ： unicast          1对1，源和目的都是已知的  广播 ： broadcast  1对all 源已知，目的通常未知  多播 ： mutiplecast（iphone iptv ipmeet）  1对many或者many对1 源已知，目的通常未知    设备处理  router  单播 广播 路由器默认阻止广播流穿越，除非有特殊的进程或协议 多播 默认不">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-03-15T02:02:19.200Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="多播">
+<meta name="twitter:description" content="多播 数据传播方式  单播 ： unicast          1对1，源和目的都是已知的  广播 ： broadcast  1对all 源已知，目的通常未知  多播 ： mutiplecast（iphone iptv ipmeet）  1对many或者many对1 源已知，目的通常未知    设备处理  router  单播 广播 路由器默认阻止广播流穿越，除非有特殊的进程或协议 多播 默认不">
+  
+    <link rel="alternative" href="/atom.xml" title="dmonster&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">dmonster&#39;s blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Hello my world!</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/sitemap.xml">sitemap</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="dmonster.top">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-多播" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/25/多播/" class="article-date">
+  <time datetime="2017-11-25T01:24:49.000Z" itemprop="datePublished">2017-11-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/笔记/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      多播
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <!-- Table of Contents -->
+      
+        <div id="toc" class="toc-article">
+          <strong class="toc-title">文章目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#多播"><span class="toc-number">1.</span> <span class="toc-text">多播</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">1.1.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#跨域多播"><span class="toc-number">2.</span> <span class="toc-text">跨域多播</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#参考书籍"><span class="toc-number">2.1.</span> <span class="toc-text">参考书籍</span></a></li></ol></li></ol>
+        </div>
+      
+        <h1 id="多播"><a href="#多播" class="headerlink" title="多播"></a>多播</h1><ol>
+<li><p>数据传播方式</p>
+<ol>
+<li><p>单播 ： unicast        </p>
+<p> 1对1，源和目的都是已知的</p>
+</li>
+<li><p>广播 ： broadcast</p>
+<p> 1对all 源已知，目的通常未知</p>
+</li>
+<li><p>多播 ： mutiplecast（iphone iptv ipmeet）</p>
+<p> 1对many或者many对1 源已知，目的通常未知</p>
+</li>
+</ol>
+</li>
+<li><p>设备处理</p>
+<ol>
+<li><p>router</p>
+<ol>
+<li>单播</li>
+<li>广播 路由器默认阻止广播流穿越，除非有特殊的进程或协议</li>
+<li>多播 默认不允许传递，除非有特殊的进程或协议</li>
+</ol>
+</li>
+<li><p>switch</p>
+<ol>
+<li>单播帧<ol>
+<li>已知目的mac单播帧 ： 定向转发</li>
+<li>未知目的mac单播帧 ： 泛洪</li>
+</ol>
+</li>
+<li>广播帧 泛洪</li>
+<li>多播帧 泛洪</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>多播的术语</p>
+<ol>
+<li>多播源（可能是多个）</li>
+<li>多播的成员 组成员</li>
+<li>组group </li>
+<li>树 路径（router提供）</li>
+<li>源树：树根基于源</li>
+<li>共享树：双层，下游设备基于rp算路径，rp基于源算路径</li>
+<li>集合点rp</li>
+</ol>
+</li>
+<li><p>多播图</p>
+<ol>
+<li><p>igmp 互联网组管理协议</p>
+<p> igmp帮助路由器发现直连子网内的组成员</p>
+<p> igm帮助终端主动申告是不是组成员</p>
+<ol>
+<li><p>igmpv1 </p>
+<ol>
+<li><p>report 报告消息，源于pc 毎60s发一次</p>
+<p> 作用： 回应，申告</p>
+</li>
+<li><p>request 查询消息 源于路由器 </p>
+<p> 查询回应等待时间10s</p>
+<p> 老化时间180s</p>
+</li>
+<li><p>重大缺点</p>
+<ol>
+<li>显性加入，隐性离开</li>
+<li>多查询者</li>
+<li>多个转发者</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>igmpv2</p>
+<ol>
+<li>request</li>
+<li>report</li>
+<li>leave 来自pc 显性离开</li>
+<li>sq 特定查询消息 等待时间3s—-report</li>
+<li><p>查询者竞选机制</p>
+<p> 源ip越小越优</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>多播的ip和多播的mac</p>
+<ol>
+<li><p>多播的目的ip</p>
+<p> 224.xxx.0-239.xxx</p>
+<p> 多播ip标识的不是数据接收设备，是服务或应用</p>
+<pre><code>224.0.0.1 所有pc接收
+224.0.0.2 所有路由器侦听
+224.0.0.9 代表ripv2
+224.0.0.10 代表eigrp
+</code></pre></li>
+<li><p>多播的mac</p>
+<p> 01005E.后6个16进制书利用多播ip进行计算</p>
+<p> ！！注意 ： 多播mac地址可能因为多播ip的后23bit一致，而重复</p>
+</li>
+</ol>
+</li>
+<li><p>多播路由协议</p>
+<p> 主要负责计算多播路径（树），同时维护</p>
+<ol>
+<li><p>多播路由协议的种类</p>
+<ol>
+<li>dvmrp：距离矢量多播路由协议：淘汰</li>
+<li>mospf：多播的ospf ：淘汰</li>
+<li>cbt：基于核心的树：淘汰</li>
+<li>pim：协议独立的多播路由协议：主流</li>
+<li>M-BGP：多播的bgp</li>
+<li>msdp：快于多播时使用，多播源发现协议</li>
+</ol>
+</li>
+<li><p>PIM </p>
+<p> as内负责多播树构建的协议</p>
+<ol>
+<li><p>pim的模式</p>
+<ol>
+<li><p>密集模式：路径都是源树</p>
+<p> 子网内多播组成员占比重</p>
+<p> pim dense mode 使用的是igmpv1</p>
+</li>
+<li><p>稀疏模式：路径都是共享树</p>
+<p> pim sparse mode 使用的是igmpv2</p>
+</li>
+<li><p>注意</p>
+<p> pim的密集模式现在用的也是igmpv2</p>
+</li>
+<li><p>pim的密集模式详解</p>
+<ol>
+<li><p>密集模式的消息  扩散–修剪</p>
+<ol>
+<li>hello消息：用于建立pim邻居关系</li>
+<li>jion消息：当前路由器发给上游设备，告诉上游路径将直连路径加入多播树</li>
+<li>prune消息：修剪消息，当前路由器发给上游设备，告知上游设备将直连网络从树中移开</li>
+<li>graft消息：接枝消息，上游设备发送给上游，将之前移开的直连网络请求再加进去</li>
+<li>graft-ack：接枝确认消息，上游发给下游设备，告知路径已经接回来</li>
+<li>assert：禁言消息</li>
+</ol>
+</li>
+<li><p>pim的密集模式的禁言消息</p>
+<p> pim assert消息实际上是竞选转发者所用</p>
+<p> assert消息里携带3个参数</p>
+<ol>
+<li>转发多播流设备使用的底层协议管理距离 小优</li>
+<li>转发多播流设备蒂法多播源的路径开销 小优</li>
+<li>转发多播流接口IP地址 ip地址大优</li>
+</ol>
+</li>
+<li><p>pim密集模式中的dr（指定路由器）</p>
+<p> pim的密集模式使用的是ibmpv1，pim的密集模式会在连接的子网一段竞选bdr，有dr最终负责查训工作。</p>
+<p> dr竞选过程：优先级和接口ip，优先级越大越优，接口ip越大越优</p>
+<p> pim的密集模式现在使用的是igmpv2，igmpv2小优，dr是ip大优，两者冲突，最终igmpv2决定一切</p>
+</li>
+</ol>
+</li>
+<li><p>pim稀疏模式： </p>
+<ol>
+<li><p>pim稀疏模式消息</p>
+<ol>
+<li>hello</li>
+<li>jion</li>
+<li>prune</li>
+<li>graft</li>
+<li>graft-ack</li>
+<li>assert</li>
+<li><p>register 注册消息 ：第一跳路由器发送给rp</p>
+<p> 注册消息实际上是第一跳路由器将接收的多播流二次封装成单播流量，以抵达rp的最短路径发给rp，触发rp计算抵达多播源的最短路径计算</p>
+</li>
+<li><p>register-stop 注册停止消息 rp反发给第一跳路由器</p>
+<p> rp以源为根，计算完毕最短路径后，利用注册停止信息，告诉第一跳路由器，不需要二次封装发送数据，路径完成可以多播形式发送</p>
+<p> 多播源主动注册，下游主动加入</p>
+</li>
+</ol>
+</li>
+<li><p>pim sparse mode中dr的作用</p>
+<p> 下游设备dr负责发送加入消息，</p>
+<p> 多个第一跳设备dr负责发送注册消息</p>
+</li>
+<li><p>共享树切换成源树</p>
+<p> 启用pimsm的设备接收超过4个字节的多播流之后，就会尝试以原为根计算最短路径，用该路径代替之前的共享树</p>
+<p> pimsm最终稳定之后实际上能看到的都是源树</p>
+<p> ！！注意：既然最终都切换到源树，那干嘛还要rp共享树呢 ： rp就是无扩散多播流得到多播路径的精髓，有了rp，有了共享树，有了更高效计算路径的方式，但未必路径最优，才需要切到源树</p>
+</li>
+<li><p>多播防环机制</p>
+<p> rpf revense path forward：默认开启帮助多播避环的机制，接收多播流的接口必须是单播路径上抵达多播源的出后，接口才可以接收，流量接收后，才允许被发送</p>
+</li>
+<li><p>稀疏模式的rp由来</p>
+<ol>
+<li><p>人为手动指定， 维护不易，没有必要的冗余备份</p>
+<pre><code>ip pim rp-address &lt;xxxx&gt;
+</code></pre></li>
+<li><p>动态竞选</p>
+<ol>
+<li><p>auto-rp：思科私有</p>
+<p> c-rp：：候选rp，所有期望成为rp的角色</p>
+<p> rp-agent：rp代理，获取c-rp信息，裁决出结果，共享给所有pim路由器</p>
+<p> rp-agent实干梨园手动指定，没有备份</p>
+<p> c-rp的竞选参数是c-rp的id，这个id通常是loopback接口IP管理员指定c-rp id越大越有可能成为rp</p>
+<ol>
+<li><p>auto-rp使用地址</p>
+<p> 224.0.1.39 RP-AGENT侦听，C-RP将信息发向这里。<br> 224.0.1.40 所有启用PIM的路由器侦听，RP-AGENT将结果发向这里。</p>
+<p> ！！注意    ，RP-AGENGT消息的传播范围TTL：默认是1（必须改范围最大255），路由器对待RP-AGENT消息的方式：接收后并不继续传递。</p>
+</li>
+<li><p>auto-rp listen</p>
+<p> 路由器开启该功能，路由器不光接收RP-AGENT，还会在TTL允许的情况下继续传递。</p>
+</li>
+<li><p>rp-agent的配置</p>
+<pre><code>Ip pim send-rp-discovery loopback 0 scope 255
+Ip pim send-rp-an lo 0 sc 255（C-RP配置C-RP）
+ip pim autorp listener（路由侦听）
+</code></pre></li>
+</ol>
+</li>
+<li><p>bsr boot strap router ：自荐路由器</p>
+<p> c-rp</p>
+<p> c-bsr：候选bsr，负责收集c-rp信息，但是不裁决，当c-rp信息集发送给所有pim路由器，由他们自己完成裁决</p>
+<p> bsr竞选机制：先比较优先级（大优），再比较bsr id（大优）</p>
+<p> rp竞选机制：优先级（小优），hash长度（越长越好，但是现在不用了），c-rp id（大优）</p>
+<pre><code>ip pim bsr-candidate lo 0  0(hsah) 0（优先级）
+show ip pim bsr router  //看谁是bsr
+ip pim rp-candicate lo0 priority 1  //设置c-rp
+interface 
+ip pim dr-proiority xxx//改dr优先级    
+</code></pre></li>
+<li><p>注意</p>
+<p> 静态RP使用的LOOPBACK接口不需要参加PIM，AUTO-RP，BSR,作为ID的LOOPBACK接口必须参与PIM。</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>pim混合模式：sparse-dense-mode 混合模式</p>
+<p> 混合模式下，稀疏模式先工作，稀疏模式崩溃后，密集模式工作</p>
+<p> ！！补充：官方提供了命令，可以不允许混合模式下，稀疏退回密集</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>多播路由表的查看</p>
+<pre><code>show ip mroute //查看多播路由表  
+show ip igmp group //查看组成员
+show ip igmp interface &lt;intf-id&gt;  //查看接口的igmp参数
+show ip pim neighbor //查看pim邻居
+show ip rpf &lt;真实源ip&gt; //查看rpf 
+clear ip mroute *  //清除mroute
+show ip pim rp //查看rp是否跟组关联了
+show ip pim rp mapping //查看当前设备是否有rp信息
+ip pim spt-threshold infinity //使稀疏模式不切回密集模式
+</code></pre><p> 多播路由表条目几乎都是流量触发而来</p>
+<p> 每个条目的老化时间是3分钟</p>
+<ol>
+<li><p>多播路由表中的副条目和子条目</p>
+<ol>
+<li><p>多播路由表的父条目不负责转发数据，子条目才负责转发数据</p>
+<pre><code>（源信息，组信息）老化计时器
+incoming interface （上游接口，接收多播流的接口）  状态（forward/prune）/模式（dense/sparse）
+outgoing interface （下游接口，转发多播流量接口）  状态/模式
+</code></pre></li>
+<li><p>如何区分父条目，子条目</p>
+<p> 通常父条目源是* 上游接口为空，子条目是真正的多播源，上下游都有详细的信息</p>
+<p> 路由器收到report消息，就会针对特定组创建父条目，子条目基本都是真是的多播流创建</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>多播配置流程</p>
+<ol>
+<li><p>将路由器模拟成多播组成员</p>
+<pre><code>ip igmp jion-group &lt;多播地址&gt;
+</code></pre><p> 该命令可以变化参与，然后反复的录入，让一个接口十多个不同组的成员</p>
+</li>
+<li><p>路由器开启多播路由功能</p>
+<pre><code>ip multicast-routing
+</code></pre></li>
+<li><p>接口下启用pim</p>
+<pre><code>ip pim dense-mode
+ip pim sparse-mode
+ip pim sparse-dense-mode
+</code></pre></li>
+<li><p>那些接口参与pim </p>
+<ol>
+<li>连接子网成员的接口必须参与（参与之后igmp就在路由器开启了）</li>
+<li><p>连接多播流的接口必须参与</p>
+<p> 因为接口想要成功的接收多播流，必须满足两个条件：第一：参与pim，第二：通过rpf检测</p>
+</li>
+<li>最终需要传递多播流的路径两端接口必须参与</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>路由器、交换机处理单，广，多播数据的方式</li>
+<li>igmp的版本 v1v2消息，工作机制，优缺点</li>
+<li>igmpv2的查询者竞选机制</li>
+<li>pim密集模式和稀疏模式的运用场景</li>
+<li>pim dm中dr作用</li>
+<li>pim sm中dr作用</li>
+<li>pim dr的竞选</li>
+<li>pim dm树构建的过程</li>
+<li>pim sm树构建过程</li>
+<li>pim rp的获取方式</li>
+<li>pim dm sm中禁言消息的作用</li>
+<li>多播路由表中的父子条目</li>
+<li>如何影响多播路径</li>
+<li>rpf作用</li>
+</ol>
+<h1 id="跨域多播"><a href="#跨域多播" class="headerlink" title="跨域多播"></a>跨域多播</h1><ol>
+<li>跨域多播遇到的挑战，<ol>
+<li>靠近源的设备，收到注册消息，计算出抵达源的spt（最短路径树）但是得不到后半段路径消息</li>
+<li>靠近组成员的设备，收到join后，只能算出后半段路径，缺乏抵达源的路径信息</li>
+</ol>
+</li>
+<li><p>msdp：多播源发现协议</p>
+<pre><code>ip msdp peer xxxx connect-source lo 100
+show ip msdp summ    //看msdp邻居关系
+show ip msdp sa-cache //看有没有sa消息
+</code></pre><p> msdp配置在不同域的rp上，msdp会建立基于tcp的邻接关系，靠近源一侧的msdp收到注册消息后，会利用msdp sa消息，告诉靠近组成员一侧的rp，谁是源</p>
+<p> ！！注意：跨域多播中还需要考虑rpf的问题，接收多播流的接口必须通过ref检测，否则不接受转发多播流</p>
+</li>
+<li><p>m-bgp </p>
+<p> m-bgp是帮助参与多播的设备通过rpf检测的手段</p>
+<p> ！！rpf的作用</p>
+<p> rpf会避免多播流一环路方式传递</p>
+<p> rpf也会限制接口接收多播流</p>
+<p> 源网络可以通过传递的协议学习，比如： rip 。。。。，还可以通过m-bgp学习。</p>
+<p> m-bgp学习的网络进入m-bgp转发表，但不进入路由表</p>
+</li>
+<li><p>m-bgp的配置</p>
+<p> router bgp <as-id><br> nei <peer> remote xx<br> address ipv4 multicast<br> nei xxxx act</peer></as-id></p>
+<p> show ip bgp ipv4 muliticast //m-bgp转发表<br> cle ip bgp ipv4 1 soft out</p>
+</li>
+</ol>
+<ol>
+<li><p>anycast 范播</p>
+<p> 完全基于msdp，多播中利用anycast，可以提升rp切换的效率</p>
+</li>
+<li><p>IGMP SNOOPING（嗅探） 和CGMP (思科组管理协议)</p>
+<p> cgmp和igmp snooping 是运行在路由器和交换机上的，将多播流发送给该发送的设备</p>
+<pre><code>switch ： ip cgmp enable
+router ： ip cgmp emable
+</code></pre></li>
+</ol>
+<h2 id="参考书籍"><a href="#参考书籍" class="headerlink" title="参考书籍"></a>参考书籍</h2><pre><code>ip 多播网络的设计与部署
+tcp/ip 卷2
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://dmonster.top/2017/11/25/多播/" data-id="cjescjkfa00149ougjmkr0n68" class="article-share-link" data-share="baidu" data-title="多播">分享到</a>
+      
+
+      
+        <a href="http://dmonster.top/2017/11/25/多播/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CCIE/">CCIE</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/11/25/ISIS/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          ISIS
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/11/24/MPLS/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">MPLS</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2017/11/25/多播/" data-title="多播" data-url="http://dmonster.top/2017/11/25/多播/"></div>
+  </section>
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/实验/">实验</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/笔记/">笔记</a><span class="category-list-count">18</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCIE/">CCIE</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/">CCNA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/">CCNP</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/学习笔记/">学习笔记</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络安全/">网络安全</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">8</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/12/02/网络安全/">网络安全</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/02/网络安全(1)/">网络安全</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/25/ISIS/">ISIS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/25/多播/">多播</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/24/MPLS/">MPLS</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+     
+	<div class="widget-wrap"> 
+		<h3 class="widget-title">Weibo show</h3> 
+		<div class="widget-weibo"> 
+			<iframe width="100%" height="550" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=2&ptype=1&speed=0&skin=5&isTitle=1&noborder=1&isWeibo=1&isFans=1&uid=5753916666&verifier=c645597d&dpc=1"></iframe>
+		</div> 
+	</div> 
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 dmonster<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/sitemap.xml" class="mobile-nav-link">sitemap</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 多说公共js代码 start -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"reqianduan"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共js代码 end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>
