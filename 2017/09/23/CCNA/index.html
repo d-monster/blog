@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>CCNA | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="简单的流量操控ACL 访问能控制链表 工作在在网络层和传输层  标准acl 针对源ip 应用在接口之下，在每个接口针对每个方向的流量套用的acl只能用        一个  配置： /*数字编号*/  acc X(1-99) deny 源ip 反掩码  int X(接口编号)  ip acc X out/int   /*命名*/  ip acc standard X（名字）deny 源ip 反掩码">
+<meta name="keywords" content="CCNA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CCNA">
+<meta property="og:url" content="http://yoursite.com/2017/09/23/CCNA/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="简单的流量操控ACL 访问能控制链表 工作在在网络层和传输层  标准acl 针对源ip 应用在接口之下，在每个接口针对每个方向的流量套用的acl只能用        一个  配置： /*数字编号*/  acc X(1-99) deny 源ip 反掩码  int X(接口编号)  ip acc X out/int   /*命名*/  ip acc standard X（名字）deny 源ip 反掩码">
+<meta property="og:updated_time" content="2018-03-15T02:02:28.916Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CCNA">
+<meta name="twitter:description" content="简单的流量操控ACL 访问能控制链表 工作在在网络层和传输层  标准acl 针对源ip 应用在接口之下，在每个接口针对每个方向的流量套用的acl只能用        一个  配置： /*数字编号*/  acc X(1-99) deny 源ip 反掩码  int X(接口编号)  ip acc X out/int   /*命名*/  ip acc standard X（名字）deny 源ip 反掩码">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-CCNA" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/09/23/CCNA/" class="article-date">
+  <time datetime="2017-09-23T11:48:28.000Z" itemprop="datePublished">2017-09-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/笔记/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      CCNA
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="简单的流量操控"><a href="#简单的流量操控" class="headerlink" title="简单的流量操控"></a>简单的流量操控</h1><p>ACL 访问能控制链表 工作在在网络层和传输层</p>
+<ul>
+<li><p>标准acl 针对源ip 应用在接口之下，在每个接口针对每个方向的流量套用的acl只能用        一个</p>
+<ul>
+<li><p>配置：</p>
+<pre><code>/*数字编号*/
+ acc X(1-99) deny 源ip 反掩码
+ int X(接口编号)
+ ip acc X out/int
+  /*命名*/
+ ip acc standard X（名字）deny 源ip 反掩码
+</code></pre></li>
+</ul>
+</li>
+<li><p>扩展acl 针对协议（传输层，网络层），源ip，目的ip，端口号</p>
+<ul>
+<li><p>配置：</p>
+<pre><code>/*数字编号*/
+ acc X(100-199) deny 协议 源ip 反掩码 目的ip/目的网段 反掩码 端口号
+ acc X(100-199) deny 协议 源ip 反掩码 host 主机ip  端口号
+ acc X permit any any            
+  /*命名*/
+ ip acc extend X（名字）
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>不管是何种acl最后都会存在一条拒绝所有数据的命令，一般都会在结尾加上一条放行所有命令行 </p>
+<pre><code>acc X permint any
+</code></pre><p>acl顺序不可调整 </p>
+</li>
+<li><p>删除</p>
+<pre><code>no acc X
+</code></pre></li>
+<li><p>奇偶</p>
+<pre><code>奇数acc 1 per 172.16.1.0 0.0.254.255
+偶数acc 1 per 172.16.0.0 0.0.254.255
+</code></pre></li>
+</ul>
+<h1 id="远程登录-telnet"><a href="#远程登录-telnet" class="headerlink" title="远程登录 telnet"></a>远程登录 telnet</h1><p>端口号：23  ，要求ping的通</p>
+<pre><code>line vty 0 4 //0表示line从0开始，4表示一共有5个可供登录的单位
+
+password X
+</code></pre><p>同时配置，密文优先生效</p>
+<h1 id="nat：地址转换协议"><a href="#nat：地址转换协议" class="headerlink" title="nat：地址转换协议"></a>nat：地址转换协议</h1><p>进行地址转换，可将私网地址转成公网地址进行通讯，提升了ip地址空间的使用率</p>
+<ul>
+<li>内部本地地址：内部主机所获得的私网地址</li>
+<li><p>内部全局地址：转换成的公网地址</p>
+<ul>
+<li><p>配置方式</p>
+<p>  一对一：静态的手动指定</p>
+<ol>
+<li><p>定义接口角色：</p>
+<pre><code>int e0/0
+ip nat inside
+
+int e0/1
+ip nat outside
+</code></pre></li>
+<li><p>进行地址映射的配置</p>
+<pre><code>ip nat inside source static 私网内地址 公网出接口地址
+</code></pre><p>多对多：动态的</p>
+</li>
+<li><p>定义接口角色</p>
+</li>
+<li><p>定义抓取要转换的流量</p>
+<pre><code>acc 1 per 要转换的ip 反掩码8
+</code></pre></li>
+<li><p>定义转换后的地址</p>
+<pre><code>ip nat pool ?（名字） 转换后的地址 netmask 子网掩码        
+</code></pre></li>
+<li><p>进行地址映射</p>
+<pre><code>ip nat inside source list 1 pool ccnp
+</code></pre><p>多对一：（目前用的最多的）端口号：区分主机</p>
+</li>
+<li><p>定义接口角色</p>
+</li>
+<li><p>定义要转换的地址流量</p>
+</li>
+<li><p>进行地址映射</p>
+<pre><code>ip nat inside source list 1 int e0/0 overload  // e/0/0为出接口
+</code></pre></li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="单臂路由"><a href="#单臂路由" class="headerlink" title="单臂路由"></a>单臂路由</h1><p>子接口： 将一个物理接口逻辑上划分成多个子接口使用，每一个划分出来的子接口和物理接口一样正常使用</p>
+<pre><code>进入接口
+no sh
+int e0/0.X
+en dot1q X(所要识别的标记)
+</code></pre><h1 id="stp生成树协议"><a href="#stp生成树协议" class="headerlink" title="stp生成树协议"></a>stp生成树协议</h1><p>路由器单点故障（冗余）</p>
+<ol>
+<li>广播风暴</li>
+<li>重复帧</li>
+<li><p>mac地址表的不稳定</p>
+<p> 解决方法：</p>
+<ol>
+<li>一个网络中选取一个根桥</li>
+<li>根桥上所有端口都为指定端口</li>
+<li>非根桥上选举一个根端口</li>
+<li>每一段选取一个指定端口</li>
+<li>非指定端口为阻塞端口</li>
+</ol>
+</li>
+</ol>
+<ul>
+<li>bpdu：桥协议数据单元 （只允许根桥产生，不允许非根桥产生，毎2s发送一次，维护本生成树的运行）<ol>
+<li>root id   = 优先级（默认为32768，越小越优，更改优先级时，优先级必须为4096的倍数 + 插进vlan信息数值） + 背板mac（表示交换机，越小越优）</li>
+<li>桥id （发送者桥id） = 优先级 + 背板mac，设置与root id一样</li>
+<li>cost</li>
+<li>port id  = 优先级（默认为128，越小越优，更改时必须为64的倍数） + 端口mac（发送者的端口mac）</li>
+</ol>
+</li>
+</ul>
+<ul>
+<li><p>pvst 毎vlan生成树</p>
+<p>  若20s内没有收到bpdu信息则交换机将所有端口置于listen状态，<br>  tcn bpdu ：拓扑变更信息，从跟端口向上转发，根桥回复ack确认信息，由根桥向下所有人发送信息，全部重选</p>
+<ol>
+<li>block</li>
+<li>init 初始化</li>
+<li>listen 15s过后切入learn</li>
+<li>learn  学习mac地址，完善mac地址表，15s后切入forword状态</li>
+<li>forword</li>
+</ol>
+</li>
+</ul>
+<ul>
+<li><p>端口</p>
+<ul>
+<li>指定端口：可以执行数据的转发，一台交换机上可以有多个指定端口（除跟端口和阻塞端口外，其余端口所有端口都为指定端口，根桥上所有端口都为指定端口）</li>
+<li>根端口（只在非根桥上选举，并且只选以一个，为距离根桥路径最短的端口）</li>
+<li><p>阻塞端口：逻辑上的阻塞，不执行数据的转发，但会持续侦听bpdu更新</p>
+<pre><code>sh spanning sum
+sh spa sum root port //查看谁是根
+sh spa 
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<pre><code>span vlan 1,3,5,7,9 pri X（优先级值）
+
+span vlan 1,3,5,7,9 root X（pri（主根）/sec（副根））（所有交换机优先级大于4096才可执行）
+</code></pre><ul>
+<li><p>rstp 快速vlan生成树</p>
+<ul>
+<li><p>端口：</p>
+<ol>
+<li>根端口</li>
+<li>指定端口</li>
+<li>阻塞端口</li>
+<li>替代端口：替代根端口，从指定端口中选取</li>
+<li>备份端口：备份的指定端口，从阻塞端口中选取</li>
+</ol>
+</li>
+<li><p>状态：</p>
+<ol>
+<li>dis   丢弃状态： 周期性向外发送bpdu信息</li>
+<li>learning  学习状态  一边侦听一边学习</li>
+<li>forword  转发</li>
+</ol>
+</li>
+<li><p>协商/同意机制</p>
+<pre><code>特权模式下
+spa mo rapid
+</code></pre></li>
+</ul>
+</li>
+<li><p>mst </p>
+<p>  自动开启快速生成树（对快速生成树配置的优化），<br>  对vlan进行分组，一个组叫做一个实例（默认实例0）</p>
+<pre><code>span mo mst 
+span mst con
+ins X(实例编号) vlan 1,2,3,4,5,6
+</code></pre></li>
+<li><p>portfast 快速端口/边缘端口</p>
+<p>  将端口设为快速端口不参与生成树的选举之间进入到转发状态<br>  全局模式下</p>
+<pre><code>spa port def //将交换机上所有端口都置于快速端口
+
+接口下
+spa port  //针对单一的接口开启
+</code></pre></li>
+<li><p>bpdu guard  bpdu保护</p>
+<p>  置于快速的端口，若收到bpdu信息立马关闭，且必须管理员手动恢复（先sh，再no sh）</p>
+<pre><code>全局模式下
+spa por bpdug def
+
+接口下
+sw port mac-add mac地址    //绑定终端地址
+</code></pre></li>
+</ul>
+<ul>
+<li><p>接口角色</p>
+<ul>
+<li>inside：连接在内部广播域</li>
+<li>outside：连接公网</li>
+<li><p>配置：</p>
+<pre><code>1.定义接口角色：
+    int e0/0
+    ip nat inside
+
+    int e0/1
+    ip nat outside
+2.进行地址映射的配置
+    ip nat inside source static 私网内地址 公网出接口地址
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<h1 id="DHCP：动态主机ip地址获得协议"><a href="#DHCP：动态主机ip地址获得协议" class="headerlink" title="DHCP：动态主机ip地址获得协议"></a>DHCP：动态主机ip地址获得协议</h1><pre><code>ip dhcp pool x（名字） 
+network 地址段    //宣告将要分配的地址段
+default-router 网关路由器地址
+
+ip dhcp excluded-add //不向外分配的ip地址
+
+/*指定分配ip*/
+路由器上
+ip dhcp pool X(名字)
+host 将要分配的地址 子网掩码
+def-ro 网关路由地址
+client-iden 01mac地址（小数点向前移2位）
+
+在主机上
+int e0/0
+ip add dhcp client-id e0/0
+</code></pre><ul>
+<li><p>dhcp中继</p>
+<p>  由中继路由器收到的rarp广播请求发给dhcp服务器</p>
+<pre><code>中继路由器上
+ip help- add dhcp服务器地址
+</code></pre></li>
+<li><p>arp绑定</p>
+<pre><code>arp 主机ip mac地址 arpa    
+</code></pre></li>
+</ul>
+<h1 id="网关冗余协议"><a href="#网关冗余协议" class="headerlink" title="网关冗余协议"></a>网关冗余协议</h1><ul>
+<li><p>GLBP</p>
+<ul>
+<li>思科私有，一个组最多可以有4台路由器</li>
+<li>虚拟网关所对应的虚拟mac 0007.b400b.02xx </li>
+<li>AVF：虚拟转发者</li>
+<li>AVG：网关管理者，分配由哪一台路由器去承载该数据流量</li>
+<li>优先级：默认100 越大越优</li>
+<li><p>接口ip地址：越大越优</p>
+<pre><code>sh gl bri
+int e0/0
+glbp X（组号） ip 虚拟网关ip地址 
+
+glbp 1 pre  //开启抢占功能（所有路由器）
+
+glbp 1 pri X（优先级）
+
+glbp 1 load-bal round-robin(默认，依次)/host（固定的主机定向，固定线路）/wei（按比例分配流量）
+glbp 1 wei X
+</code></pre></li>
+</ul>
+</li>
+<li><p>HSRP</p>
+<ul>
+<li>一个组中最多可以有12台路由器，组多只有一台转发，其他都为备份</li>
+<li>虚拟网关ip所对应的虚拟mac 0000.0c07.acxx (xx为组号)</li>
+<li>active：实际转发者</li>
+<li>standby：备份路由器</li>
+<li>优先级：默认100 越大越优</li>
+<li><p>接口ip地址：越大越优</p>
+<pre><code>standby X（组号） 虚拟网关
+standby X pree  //开启抢占功能
+standby X pri X（优先级）
+sh sta bri
+sta X tr 接口号 X（处罚值，当接口断开后从优先级上剪掉处罚值） //追踪接口
+</code></pre></li>
+</ul>
+</li>
+<li><p>VRRP    </p>
+<p>  对应的虚拟mac 0000.5e00.01xx</p>
+</li>
+<li><p>接口状态：</p>
+<ul>
+<li>down：没有开启网关冗余协议协议</li>
+<li>init：已开启，发送hello信息包</li>
+<li>learn：开启网关冗余，但是没有设置虚拟ip，学习同组虚拟ip</li>
+<li>listen：侦听hello信息包进行角色竞选</li>
+<li>standby：持续侦听hello信息，一边确定网络中的active路由器是否还在，他的竞选参数跟本地相比是否更优</li>
+<li>active：正常接收数据，转发，同时周期性的发送hello信息通告本地的存活状态及参数，毎2s发一次</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/09/23/CCNA/" data-id="cjesbvbky0000wgugocm1k9hs" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CCNA/">CCNA</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/15/hello-world/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Hello World
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/笔记/">笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/">CCNA</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CCNA/" style="font-size: 10px;">CCNA</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/03/15/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/23/CCNA/">CCNA</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
