@@ -75,6 +75,147 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-django强行入门——链接mysql数据库" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/03/19/django强行入门——链接mysql数据库/" class="article-date">
+  <time datetime="2018-03-19T08:17:29.000Z" itemprop="datePublished">2018-03-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/03/19/django强行入门——链接mysql数据库/">django强行入门——链接mysql数据库</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <!-- Table of Contents -->
+      
+        <p>最近纵向搭个网站，于是找了django框架来学习，然而python已经忘得差不多了，之前又花了好几天把python复习了一下，写了几个爬虫练练手，今天终于可以开始操作了。</p>
+<h2 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h2><p>比如创建一个叫做mysite的数据库</p>
+<h2 id="更改配置"><a href="#更改配置" class="headerlink" title="更改配置"></a>更改配置</h2><ul>
+<li><p>首先需要更改settings.py</p>
+<p>  找到DATABASES，改成</p>
+<pre><code>DATABASES = {
+&apos;default&apos;: {
+&apos;ENGINE&apos;: &apos;django.db.backends.mysql&apos;,
+&apos;NAME&apos;: &apos;db_name&apos;,        //数据库的名字
+&apos;HOST&apos;: &apos;&apos;,              //主机名，自己学习用一般是localhost
+&apos;PORT&apos;: &apos;3306&apos;,             //端口，数据库服务的端口，mysql默认是3306
+&apos;USER&apos;: &apos;root&apos;,             //数据库的用户名，一般是要root用户，权限才够
+&apos;PASSWORD&apos;: &apos;41223&apos;,      //root对应的密码
+    }
+}
+</code></pre></li>
+</ul>
+<ul>
+<li><p>更改models.py</p>
+<p>  创建表对应的类，例如：</p>
+<pre><code>class Publisher(models.Model):        //出版商类，对应mysite数据库中的一个表
+    pub_name = models.CharField(max_length=200)
+    city = models.CharField(max_length=200)
+
+class Book(models.Model):            //书类
+    book_name = models.CharField(max_length=200)
+    author = models.CharField(max_length=200)
+    pub_date = models.DateTimeField(&apos;date published&apos;)
+    publish = models.ForeignKey(Publisher, on_delete=models.CASCADE)
+</code></pre><p>  其中各个变量类型对应的方法为：</p>
+<p>  <img src="E:\blog\source\_posts\django+mysql.png" alt=""></p>
+</li>
+</ul>
+<h2 id="同步数据库"><a href="#同步数据库" class="headerlink" title="同步数据库"></a>同步数据库</h2><pre><code>命令行cd到工程下
+
+    python manage.py makemigrations
+    python manage.py migrate
+
+PS：这一步如果报错的话可百度，有很多解决方法。
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://dmonster.top/2018/03/19/django强行入门——链接mysql数据库/" data-id="cjexzmnm7000ke4ug1ues7mxf" class="article-share-link" data-share="baidu" data-title="django强行入门——链接mysql数据库">分享到</a>
+      
+
+      
+        <a href="http://dmonster.top/2018/03/19/django强行入门——链接mysql数据库/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-pycharm-professional安装遇到的小麻烦" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/03/18/pycharm-professional安装遇到的小麻烦/" class="article-date">
+  <time datetime="2018-03-18T05:31:47.000Z" itemprop="datePublished">2018-03-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/03/18/pycharm-professional安装遇到的小麻烦/">pycharm professional安装遇到的小麻烦</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <!-- Table of Contents -->
+      
+        <p>今天装pycharm的时候发现社区版的有些功能缺失，比如创建django文件，社区版的就没有这个功能，于是就想换成专业版，结果以为很麻瓜的注册码出了问题问题</p>
+<ol>
+<li><p>在C:\Windows\System32\drivers\etc下有个host文件，打开。</p>
+</li>
+<li><p>在host文件的最底行输入0.0.0.0 account.jetbrains.com  </p>
+<p> 据说是能屏蔽掉pycharm对激活码的验证，我反正是偷来的，并不清楚。</p>
+</li>
+<li><p>在安装pycharm的时候输入激活码就好啦。</p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://dmonster.top/2018/03/18/pycharm-professional安装遇到的小麻烦/" data-id="cjexzmnmb000me4ug1did75ca" class="article-share-link" data-share="baidu" data-title="pycharm professional安装遇到的小麻烦">分享到</a>
+      
+
+      
+        <a href="http://dmonster.top/2018/03/18/pycharm-professional安装遇到的小麻烦/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-网络安全" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/12/02/网络安全/" class="article-date">
@@ -274,538 +415,11 @@ show access-list  //查看acl有没有被击中
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/12/02/网络安全/" data-id="cjescjkfn001i9oug10lp7j7i" class="article-share-link" data-share="baidu" data-title="网络安全">分享到</a>
+        <a data-url="http://dmonster.top/2017/12/02/网络安全/" data-id="cjexzmnme000pe4ug3fy8oejb" class="article-share-link" data-share="baidu" data-title="网络安全">分享到</a>
       
 
       
         <a href="http://dmonster.top/2017/12/02/网络安全/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CCIE/">CCIE</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-网络安全(1)" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/12/02/网络安全(1)/" class="article-date">
-  <time datetime="2017-12-02T01:17:34.000Z" itemprop="datePublished">2017-12-02</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/笔记/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/02/网络安全(1)/">网络安全</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      <!-- Table of Contents -->
-      
-        <h1 id="vpn"><a href="#vpn" class="headerlink" title="vpn"></a>vpn</h1><p>虚拟的专有网络，<br>可以对数据进行加密和完整性保护，也可以不加密，不保护</p>
-<ol>
-<li><p>vpn分类</p>
-<ol>
-<li>osi7层 <ol>
-<li>应用层 ：app 开源vpn（openvpn）</li>
-<li>会话层，表示层 ：没有vpn</li>
-<li>传输层 ：ssl vpn（安全 socket（套接字/端口））</li>
-<li>网络层 ：ipsec vpn（运用度很广）mpls vpn（2.5层）</li>
-<li>数据链路层 :pptp（点到点隧道协议）,l2tp（二层隧道协议）—-逐渐被淘汰（用于保护操作系统数据传输过程）</li>
-</ol>
-</li>
-<li><p>应用</p>
-<ol>
-<li><p>L2L vpn；site to site vpn（局域网到局域网，站点到站点） ：</p>
-<p> ipsec vpn—-&gt;DM vpn(基于ipsec，为了取代它，思科私有)【ccie考试必考】</p>
-<p> get vpn （通用的 封装加密 隧道）对mpls vpn的安全加固（思科私有）</p>
-</li>
-<li><p>remote vpn</p>
-<p> ssl vpn（保护邮件）</p>
-<p> pptp，l2tp ez-vpn（思科私有）—-&gt;anyconnect vpn（最新）能适配终端更多（ios/Android…）</p>
-</li>
-</ol>
-</li>
-<li>明文数据挑战<ol>
-<li>对等体认证</li>
-<li>完整性</li>
-<li>加密</li>
-<li>抵赖—-数字签名</li>
-</ol>
-</li>
-<li><p>vpn组建</p>
-<ol>
-<li><p>key 密钥</p>
-<ol>
-<li>认证的过程中 key 就是口令</li>
-<li>计算过程中 key是工具，变量</li>
-<li><p>加密算法key</p>
-<ol>
-<li>对称key ：加密解密同一把key，优点：快，高效，加密后的数据以及不会膨胀太多</li>
-<li><p>非对称key ：</p>
-<ol>
-<li>公key</li>
-<li><p>私key</p>
-<p> 拿到公私钥互相算不出对方，但可以互相解密</p>
-</li>
-<li><p>一般情况下，加密公私钥如何分配</p>
-<p> 公钥互相交换，公钥加密数据，私钥解密</p>
-</li>
-<li>数字签名</li>
-</ol>
-</li>
-</ol>
-<p>对称密钥加密算法保护数据，非对称密钥加密算法保护过程</p>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-<li><p>对称，非对称算法</p>
-<ol>
-<li>对称的 ：des；3des；aes</li>
-<li>非对称 ：dsa；rsa</li>
-</ol>
-</li>
-<li><p>数据完整性保护算法</p>
-<ol>
-<li>md5（消息摘要算法）算完128bit（描述一个算法的强壮程度是bit数）</li>
-<li>sha（算完256bit，要去代md5）</li>
-</ol>
-</li>
-<li><p>key的产生</p>
-<p> dh算法  ，两个随机数算出相同的数，且不可逆（魔方算法）</p>
-</li>
-<li><p>启源认证/对等体认证</p>
-<ol>
-<li>预共享口令认证</li>
-<li>数字证书 rsa/signature</li>
-<li>加密随机数（淘汰，傻逼）</li>
-</ol>
-</li>
-<li><p>lsakmp与ike2个阶段</p>
-<ol>
-<li>lsakmp互联网安全关联密钥管理协议<ol>
-<li>sa安全关联—-连接和过程已经被保护了</li>
-</ol>
-</li>
-<li><p>ike互联网密钥交换（被包含在isakmp）</p>
-<pre><code>a----------------b
-1. ike阶段一
-    1. （1.2）互发vpn保护策略（方式一样）
-    2. （3.4）互发认证消息
-    3. （5.6）互发保护vpn的key
-2. ike阶段二
-    1. （7.8.9）利用阶段一的key算出保护数据的key，确认加密用户数据的算法和完整性的算法
-</code></pre></li>
-</ol>
-</li>
-<li><p>vpn头部</p>
-<ol>
-<li>隧道模式 tunnel mode</li>
-<li>传输模式 transport mode</li>
-<li>ah，esp<ol>
-<li>ah认证头：加密数据只保证认证和完整性</li>
-<li>ESP：封装安全静荷（静荷就是中心数据）：加密数据保证认证和完整性</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-<h1 id="ipsec-vpn的配置"><a href="#ipsec-vpn的配置" class="headerlink" title="ipsec vpn的配置"></a>ipsec vpn的配置</h1><ol>
-<li><p>确认路由器ios支持ipsec vpn</p>
-<pre><code>show version //查看版本
-K9的含义代表支持128bit以上的加密算法
-</code></pre></li>
-<li><p>完成ipsec阶段一保护策略的设置</p>
-<pre><code>crypto isakmp policy &lt;策略编号&gt;
-authentication pre-share //开启预共享口令认证
-encrption &lt;des/3des/aes&gt; //设置加密vpn数据流量方式
-hash &lt;md5/sha&gt; //设置vpn流量完整性保护方式
-group &lt;1/2/5&gt;  //设置dh组算法级别
-</code></pre></li>
-<li><p>设置对等体地址，并设置预共享口令</p>
-<pre><code>crypto iskmp key &lt;口令&gt; address &lt;对端vpn网关公网地址&gt;
-</code></pre></li>
-<li><p>设置ike阶段二 ，用户数据保护方式和数据封装头部方式和vpn方式</p>
-<pre><code>crypto ipsec transet &lt;转换集名称&gt; esp-&lt;des/3des/aes&gt; esp-&lt;md5/sha&gt;-hmac
-mode &lt;tunnel/transport&gt;
-</code></pre></li>
-<li>编写扩展acl，利用acl匹配需要被vpn保护的流量</li>
-<li><p>配置加密映射，将对等体，感兴趣流和阶段二用户保护方式结合</p>
-<pre><code>crypto map &lt;机密映射名字&gt; &lt;加密映射编号&gt; ipsec-isakmp
-set peer &lt;对端vpn网关公网地址&gt;
-set transet &lt;转换集名字&gt;
-match address &lt;acl编号&gt;
-</code></pre></li>
-<li><p>加密映射套用在接口上</p>
-<p> crypto map 只对接口发送的流量生效</p>
-<pre><code>interface &lt;intf-id&gt;
-crypto map &lt;加密映射名字&gt;    
-</code></pre></li>
-<li>查看<pre><code>show crypto engine connection active  //查看vpn是否机密解密流量
-show access-list  //查看acl有没有被击中
-</code></pre></li>
-</ol>
-<h2 id="ipsec-vpn与nat同时存在的问题"><a href="#ipsec-vpn与nat同时存在的问题" class="headerlink" title="ipsec vpn与nat同时存在的问题"></a>ipsec vpn与nat同时存在的问题</h2><p>nat会先于vpn抓取到流量，所以nat的转换工作可能会导致vpn无法识别该被加密的流量</p>
-<ol>
-<li><p>nat bypass ：nat绕行</p>
-<p> 改acl，使通过vpn到达对端的流量不走nat    </p>
-</li>
-</ol>
-<h2 id="ipsec-vpn实施方式"><a href="#ipsec-vpn实施方式" class="headerlink" title="ipsec vpn实施方式"></a>ipsec vpn实施方式</h2><ol>
-<li><p>隧道ipsec vpn</p>
-<p> 先建立gre隧道，利用隧道完成路由可达，再利用ipsec vpn对隧道保护</p>
-</li>
-<li><p>设备出口直接使用ipsec vpn</p>
-<p> 设备出口流量会被ipsec vpn识别，判断是否需要加密保护</p>
-</li>
-</ol>
-<h2 id="ipsec-vpn的缺陷"><a href="#ipsec-vpn的缺陷" class="headerlink" title="ipsec vpn的缺陷"></a>ipsec vpn的缺陷</h2><ol>
-<li>对端设备必须公网地址固定</li>
-<li>如果需要全互联IPSEC VPN保护，配置特别复杂</li>
-<li>无法实现分支之间无需IPSEC VPN配置就能建立IPSEC VPN连接</li>
-</ol>
-<h2 id="pbr结合ipsec-vpn的选路设置"><a href="#pbr结合ipsec-vpn的选路设置" class="headerlink" title="pbr结合ipsec vpn的选路设置"></a>pbr结合ipsec vpn的选路设置</h2><ol>
-<li><p>pbr：基于策略的路由</p>
-<p> pbr利用acl匹配出源于不同网络去向不同网络的流量，利用route-map强行设置下一跳</p>
-<p> pbr只能对接口接收的流量生效</p>
-</li>
-<li><p>ip sla ： ip服务质量</p>
-<p> ip sla 实际上起到探针的作用，能检测连通性</p>
-</li>
-<li><p>ip track：ip对象跟踪</p>
-<p> 对象跟踪可以跟踪特定的目标，并且引用</p>
-<pre><code>ip sla &lt;id&gt; //定义了特定编号的sla探针
-icmp-echo &lt;目标ip&gt; source-ip &lt;源ip&gt;  //以特定源去ping特定目的地
-ip sla schedule &lt;id&gt; life froever strat-time now  //设定特定编号的sla探针生效多久，什么时候开始
-track &lt;对象跟踪的编号&gt; rtr &lt;sla 探针编号&gt; reachability  //定义了特定的对象编号，跟踪特定sla可用性
-</code></pre></li>
-</ol>
-<h1 id="DM-vpn"><a href="#DM-vpn" class="headerlink" title="DM-vpn"></a>DM-vpn</h1><p>动态多点vpn技术 ，思科私有</p>
-<ol>
-<li><p>dm-vpn组件</p>
-<ol>
-<li><p>m-gre 多点隧道</p>
-<p> 传统隧道必须指明目的地地址，多点隧道不需要指定</p>
-</li>
-<li><p>物理地址和逻辑地址</p>
-<p> 物理地址是接口所获得的公网地址</p>
-<p> 逻辑地址是管理员配置给m-gre所用（m-gre隧道ip通常是私有地址）</p>
-</li>
-<li><p>NHRP和NHS</p>
-<ol>
-<li><p>NHRP 下一跳解析协议</p>
-<p> 通过nhrp将逻辑地址对应的物理地址解析出来</p>
-</li>
-<li><p>NHS 下一跳服务器</p>
-<p> 所有分支都必须致命谁是下一跳服务器，分支将自己的逻辑地址和所获得的动态物理地址回报给nhs</p>
-</li>
-</ol>
-</li>
-<li><p>dm-vpn中所需要的底层协议</p>
-<p> 该协议是帮助隧道建立邻居关系，帮助总部和分支交换路由信息</p>
-</li>
-<li><p>ipsec </p>
-<p> dm vpn最终利用ipsec保护隧道传递数据</p>
-</li>
-</ol>
-</li>
-<li><p>dm-vpn的是哪个阶段</p>
-<ol>
-<li>阶段一：所有的分支流量必须要经过hub传递</li>
-<li>阶段二：所有的分支流量只有在第一次的时候通过hub传递，后面就全部都是相互直接传递</li>
-<li>阶段三：hub可以有多个，进行备份</li>
-</ol>
-</li>
-<li><p>dm-vpn的配置</p>
-<ol>
-<li><p>在hub上完成隧道的创建和配置</p>
-<pre><code>interface tunnel &lt;id&gt;
-ip address &lt;逻辑地址&gt; &lt;掩码&gt;
-tunnel source &lt;物理地址&gt;
-tunnel key &lt;口令&gt;    //口令不一定要配置，增加安全性
-tunnel mode multipoint     //多点模式
-</code></pre></li>
-<li>完成spoke的隧道配置</li>
-<li><p>完成hub上nhrp的配置</p>
-<pre><code>ip nhrp network-id &lt;id&gt;   //设置网络id（类似域名）
-ip nhrp authentication &lt;id&gt; //设置认证口令
-ip nhrp map multicast dynamic //允许多播流量在m-gre中传递-----底层协议路由更新在m-gre隧道中以多播形式发送
-</code></pre></li>
-<li><p>完成spoke端nhrp配置</p>
-<pre><code>ip nhrp network-id &lt;id&gt;   //设置网络id（类似域名）
-ip nhrp authentication &lt;id&gt; //设置认证口令
-ip nhrp &lt;逻辑地址&gt;  //指定nhs服务器，该地址是hub的隧道地址
-ip nhrp map &lt;hub逻辑地址&gt; &lt;hub物理地址&gt;  //完成nhs服务器逻辑地址和物理地址的关联
-ip nhrp map multicast &lt;物理地址&gt;  //spoke向hub发送多播流
-</code></pre></li>
-<li>启用底层协议（eigrp）</li>
-<li><p>完成ipsec的配置和引用</p>
-<p> 此处的ipsec不需要写明对等体地址，也不需要编写感兴趣流</p>
-<pre><code>crypto isakmp key xxx address 0.0.0.0 0.0.0.0  //对等体地址是动态的，无法已知
-
-crypto ipsec transform-set xxx esp-des esp-md5-hmac 
-mode transport //将模式改为传输模式
-
-crypto ipsec profile xxx
-set transform-set xxx  //创建ipsec配置文件，指定转换集
-
-interface tunnel &lt;id&gt;
-tunnel protection ipsec profile xxx //隧道流量用ipsec保护
-</code></pre></li>
-<li><p>查看</p>
-<pre><code>show ip nhrp //在hub端用，看spoke是否通过nhrp告诉我spoke端的逻辑ip和物理ip
-</code></pre></li>
-</ol>
-</li>
-</ol>
-<ol>
-<li><p>dm-vpn阶段一</p>
-<p> 正常情况下dm-vpn阶段1隧道参与eigrp后、spoke之间不学习路由，因为eigrp的水平分割机制</p>
-<p> dm-vpn阶段一，hub隧道接口下务必关闭水平分割</p>
-<pre><code>interface tunnel &lt;id&gt;
-no ip split-horizon eigrp xxx //关闭eirp水平分割
-</code></pre></li>
-<li><p>dm-vpn阶段二</p>
-<ol>
-<li><p>实现方法一：hub上先关闭水平分割，再关闭next-hop-self—–hub不会将自己设置为下一跳了</p>
-<pre><code>interface tunnel &lt;id&gt;
-no ip next-hop-self eigrp xxx
-</code></pre></li>
-<li><p>实现方法二：hub上隧道接口下配置手动汇总，分支和核心去配置nhrp的捷径功能</p>
-<p> hub端手动汇总可以减少spoke端路由的学习</p>
-<p> spoke端隧道接口下配置：</p>
-<pre><code>ip nhrp shortcut //配置捷径
-</code></pre><p> hub端隧道接口下配置：</p>
-<pre><code>ip nhrp redirect //配置重定向
-</code></pre></li>
-</ol>
-</li>
-<li><p>dm-vpn阶段三</p>
-<p> 多中心解决方案</p>
-<p> spoke端隧道接口下</p>
-<pre><code>ip nhrp nhs &lt;主nsh服务器地址&gt; &lt;备份nsh服务器地址&gt;
-ip nhrp map &lt;主nsh服务器逻辑地址&gt; &lt;主nsh服务器物理地址&gt;
-ip nhrp map &lt;备份nsh服务器逻辑地址&gt; &lt;备份nsh服务器物理地址&gt;
-ip nhrp map multicast &lt;主nsh服务器物理地址&gt;
-ip nhrp map multicast &lt;备份nsh服务器物理地址&gt;
-</code></pre><p> hub端接口下:两个中心相互映射</p>
-<pre><code>ip nhrp &lt;对端逻辑地址&gt; &lt;物理地址&gt;
-ip nhrp 
-</code></pre></li>
-<li><p>补充知识</p>
-<p> 不同路由协议更新交换方式</p>
-<ol>
-<li>rip eigrp路由更新方式一样 ：目标网络，更新源，下一跳</li>
-<li>ospf isis的路由更新方式一样 ：传递节点信息，知道网络中有哪些设备</li>
-</ol>
-</li>
-</ol>
-<h1 id="防火墙"><a href="#防火墙" class="headerlink" title="防火墙"></a>防火墙</h1><ol>
-<li><p>防火墙的定义和分类</p>
-<ol>
-<li><p>软件防火墙</p>
-<p> 侦测流量，发现系统病毒和漏洞</p>
-</li>
-<li>网络硬件防火墙<ol>
-<li>nat：隐藏内网地址/地址转换</li>
-<li>病毒侦测，vpn建立，虚拟防火墙，防火墙的热备份</li>
-</ol>
-</li>
-<li>waf ： web应用防火墙</li>
-</ol>
-</li>
-<li><p>juniper，cisco</p>
-<p> juniper 收购了 诺基亚chekpoint并入了netscreen产品线</p>
-<p> cisco pix第一代 ，现在迭代成asa</p>
-<p> sdn安全自防御网络  sdn软件定义的网络</p>
-</li>
-<li><p>asa：安全自适应算法</p>
-<p> asa5000 </p>
-<ol>
-<li><p>asa上的nat control</p>
-<ol>
-<li>asa的接口类型<ol>
-<li>inside（可信任网络）（security-level 100）</li>
-<li>outside（非信任网络）（security-level 0）</li>
-<li>dmz（非军事区域，停火区域）（security-level 0）【没卵用】</li>
-</ol>
-</li>
-<li>asa的接口拥有安全级别    ：0-100</li>
-<li>asa接口访问规则：<ol>
-<li>高安全级别接收流量穿越防火墙从低安全级别出去必须nat</li>
-<li>防火墙的nat不光转换地址，还会转换例如：端口号，回话id，防火墙把nat叫做有状态的转换</li>
-<li>pix上可以关闭该功能，流量从高到低可以不需要nat，asa不让关</li>
-<li>低安全级别接收流量，如果流量不是返回流量，也不是被acl允许的，那么是无法穿越防火墙进入inside。</li>
-<li>安全级别相同的接口默认是不允许相互传递流量</li>
-</ol>
-</li>
-</ol>
-</li>
-<li><p>防火墙接口的类型指定，安全级别指定，包括nat的配置</p>
-<pre><code>show interface ip brief //查看接口信息
-show route //查看路由表
-
-interface &lt;id&gt;
-nameif &lt;inside/outside/xxx&gt; //给接口命令并且指定类型
-security-level &lt;0-100&gt;
-ip address xxxx xxxx
-no sh
-接口不命名，接口集火也无法传递数据
-//所有cisco防火墙特权模式默认密码为 回车
-</code></pre><p> 接口名字如果是inside/outside那么携带默认安全级别，否则都是0</p>
-</li>
-<li><p>防火墙配置静态路由</p>
-<pre><code>route 出口（nameif的名字） 目标网络 目标网络掩码 下一跳
-</code></pre></li>
-<li><p>pix和asa配置nat转换</p>
-<ol>
-<li><p>pix nat配置 </p>
-<pre><code>nat（inside）x 被允许做转换的内网网段 子网掩码   //括号里为接口名
-global（outside）x  interface   //interface 实现多对一的pat地址转换
-//x是编号nat和global后的编号统一才会做地址转换
-</code></pre><p> pix上关闭nat</p>
-<pre><code>no nat control
-
-nat（接口名）0&lt;源网络&gt;&lt;掩码&gt; //较为温和
-//nat对应的转换编号是0，那么对应的源网络不转换
-</code></pre></li>
-<li><p>asa上的nat</p>
-<pre><code>show xlate //查看asa的转换条目
-</code></pre><ol>
-<li><p>配置对象网络，抓取允许被转换的内网源</p>
-<pre><code>object network &lt;name&gt;  //该名字可以是部门名字
-subnet &lt;内网ip地址&gt; &lt;子网掩码&gt;
-</code></pre></li>
-<li><p>创建对象组，把所有的对象网络融合在一起</p>
-<pre><code>object-group network &lt;group-name&gt;
-object-network object &lt;对象网络名字&gt;
-</code></pre></li>
-<li><p>配置转换语句，将对象组和转换接口关联</p>
-<pre><code>nat（inside,outside） source dynamic &lt;obj-g-name&gt; interface
-//inside/outside是接口名字
-</code></pre></li>
-</ol>
-</li>
-</ol>
-</li>
-<li><p>防火墙不允许ping的返回流量从outside 接口穿越防火墙</p>
-<p> 防火墙上配置acl，放行穿越防火强的流量（从低到高）</p>
-<pre><code>access-list xxx extended permit icmp any any echo-reply
-access-group xxx in/out interface outside(套用acl的接口)
-</code></pre></li>
-<li><p>防火墙上发布内网的服务被公网访问</p>
-<ol>
-<li><p>asa：</p>
-<pre><code>object network &lt;name&gt;
-host &lt;内网地址&gt;  //服务器所在的真实的内网地址
-nat(inside,outside) static &lt;外网地址\interface&gt; service tcp &lt;内port&gt; &lt;外port&gt;
-</code></pre><p> !!注意：防火墙上如果做服务发布，那么最终一定要用acl允许流量穿越到内网</p>
-<pre><code>access-list &lt;name&gt; extended permit tcp any host 内网服务器地址 eq 内网服务器端口
-</code></pre><p> 防火墙的服务发布是允许内网什么人呢访问，所以acl是放行到内网数据</p>
-<p> ！！终极补充：防火墙流量穿行规则：</p>
-<ol>
-<li>任意大于1安全等级的流量穿越防火强从安全等级0出去都要nat</li>
-<li><p>但是非0之间通讯，未必需要nat，但是如果安全等级一样，默认不允许通讯，除非录入如下命令：</p>
-<pre><code>same-security-traffic permit inter-interface
-</code></pre></li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-<h2 id="防火墙古装倒换：fail-over"><a href="#防火墙古装倒换：fail-over" class="headerlink" title="防火墙古装倒换：fail over"></a>防火墙古装倒换：fail over</h2><p>防火墙的故障倒换实际上就是防火墙的热备份</p>
-<ol>
-<li><p>故障倒换的模式</p>
-<ol>
-<li><p>A/S：active/standby</p>
-<p> 两台防火墙只有active状态负责处理数据，standby只负责监听</p>
-</li>
-<li><p>A/A:active/active</p>
-<p> 两台防火墙同时处于active状态，同时处理数据，且互为备份</p>
-</li>
-</ol>
-</li>
-<li><p>故障倒换的术语</p>
-<ol>
-<li><p>设备的角色和状态</p>
-<p> 主primary，从standby</p>
-<p> 故障倒换里，所有主设备都会复制给从设备。主设备通常是active，从设备通常是standby</p>
-</li>
-<li><p>配置同步链路及状态同步链路</p>
-<p> 配置同步链路，是负责配置同步文件，同步从设备的</p>
-<p> 状态同步链路，是负责传递nat信息，同步状态给从设备</p>
-</li>
-<li><p>物理接口下的主ip地址和从ip地址</p>
-<p> 物理接口下主ip地址是当作主ip信息反送出去的，。两台防火墙都可以配置一样的主地址和从地址，但是只有active状态的设备被认为拥有主地址，另外一边就是从。（最多两人一组）</p>
-</li>
-<li><p>故障倒换的方式</p>
-<ol>
-<li>基于线缆的：防火墙有特殊的接口，利用特殊的线缆连接，完成配置和状态的同步</li>
-<li>基于lan的：防火墙消耗一个正常的接口，完成配置和状态的同步。</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-<ul>
-<li>注意：如果需要使用故障倒换，需要激活码激活</li>
-</ul>
-<h2 id="虚拟防火墙"><a href="#虚拟防火墙" class="headerlink" title="虚拟防火墙"></a>虚拟防火墙</h2><ol>
-<li><p>防火墙的模式 </p>
-<ol>
-<li>single单模式 默认模式</li>
-<li><p>multiple多模式 支持虚拟防火墙</p>
-<pre><code>show mode
-</code></pre></li>
-</ol>
-</li>
-<li><p>context 内容</p>
-<p> 一个context就是一个独立的配置容器，关联接口，关联路径，关联配置，关联保存路径，防火墙系统就会同时运行多个context等于只想能够多个策略。</p>
-</li>
-</ol>
-<ul>
-<li><p>防火墙默认切换到到模式后，只支持2个虚拟防火墙，需要序列号激活，拥有多个虚拟防火墙</p>
-<p>  防火墙上默认有一个叫admin的context用于创建其他context</p>
-</li>
-</ul>
-<ol>
-<li><p>虚拟防火墙及故障倒换结合</p>
-<p> 同一台防火墙在不同的虚拟防火墙下扮演不同的故障倒换角色，虚拟防火墙不支持动态路由协议，不支持vpn。</p>
-</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://dmonster.top/2017/12/02/网络安全(1)/" data-id="cjescjkfh001b9oughsa1hv44" class="article-share-link" data-share="baidu" data-title="网络安全">分享到</a>
-      
-
-      
-        <a href="http://dmonster.top/2017/12/02/网络安全(1)/#ds-thread" class="article-comment-link">评论</a>
       
 
       
@@ -1014,7 +628,7 @@ net ...........(此条命令可被复敲，不会覆盖)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/11/25/ISIS/" data-id="cjescjke9000f9ougy875be6o" class="article-share-link" data-share="baidu" data-title="ISIS">分享到</a>
+        <a data-url="http://dmonster.top/2017/11/25/ISIS/" data-id="cjexzmnm0000ge4ugof8wdpvq" class="article-share-link" data-share="baidu" data-title="ISIS">分享到</a>
       
 
       
@@ -1418,7 +1032,7 @@ tcp/ip 卷2
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/11/25/多播/" data-id="cjescjkfa00149ougjmkr0n68" class="article-share-link" data-share="baidu" data-title="多播">分享到</a>
+        <a data-url="http://dmonster.top/2017/11/25/多播/" data-id="cjexzmnn70012e4ugkc8ge0cr" class="article-share-link" data-share="baidu" data-title="多播">分享到</a>
       
 
       
@@ -2111,7 +1725,7 @@ ASBR间启用MP-BGP PEER 关系（利用直连网络建立的BGP PEER 关系）
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/11/24/MPLS/" data-id="cjescjkeh000k9oug39lskdrk" class="article-share-link" data-share="baidu" data-title="MPLS">分享到</a>
+        <a data-url="http://dmonster.top/2017/11/24/MPLS/" data-id="cjexzmnnq001de4ugdoo71lok" class="article-share-link" data-share="baidu" data-title="MPLS">分享到</a>
       
 
       
@@ -2449,7 +2063,7 @@ sta X tr 接口号 X（处罚值，当接口断开后从优先级上剪掉处罚
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/09/23/CCNA/" data-id="cjescjkdd00049ougwrfkrz1t" class="article-share-link" data-share="baidu" data-title="CCNA">分享到</a>
+        <a data-url="http://dmonster.top/2017/09/23/CCNA/" data-id="cjexzmnju0000e4ug5uf6l3t7" class="article-share-link" data-share="baidu" data-title="CCNA">分享到</a>
       
 
       
@@ -2611,7 +2225,7 @@ passwoed 123  //配置管理者pc的telnet登录密码
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/09/10/NA测试题小综合/" data-id="cjescjkem000n9ougzzfue4zz" class="article-share-link" data-share="baidu" data-title="NA测试题小综合">分享到</a>
+        <a data-url="http://dmonster.top/2017/09/10/NA测试题小综合/" data-id="cjexzmnm4000ie4uguuzfmnu5" class="article-share-link" data-share="baidu" data-title="NA测试题小综合">分享到</a>
       
 
       
@@ -2804,7 +2418,7 @@ por-chan load-bal ?   //物理接口中如何进行流量分配
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/08/14/CCNP--交换/" data-id="cjescjkdg00059ougld3bgi4d" class="article-share-link" data-share="baidu" data-title="CCNP--交换">分享到</a>
+        <a data-url="http://dmonster.top/2017/08/14/CCNP--交换/" data-id="cjexzmnmn000te4ugm4lr5nf9" class="article-share-link" data-share="baidu" data-title="CCNP--交换">分享到</a>
       
 
       
@@ -3064,338 +2678,11 @@ set metric 100
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/08/14/CCNP--路由EGP/" data-id="cjescjke4000b9ougypgog4yb" class="article-share-link" data-share="baidu" data-title="CCNP--路由EGP">分享到</a>
+        <a data-url="http://dmonster.top/2017/08/14/CCNP--路由EGP/" data-id="cjexzmnl60006e4ugsbcbm1wq" class="article-share-link" data-share="baidu" data-title="CCNP--路由EGP">分享到</a>
       
 
       
         <a href="http://dmonster.top/2017/08/14/CCNP--路由EGP/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CCNP/">CCNP</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-CCNP--路由IGP(1)" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/07/16/CCNP--路由IGP(1)/" class="article-date">
-  <time datetime="2017-07-16T08:05:35.000Z" itemprop="datePublished">2017-07-16</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/笔记/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/16/CCNP--路由IGP(1)/">CCNP路由IGP</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      <!-- Table of Contents -->
-      
-        <h1 id="静态配置"><a href="#静态配置" class="headerlink" title="静态配置"></a>静态配置</h1><p>网络管理员手动添加  小型规模网络  维护成本高  不能灵活变通</p>
-<h3 id="路由表"><a href="#路由表" class="headerlink" title="路由表"></a>路由表</h3><p>连接方式     连接网段/网络位位数 [管理距离/metric值] via 下一跳地址, 已连接时间, 本地出接口</p>
-<ul>
-<li>管理距离：路由的可信度 值越小，越可信</li>
-<li>metric值：开销/成本 以跳数计算</li>
-</ul>
-<h2 id="配置语句"><a href="#配置语句" class="headerlink" title="配置语句"></a>配置语句</h2><pre><code>ip route 目的地网段 目的地的子网掩码 下一跳地址
-ip route 目的地网段 目的地的子网掩码 本地出接口
-</code></pre><p>两种方式同时配置，接口方式优先生效</p>
-<h2 id="源ip与目的ip"><a href="#源ip与目的ip" class="headerlink" title="源ip与目的ip"></a>源ip与目的ip</h2><p>默认情况下路由器会选择到达该目的地流量发出的接口ip为数据包的源ip<br>回复时源ip为发送数据的目的ip 目的ip为发送数据的源ip</p>
-<h1 id="动态配置"><a href="#动态配置" class="headerlink" title="动态配置"></a>动态配置</h1><h2 id="路由环路解决方法"><a href="#路由环路解决方法" class="headerlink" title="路由环路解决方法"></a>路由环路解决方法</h2><p>（所有路由器上默认开启）</p>
-<ol>
-<li>水平分割 路由条目从本地路由器端口发出去，本地路由器的这个端口不会再接收该路由条目</li>
-<li>路由毒化 将网络跳数设置成16  （跳数限制：数据在网络中最多经过16跳）</li>
-<li>毒性反转 （不遵守水平分割原则）将毒性发给本地路由器发送的路由条目</li>
-<li>hold-down倒计时 240s</li>
-</ol>
-<h2 id="汇总机制"><a href="#汇总机制" class="headerlink" title="汇总机制"></a>汇总机制</h2><p>简化路由表<br>172.16.1.0/24 - 172.16.100.0/24 -&gt;172.16.0.0/16<br>所有的路由器会自动将子网汇总成主类网络向外发</p>
-<h2 id="被动接口-passive-interfacce-："><a href="#被动接口-passive-interfacce-：" class="headerlink" title="被动接口(passive-interfacce)："></a>被动接口(passive-interfacce)：</h2><p>只接受更新，不发送</p>
-<pre><code>router rip
-pas 接口
-</code></pre><h2 id="单播更新"><a href="#单播更新" class="headerlink" title="单播更新"></a>单播更新</h2><p>指定更新的接受者</p>
-<pre><code>router rip
-ne 接口地址
-</code></pre><h2 id="路由选择原则："><a href="#路由选择原则：" class="headerlink" title="路由选择原则："></a>路由选择原则：</h2><ol>
-<li>最长匹配原则：网络位最长</li>
-<li>若到达同一目的地通过不同的协议收到路径，优选管理距离小的</li>
-<li>若到达同意目的地通过相同的协议收到路径，优选metric值小的</li>
-</ol>
-<h2 id="5k值（metric值）"><a href="#5k值（metric值）" class="headerlink" title="5k值（metric值）"></a>5k值（metric值）</h2><ol>
-<li>带宽 ：物理接口的最大传输速率 =10^7/所经路径中最小带宽*256 kbit/s</li>
-<li>负载 ：所能承载最大数据量</li>
-<li>延迟 ：延迟 =所经路径产生的延迟总和/10*256 us</li>
-<li>有效性 ：有效性（保质期，TTL值：最大能够经过多少台路由器，毎经过一台路由器ttl值-1）</li>
-<li>mtu值 ：mtu值：每一个数据包中最大能包含多少字节</li>
-</ol>
-<h2 id="router-id"><a href="#router-id" class="headerlink" title="router-id"></a>router-id</h2><p>在本网络中对本台设备的标识</p>
-<ol>
-<li>若本地无环回接口则比较物理地址的大小，大的作为本地路由器的router-id</li>
-<li>若本地有环回接口有限选用环回接口地址最为本台路由器的router-id<br>若有多个环回接口选取地址大的</li>
-</ol>
-<h2 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h2><ul>
-<li>自制系统（as）：处于同一管理机制下的路由器</li>
-<li>lgp： 内部网管路由选择协议（管理距离） rip（120） eigrp（内部路由90 外部路由170） ospf（110）</li>
-<li>egp： 边界网管路由选择协议（管理距离） bgp（内部200 外部20）</li>
-</ul>
-<h3 id="rip协议"><a href="#rip协议" class="headerlink" title="rip协议"></a>rip协议</h3><ul>
-<li>最多16台路由器，只适用于小型</li>
-<li>网络中</li>
-<li>距离矢量路由选择协议</li>
-<li>版本v1（ipv4，不支持vlsm子网掩码，不支持认证，不支持手动汇总），v2（ipv4，支持vlsm子网掩码，支持认证，支持手动汇总），ng（ipv6）</li>
-<li>毎30s发一次路由更新，v1以广播形式广播地址发送   v2加进一组，组播地址224.0.0.9（组播更新）</li>
-<li>rip路由更新线路不通时，先敬如180s等待，若之后的240s后还没恢复，则删除路由条目</li>
-<li>rip认证<ul>
-<li>明文：向外发送密钥时，只会发送编号最小的密码</li>
-<li>密文：将所有编号的密码都向外发送</li>
-</ul>
-</li>
-</ul>
-<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><ul>
-<li>在全局模式下输入 router rip 进入协议进程配置模式</li>
-<li>输入 net 本地直连网络（有类网络） 1.0.0.0  宣告本地直连的网段</li>
-<li>deb ip rip 显示rip动态信息</li>
-<li>router rip ？ 配置rip版本</li>
-<li><p>在接口下</p>
-<pre><code>ip rip send version 1/2 发送什么类型的更新
-ip rip receieve version 1/2 接收什么类型的更新
-</code></pre></li>
-</ul>
-<h3 id="eigrp协议"><a href="#eigrp协议" class="headerlink" title="eigrp协议"></a>eigrp协议</h3><ol>
-<li>工作类型：高级距离矢量路由选择协议</li>
-<li>思科私有协议</li>
-<li>能保证路由选择100%无环（DUAL算法）</li>
-<li>支持vlsm</li>
-<li>支持组播和单播更新</li>
-<li>支持自动汇总和手动汇总</li>
-<li>快速收敛（路由表的更新）</li>
-<li>支持认证</li>
-<li>eigrp中一个路由器可以属于多个as，但每个接口只能属于一个as</li>
-<li>eigrp消息类型：<ul>
-<li>hello信息</li>
-<li>更新信息</li>
-<li>ack确认信息</li>
-<li>查询信息<br>-查询恢复</li>
-</ul>
-</li>
-<li>汇总<ul>
-<li>自动汇总</li>
-<li>手动汇总</li>
-</ul>
-</li>
-</ol>
-<ul>
-<li>邻居表 :毎5s以组播地址（224.0.0.10）向外发送hello包询问当前网络是否有同伴存在建立邻居关系<ul>
-<li>前提条件：1.能互相收到hello包（直连），2.处于同一AS之内  3. 5k值要匹配（eigrp 5k值默认10100）</li>
-</ul>
-</li>
-<li>拓扑表 ：包含邻居发给我的所有更新条目<ul>
-<li>ad 通告距离 ：下一跳路由器到达目的地的距离</li>
-<li>fd 可行距离 ：本地路由器到达目的地的距离</li>
-<li>fs 可行条件 ：能被路由器选为可行路径需要符合的条件 ad &lt; 最小fd</li>
-<li>sus 后继者 ：最优路径 （满足可行条件）</li>
-<li>fsus 可行后继者 ：次优路径  （也必须满足可行条件）</li>
-</ul>
-</li>
-<li>路由表</li>
-</ul>
-<h4 id="配置-1"><a href="#配置-1" class="headerlink" title="配置"></a>配置</h4><pre><code>router ei ?(as号)
-net 1.0.0.0
-</code></pre><ul>
-<li><p>精确宣告</p>
-<ul>
-<li><p>通配符（反掩码）： 0精确匹配，1不匹配 </p>
-<p>  net 172.16.1.0 0.0.0.255</p>
-</li>
-</ul>
-</li>
-<li><p>手动汇总</p>
-<pre><code>no auto  //关闭自动汇总
-</code></pre></li>
-<li><p>负载均衡    </p>
-<ul>
-<li>等价负载均衡：metric值一样</li>
-<li><p>不等价负载均衡 ：将可行后继放进路由表中</p>
-<pre><code>router ei 1
-va X    //修改倍数因子
-</code></pre></li>
-</ul>
-</li>
-<li><p>末结区域</p>
-<pre><code>不接受查询信息，
-不连接其他任何网段，末结区域的路由器只关心本地是否能够向外通信
-
-router ei 1
-eigrp stub
-</code></pre></li>
-</ul>
-<h3 id="ospf协议"><a href="#ospf协议" class="headerlink" title="ospf协议"></a>ospf协议</h3><p>开放最短路径优先</p>
-<ul>
-<li>链路状态路由选择协议</li>
-<li>lsa数据包（11种）</li>
-<li>邻接关系：逻辑上连接（在同一网络中）</li>
-<li>骨干区域，非骨干区域 ： 非骨干区域之间的通信必须经过骨干区域（非骨干区域必须跟骨干狳直接相连）</li>
-<li><p>DR指定路由器/BDR备份指定路由器/DRother其他路由器：（只有在刚播网络中才会竞选）</p>
-<ul>
-<li><p>优先级：越大越好 默认1  -255   设为0不称为DR/BDR</p>
-<pre><code>int e0/1
-ip os pr X  //修改优先级值
-</code></pre></li>
-<li>接口ip：大—DR</li>
-<li>所有的路由器与DR与BDR之间建立邻接关系，DRother之间不建立任何邻接关系，他们一直处于two-way状态，DRother将所有更新条目发送给DR和BDR，DR和BDR汇总完成后再下发给DRother</li>
-</ul>
-</li>
-<li><p>虚链路 中间只能横跨一个区域 一条骨干上虚链路只能有一个</p>
-<pre><code>router os 1
-ar X（需要穿过的区域） vir X（对方router-id）
-</code></pre></li>
-<li>邻居表</li>
-<li>lsdb链路状态数据库 dbd数据库描述 sh ip os databse </li>
-<li><p>cost开销值（受带宽影响）在接口下ip os cost X在接受方向上改变</p>
-<pre><code>带宽          cost=metric 
-10            100
-100            19
-1000        4
-10000        2
-</code></pre></li>
-<li><p>消息类型</p>
-<ul>
-<li>hello</li>
-<li>bdb</li>
-<li>lsr链路状态查询</li>
-<li>lsu链路状态更新</li>
-<li>lsack链路状态确认</li>
-</ul>
-</li>
-<li><p>lsa链路状态通告</p>
-<ul>
-<li>1类：router lsa （路由器lsa）区域内所有路由器都会自行产生一条，其中包含本地所有参与ospf的接口，ip，开销链路类型，等物理信息。只会在本区域内传递，不能穿过ABR</li>
-<li>2类：network lsa （网络lsa）由DR产生，在本区域内传递，通告本段链路所能到达的所有路径。  O</li>
-<li>3类：network summary lsa（网络汇总lsa）由ABR产生，向其他区域通告本区域的路径信息。通告范围：AS，即所有启用ospl的其他区域（本区域和特殊区域除外）   O IA</li>
-<li>4类：ASBR汇总lsa 由ABR产生，向其他区域通告本区域中的ASBR是谁</li>
-<li>5类：外部路径lsa 由ASBR产生，向ospf自制系统中通告外部路径 产生的路由类型O E2：在ospf自制系统中的传递开销值不会叠加 默认20 ； O E1: 在ospf自制系统中传递叠加开销值 ，若同时有OE1和OE2的路由存在优选OE1</li>
-<li>7类：NSSA区域中的外部路径lsa ON2不叠加开销值；ON1叠加开销值</li>
-</ul>
-</li>
-<li><p>特殊区域   </p>
-<ul>
-<li>stub 末结区域 ：身后不连接其他任何自制系统，但可以正常接收        ospf中其他区域的路由条目。123传递，457不传递</li>
-<li><p>totally stup 完全末结区域：身后不连接其他任何自制系统，也不接               收ospf中其他区域路由条目。</p>
-<pre><code>area X stub //末结
-area X stub no-summary //完全末结
-</code></pre><ul>
-<li>由ABR向末结和完全末结区域内下发一条缺省路由以作通信（下一跳为ABR）</li>
-</ul>
-</li>
-<li>nssa    末梢区域：可以传递外部路由（7类lsa））（缺省路由）</li>
-<li><p>totally nssa 完全末梢区域：可以传递外部路由（7类lsa））（缺省路由）</p>
-<pre><code>area X nssa //末梢
-area X nssa no-summary //完全末梢
-</code></pre></li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><p>ospf中接口网络类型    </p>
-<pre><code>sh ip os int X（接口编号）
-</code></pre><p>  接口参与ospf后的网络类型会影响ospf邻居关系的建立和dr的竞选</p>
-<ol>
-<li><p>loopback 被视为主机 ，网络类型就是loopback</p>
-<pre><code>接口下 ip os net point-to-point  //切换到ptp
-</code></pre></li>
-<li>以太口，快速以太口：广播，所有的以太网默认都是广播类型的</li>
-<li>隧道，串口：点到点（ptp），只有一个邻居的存在</li>
-<li>NBMA ：非广播型多链路访问 （帧中继）</li>
-<li>点到多点</li>
-</ol>
-</li>
-</ul>
-<h4 id="配置-2"><a href="#配置-2" class="headerlink" title="配置"></a>配置</h4><ul>
-<li><p>接口下</p>
-<pre><code>ospf X area 区域号
-</code></pre></li>
-<li><p>ospf进程下</p>
-<pre><code>router ospf X（进程号）
-net 12.12.12.0 0.0.0.255 area X（区域号0为骨干区域，其他都为非骨干区域）宣告必须携带反掩码
-</code></pre></li>
-<li><p>重置ospf</p>
-<pre><code>clear os pr
-</code></pre></li>
-<li><p>汇总（针对区域，外部汇总）</p>
-<ol>
-<li><p>ospf自制系统内的区域汇总（ABR上）</p>
-<pre><code>router ospf ？（进程id）
-area ？ range 汇总后的网段 汇总后网段的子网掩码
-</code></pre></li>
-<li><p>ospf外部路由的汇总（ASBR上）</p>
-<pre><code>summary-address 汇总后的网段 汇总后网段的子网掩码
-router os 1
-re co su
-</code></pre></li>
-</ol>
-</li>
-<li><p>认证</p>
-<ol>
-<li><p>区域认证</p>
-<pre><code>router os X
-明文 area 1 au        
-密文 area 1 au message 
-</code></pre><p>到该区域的接口下配置密码</p>
-</li>
-<li><p>接口认证</p>
-<pre><code>明文 ip ospf au-key key X(密码)
-密文 ip ospf au message
-    ip ospf messsafe key X(密码) md5
-</code></pre></li>
-</ol>
-</li>
-</ul>
-<h3 id="重分发"><a href="#重分发" class="headerlink" title="重分发"></a>重分发</h3><ul>
-<li><p>其他路由选择协议进rip</p>
-<pre><code>router rip
-redistribute 协议 metric X（metric值，默认为0 ）
-</code></pre></li>
-<li><p>其他路由选择协议进erigrp</p>
-<pre><code>router ei ?
-re 协议 metric 10000带宽 100延迟 255可靠值 1负载 150mtu
-</code></pre></li>
-<li><p>其他路由选择协议进ospf</p>
-<pre><code>router os 1
-red 协议 sub （metric-type X）（metric ？）
-</code></pre></li>
-<li><p>connected：直连</p>
-</li>
-<li>双向重分发：两个协议都能收到互相的路由信息</li>
-</ul>
-<h1 id="配置网关"><a href="#配置网关" class="headerlink" title="配置网关"></a>配置网关</h1><pre><code>ip default-gateway 网关地址    
-</code></pre><h1 id="偏移列表offset-list"><a href="#偏移列表offset-list" class="headerlink" title="偏移列表offset-list"></a>偏移列表offset-list</h1><p>rip，eigrp在路由更行转发时累加度量值</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://dmonster.top/2017/07/16/CCNP--路由IGP(1)/" data-id="cjescjkds00069ougsy96imxm" class="article-share-link" data-share="baidu" data-title="CCNP路由IGP">分享到</a>
-      
-
-      
-        <a href="http://dmonster.top/2017/07/16/CCNP--路由IGP(1)/#ds-thread" class="article-comment-link">评论</a>
       
 
       
@@ -3421,7 +2708,7 @@ red 协议 sub （metric-type X）（metric ？）
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/实验/">实验</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/笔记/">笔记</a><span class="category-list-count">18</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/实验/">实验</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/笔记/">笔记</a><span class="category-list-count">14</span></li></ul>
     </div>
   </div>
 
@@ -3430,7 +2717,7 @@ red 协议 sub （metric-type X）（metric ？）
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCIE/">CCIE</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/">CCNA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/">CCNP</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/学习笔记/">学习笔记</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络安全/">网络安全</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCIE/">CCIE</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/">CCNA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/">CCNP</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/学习笔记/">学习笔记</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络安全/">网络安全</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -3439,7 +2726,7 @@ red 协议 sub （metric-type X）（metric ？）
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">8</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -3451,11 +2738,15 @@ red 协议 sub （metric-type X）（metric ？）
       <ul>
         
           <li>
-            <a href="/2017/12/02/网络安全/">网络安全</a>
+            <a href="/2018/03/19/django强行入门——链接mysql数据库/">django强行入门——链接mysql数据库</a>
           </li>
         
           <li>
-            <a href="/2017/12/02/网络安全(1)/">网络安全</a>
+            <a href="/2018/03/18/pycharm-professional安装遇到的小麻烦/">pycharm professional安装遇到的小麻烦</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/02/网络安全/">网络安全</a>
           </li>
         
           <li>
@@ -3464,10 +2755,6 @@ red 协议 sub （metric-type X）（metric ？）
         
           <li>
             <a href="/2017/11/25/多播/">多播</a>
-          </li>
-        
-          <li>
-            <a href="/2017/11/24/MPLS/">MPLS</a>
           </li>
         
       </ul>

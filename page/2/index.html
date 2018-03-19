@@ -382,7 +382,7 @@ red 协议 sub （metric-type X）（metric ？）
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/07/16/CCNP--路由IGP/" data-id="cjescjkec000h9ougrjcc14de" class="article-share-link" data-share="baidu" data-title="CCNP路由IGP">分享到</a>
+        <a data-url="http://dmonster.top/2017/07/16/CCNP--路由IGP/" data-id="cjexzmnmh000re4ugzkkpk0q7" class="article-share-link" data-share="baidu" data-title="CCNP路由IGP">分享到</a>
       
 
       
@@ -470,7 +470,7 @@ red 协议 sub （metric-type X）（metric ？）
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/07/15/CCNP--命令行/" data-id="cjescjkdz000a9ougvus6mxtq" class="article-share-link" data-share="baidu" data-title="CISCO CCNP PT命令行">分享到</a>
+        <a data-url="http://dmonster.top/2017/07/15/CCNP--命令行/" data-id="cjexzmnly000fe4ug61gn44fi" class="article-share-link" data-share="baidu" data-title="CISCO CCNP PT命令行">分享到</a>
       
 
       
@@ -710,7 +710,7 @@ print soup.select(&apos;a[class=&quot;sister&quot;]&apos;)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/04/23/BeautifulSoup库/" data-id="cjescjkd400019ougx1cpwus1" class="article-share-link" data-share="baidu" data-title="BeautifulSoup库">分享到</a>
+        <a data-url="http://dmonster.top/2017/04/23/BeautifulSoup库/" data-id="cjexzmnl40005e4ugj8bcsaqw" class="article-share-link" data-share="baidu" data-title="BeautifulSoup库">分享到</a>
       
 
       
@@ -719,246 +719,6 @@ print soup.select(&apos;a[class=&quot;sister&quot;]&apos;)
 
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-BeautifulSoup库(1)" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/04/23/BeautifulSoup库(1)/" class="article-date">
-  <time datetime="2017-04-23T02:33:44.000Z" itemprop="datePublished">2017-04-23</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/笔记/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/23/BeautifulSoup库(1)/">BeautifulSoup库</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      <!-- Table of Contents -->
-      
-        <p>若有如下html：</p>
-<pre><code>html = &quot;&quot;&quot;
-&lt;html&gt;&lt;head&gt;&lt;title&gt;The Dormouse&apos;s story&lt;/title&gt;&lt;/head&gt;
-&lt;body&gt;
-&lt;p class=&quot;title&quot; name=&quot;dromouse&quot;&gt;&lt;b&gt;The Dormouse&apos;s story&lt;/b&gt;&lt;/p&gt;
-&lt;p class=&quot;story&quot;&gt;Once upon a time there were three little sisters; and their names were
-&lt;a href=&quot;http://example.com/elsie&quot; class=&quot;sister&quot; id=&quot;link1&quot;&gt;&lt;!-- Elsie --&gt;&lt;/a&gt;,
-&lt;a href=&quot;http://example.com/lacie&quot; class=&quot;sister&quot; id=&quot;link2&quot;&gt;Lacie&lt;/a&gt; and
-&lt;a href=&quot;http://example.com/tillie&quot; class=&quot;sister&quot; id=&quot;link3&quot;&gt;Tillie&lt;/a&gt;;
-and they lived at the bottom of a well.&lt;/p&gt;
-&lt;p class=&quot;story&quot;&gt;...&lt;/p&gt;
-&quot;&quot;&quot;
-</code></pre><h1 id="四大对象种类"><a href="#四大对象种类" class="headerlink" title="四大对象种类"></a>四大对象种类</h1><p>Beautiful Soup将复杂HTML文档转换成一个复杂的树形结构,每个节点都是Python对象,所有对象可以归纳为4种</p>
-<pre><code>soup = BeautifulSoup(open(&apos;index.html&apos;))
-print soup.prettify() //格式化输出
-</code></pre><h2 id="Tag"><a href="#Tag" class="headerlink" title="Tag"></a>Tag</h2><p>注释为输出结果</p>
-<ul>
-<li><p>.descendants<br>descendants 属性可以对所有tag的子孙节点进行递归循环</p>
-<pre><code>for child in soup.descendants:
-    print child
-//返回所有子孙节点
-</code></pre></li>
-<li><p>.content</p>
-<pre><code>print soup.head.content
-[&lt;title&gt;The Dormouse&apos;s story&lt;/title&gt;]
-</code></pre><p>  返回的是一个list，用列表索引来获取它的摸一个元素：</p>
-<pre><code>&gt;&gt;&gt;print soup.head.contents[0]
-&lt;title&gt;The Dormouse&apos;s story&lt;/title&gt;
-</code></pre></li>
-<li><p>.children</p>
-<pre><code>print soup.body.children
-&lt;listiterator object at 0x7f71457f5710&gt;
-</code></pre><p>  返回的是一个list生成器对象，循环遍历：</p>
-<pre><code>&gt;&gt;&gt;print soup.body.children:
-    print child
-
-&lt;p class=&quot;title&quot; name=&quot;dromouse&quot;&gt;&lt;b&gt;The Dormouse&apos;s story&lt;/b&gt;&lt;/p&gt;
-
-&lt;p class=&quot;story&quot;&gt;Once upon a time there were three little sisters; and their names were
-&lt;a class=&quot;sister&quot; href=&quot;http://example.com/elsie&quot; id=&quot;link1&quot;&gt;&lt;!-- Elsie --&gt;&lt;/a&gt;,
-&lt;a class=&quot;sister&quot; href=&quot;http://example.com/lacie&quot; id=&quot;link2&quot;&gt;Lacie&lt;/a&gt; and
-&lt;a class=&quot;sister&quot; href=&quot;http://example.com/tillie&quot; id=&quot;link3&quot;&gt;Tillie&lt;/a&gt;;
-and they lived at the bottom of a well.&lt;/p&gt;
-
-&lt;p class=&quot;story&quot;&gt;...&lt;/p&gt;
-</code></pre></li>
-<li><p>.patents</p>
-<pre><code>content = soup.head.title.string
-for parent in  content.parents:
-    print parent.name
-
-title
-head
-html
-[document]
-</code></pre></li>
-<li><p>.next_sibling<br>  后一个兄弟节点</p>
-</li>
-<li><p>.previous_sibling</p>
-<p>  前一个兄弟节点</p>
-</li>
-<li><p>print soup.title</p>
-<pre><code>&lt;title&gt;The Dormouse&apos;s story&lt;/title&gt;
-</code></pre></li>
-<li><p>print soup.head</p>
-<pre><code>&lt;head&gt;&lt;title&gt;The Dormouse&apos;s story&lt;/title&gt;&lt;/head&gt;
-</code></pre></li>
-<li><p>print soup.a</p>
-<pre><code>&lt;a class=&quot;sister&quot; href=&quot;http://example.com/elsie&quot; id=&quot;link1&quot;&gt;&lt;!-- Elsie --&gt;&lt;/a&gt;
-</code></pre></li>
-<li><p>print soup.p</p>
-<pre><code>&lt;p class=&quot;title&quot; name=&quot;dromouse&quot;&gt;&lt;b&gt;The Dormouse&apos;s story&lt;/b&gt;&lt;/p&gt;
-</code></pre><ul>
-<li><p>print soup.p.attrs    // 得到字典</p>
-<pre><code>{&apos;class&apos;: [&apos;title&apos;], &apos;name&apos;: &apos;dromouse&apos;}
-</code></pre></li>
-<li><p>print soup.p[‘class’] 或 print soup.p.get(‘class’)</p>
-<pre><code>[&apos;title&apos;]
-</code></pre><h2 id="NavigableString"><a href="#NavigableString" class="headerlink" title="NavigableString"></a>NavigableString</h2></li>
-</ul>
-</li>
-<li><p>.string</p>
-<pre><code>print soup.p.string   // 得到内容但只有第一条
-The Dormouse&apos;s story
-</code></pre></li>
-<li><p>.strings</p>
-<pre><code>&gt;&gt;&gt;for string in soup.strings:
-       print(repr(string))
-
-u&quot;The Dormouse&apos;s story&quot;
-u&apos;\n\n&apos;
-u&quot;The Dormouse&apos;s story&quot;
-u&apos;\n\n&apos;
-u&apos;Once upon a time there were three little sisters; and their names were\n&apos;
-u&apos;Elsie&apos;
-....
-</code></pre></li>
-<li><p>.stripped_strings</p>
-<pre><code>&gt;&gt;&gt;for string in soup.stripped_strings:
-        print(repr(string))
-
-// 作用和 .strings一样但是不输出空白行和空格
-</code></pre><p>BeautifulSoup 对象表示的是一个文档的全部内容.大部分时候,可以把它当作 Tag 对象，是一个特殊的 Tag，我们可以分别获取它的类型，名称，以及属性来感受一下</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>print type(soup.name)<br>   <type 'unicode'=""><br>print soup.name<br>   [document]<br>print soup.attrs<br>   {} 空字典</type></p>
-</blockquote>
-</blockquote>
-</blockquote>
-</li>
-</ul>
-<h2 id="Comment"><a href="#Comment" class="headerlink" title="Comment"></a>Comment</h2><p>Comment 对象是一个特殊类型的 NavigableString 对象，其实输出的内容仍然不包括注释符号，但是如果不好好处理它，可能会对我们的文本处理造成意想不到的麻烦。</p>
-<h1 id="搜索文档树"><a href="#搜索文档树" class="headerlink" title="搜索文档树"></a>搜索文档树</h1><ul>
-<li><p>find_all( name , attrs , recursive , text , keyword )</p>
-<p>  find_all() 方法搜索当前tag的所有tag子节点,并判断是否符合过滤器的条件</p>
-<ul>
-<li><p>name参数</p>
-<p>  name 参数可以查找所有名字为 name 的tag,字符串对象会被自动忽略掉</p>
-<ol>
-<li><p>字符串</p>
-<pre><code>&gt;&gt;&gt;soup.find_all(&apos;b&apos;)
- [&lt;b&gt;The Dormouse&apos;s story&lt;/b&gt;]
-</code></pre></li>
-<li><p>正则表达式</p>
-<pre><code>for tag in soup.find_all(re.compile(&quot;^b&quot;)):
-    print(tag.name)
-
-body
-b
-</code></pre></li>
-<li><p>传列表</p>
-<p> 返回列表</p>
-</li>
-<li><p>传True</p>
-<p> True 可以匹配任何值,查找到所有的tag</p>
-</li>
-<li><p>传方法</p>
-<p> 如果没有合适过滤器,那么还可以定义一个方法,方法只接受一个元素参数 ,如果这个方法返回 True 表示当前元素匹配并且被找到,如果不是则反回 False</p>
-</li>
-</ol>
-</li>
-<li><p>keyword参数</p>
-<pre><code>&gt;&gt;&gt;soup.find_all(id=&apos;link2&apos;)
- [&lt;a class=&quot;sister&quot; href=&quot;http://example.com/lacie&quot; id=&quot;link2&quot;&gt;Lacie&lt;/a&gt;]
-</code></pre><p>  在这里我们想用 class 过滤，不过 class 是 python 的关键词，这怎么办？加个下划线就可以</p>
-<pre><code>&gt;&gt;&gt;soup.find_all(&quot;a&quot;, class_=&quot;sister&quot;)
- [&lt;a class=&quot;sister&quot; href=&quot;http://example.com/elsie&quot; id=&quot;link1&quot;&gt;Elsie&lt;/a&gt;,
- &lt;a class=&quot;sister&quot; href=&quot;http://example.com/lacie&quot; id=&quot;link2&quot;&gt;Lacie&lt;/a&gt;,
- &lt;a class=&quot;sister&quot; href=&quot;http://example.com/tillie&quot; id=&quot;link3&quot;&gt;Tillie&lt;/a&gt;]
-</code></pre></li>
-<li><p>text参数</p>
-<p>  通过 text 参数可以搜搜文档中的字符串内容.与 name 参数的可选值一样, text 参数接受 字符串 , 正则表达式 , 列表, True</p>
-<pre><code>&gt;&gt;&gt;soup.find_all(text=&quot;Elsie&quot;)
- [u&apos;Elsie&apos;]
-</code></pre></li>
-<li><p>limit参数</p>
-<p>  find_all() 方法返回全部的搜索结构,如果文档树很大那么搜索会很慢.如果我们不需要全部结果,可以使用 limit 参数限制返回结果的数量.效果与SQL中的limit关键字类似,当搜索到的结果数量达到 limit 的限制时,就停止搜索返回结果.</p>
-<pre><code>&gt;&gt;&gt;soup.find_all(&quot;a&quot;, limit=2)
-[&lt;a class=&quot;sister&quot; href=&quot;http://example.com/elsie&quot; id=&quot;link1&quot;&gt;Elsie&lt;/a&gt;,
-&lt;a class=&quot;sister&quot; href=&quot;http://example.com/lacie&quot; id=&quot;link2&quot;&gt;Lacie&lt;/a&gt;]
-</code></pre></li>
-<li><p>recursive参数</p>
-<p>  调用tag的 find_all() 方法时,Beautiful Soup会检索当前tag的所有子孙节点,如果只想搜索tag的直接子节点,可以使用参数 recursive=False .</p>
-</li>
-</ul>
-</li>
-</ul>
-<h1 id="css选择器"><a href="#css选择器" class="headerlink" title="css选择器"></a>css选择器</h1><p>我们在写 CSS 时，标签名不加任何修饰，类名前加点，id名前加 #，在这里我们也可以利用类似的方法来筛选元素，用到的方法是 soup.select()，返回类型是 list</p>
-<ul>
-<li><p>通过标签名查找</p>
-<pre><code>print soup.select(&apos;title&apos;)
-print soup.select(&apos;a&apos;)
-</code></pre></li>
-<li><p>通过类名查找</p>
-<pre><code>print soup.select(&apos;.sister&apos;)
-print soup.select(&apos;#link1&apos;)
-</code></pre></li>
-<li><p>组合查找</p>
-<pre><code>print soup.select(&apos;p #link1&apos;)
-</code></pre></li>
-<li><p>直接子标签查找</p>
-<pre><code>print soup.select(&apos;head &gt; title&apos;)
-</code></pre></li>
-<li><p>属性查找</p>
-<p>  查找时还可以加入属性元素，属性需要用中括号括起来，注意属性和标签属于同一节点，所以中间不能加空格，否则会无法匹配到。</p>
-<pre><code>print soup.select(&apos;a[href=&quot;http://example.com/elsie&quot;]&apos;)
-print soup.select(&apos;a[class=&quot;sister&quot;]&apos;)
-</code></pre></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://dmonster.top/2017/04/23/BeautifulSoup库(1)/" data-id="cjescjkcu00009ougbc8d3noc" class="article-share-link" data-share="baidu" data-title="BeautifulSoup库">分享到</a>
-      
-
-      
-        <a href="http://dmonster.top/2017/04/23/BeautifulSoup库(1)/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
     </footer>
   </div>
@@ -1259,7 +1019,7 @@ f.write(&apos;写入的内容&apos;)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/04/19/python学习笔记/" data-id="cjescjkf4000x9ougmi92c4z0" class="article-share-link" data-share="baidu" data-title="pyhon学习笔记">分享到</a>
+        <a data-url="http://dmonster.top/2017/04/19/python学习笔记/" data-id="cjexzmnmz000ye4ugohsooqg1" class="article-share-link" data-share="baidu" data-title="pyhon学习笔记">分享到</a>
       
 
       
@@ -1330,7 +1090,7 @@ print getImg(html)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/04/19/python爬虫入门实验/" data-id="cjescjkf700109ougdw9a965e" class="article-share-link" data-share="baidu" data-title="python爬虫入门实验">分享到</a>
+        <a data-url="http://dmonster.top/2017/04/19/python爬虫入门实验/" data-id="cjexzmnnc0015e4ugannen768" class="article-share-link" data-share="baidu" data-title="python爬虫入门实验">分享到</a>
       
 
       
@@ -1523,7 +1283,7 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/04/19/正则表达式/" data-id="cjescjkfd00189oughfjmvgle" class="article-share-link" data-share="baidu" data-title="正则表达式">分享到</a>
+        <a data-url="http://dmonster.top/2017/04/19/正则表达式/" data-id="cjexzmnnv001fe4ug6lnpwl8c" class="article-share-link" data-share="baidu" data-title="正则表达式">分享到</a>
       
 
       
@@ -1640,135 +1400,11 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/04/13/hexo+github创建自己的博客/" data-id="cjescjkf0000u9ougzpdi8i1a" class="article-share-link" data-share="baidu" data-title="hexo+github搭建自己的博客">分享到</a>
+        <a data-url="http://dmonster.top/2017/04/13/hexo+github创建自己的博客/" data-id="cjexzmnmr000ve4ugvxbow99x" class="article-share-link" data-share="baidu" data-title="hexo+github搭建自己的博客">分享到</a>
       
 
       
         <a href="http://dmonster.top/2017/04/13/hexo+github创建自己的博客/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-hexo+github创建自己的博客(1)" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/04/13/hexo+github创建自己的博客(1)/" class="article-date">
-  <time datetime="2017-04-13T07:15:45.000Z" itemprop="datePublished">2017-04-13</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/笔记/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/13/hexo+github创建自己的博客(1)/">hexo+github搭建自己的博客</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      <!-- Table of Contents -->
-      
-        <h1 id="注册github"><a href="#注册github" class="headerlink" title="注册github"></a>注册github</h1><pre><code>- 创建一个项目，如xxx.github.io
-</code></pre><h1 id="本地配置"><a href="#本地配置" class="headerlink" title="本地配置"></a>本地配置</h1><pre><code>- 安装git和Node
-- 在本地创建一个文件夹，如blog
-- 右击blog文件夹点击git bash
-- 执行命令 npm install -g hexo 安装hexo
-- 执行命令 hexo init 初始化hexo
-</code></pre><h2 id="hexo常用命令"><a href="#hexo常用命令" class="headerlink" title="hexo常用命令"></a>hexo常用命令</h2><pre><code>- hexo n &quot;new bolg&quot; == hexo new &quot;new blog&quot; 新建文章
-- hexo p == hexo publish
-- hexo g == hexo generate  生成
-- hexo s == hexo server  启动服务预览
-    打开localhost:4000开启本地预览
-- hexo d == hexo deploy  部署
-- hexo clean  清除缓存
-</code></pre><h2 id="本地目录下-config-yml配置"><a href="#本地目录下-config-yml配置" class="headerlink" title="本地目录下_config.yml配置"></a>本地目录下_config.yml配置</h2><pre><code>- language: zh-CN
-- url: 自己申请的域名
-- repo： https://github.com/xxx/xxx.github.io.git
-- branch: master
-</code></pre><h1 id="markdown编辑器语法"><a href="#markdown编辑器语法" class="headerlink" title="markdown编辑器语法"></a>markdown编辑器语法</h1><p><a href="http://www.kancloud.cn/wizardforcel/markdown-simple-world/97375/" title="markdown 基本语法" target="_blank" rel="noopener">参考</a></p>
-<h1 id="主题及优化"><a href="#主题及优化" class="headerlink" title="主题及优化"></a>主题及优化</h1><h2 id="添加文章目录"><a href="#添加文章目录" class="headerlink" title="添加文章目录"></a>添加文章目录</h2><pre><code>1. 先找到themes/landscape/layout/_partial/article.ejs文件中的&lt;%- post.content %&gt;，在这一行下加入如下代码
-
-    &lt;!-- Table of Contents --&gt;
-     &lt;% if (!index &amp;&amp; post.toc){ %&gt;
-         &lt;div id=&quot;toc&quot; class=&quot;toc-article&quot;&gt;
-           &lt;strong class=&quot;toc-title&quot;&gt;文章目录&lt;/strong&gt;
-            &lt;%- toc(post.content) %&gt;
-          &lt;/div&gt;
-     &lt;% } %&gt;    
-
-2. 找到themes/landscape/source/css/_partial/article.styl文件，在其最后添加如下代码
-
-    .toc-article
-      background #eee
-      border 1px solid #bbb
-      border-radius 10px
-      margin 1.5em 0 0.3em 1.5em
-      padding 1.2em 1em 0 1em
-      max-width 28%
-    .toc-title
-      font-size 120%
-    #toc
-      line-height 1em
-      font-size 0.9em
-      float right
-      .toc
-     padding 0
-     margin 1em
-     line-height 1.8em
-     li
-       list-style-type none
-      .toc-child 
-     margin-left 1em
-
-3. 使用:在每篇文章开头添加 toc: true
-</code></pre><h2 id="微博秀"><a href="#微博秀" class="headerlink" title="微博秀"></a>微博秀</h2><p>进入<a href="http//http://open.weibo.com/">微博开放平台</a>找到微博秀，设置好后将复制代码,进入/blog/themes/layout/_weight文件夹，新建weibo.ejs文件，模仿其他文件编写weibo.ejs</p>
-<pre><code>&lt;% if (true){ %&gt; 
-&lt;div class=&quot;widget-wrap&quot;&gt; 
-    &lt;h3 class=&quot;widget-title&quot;&gt;Weibo show&lt;/h3&gt; 
-    &lt;div class=&quot;widget-weibo&quot;&gt; 
-        复制代码
-    &lt;/div&gt; 
-&lt;/div&gt; 
-&lt;% } %&gt;
-</code></pre><p>编辑themes/landscape/source/css/_partial/sidebar.styl文件，将其中的.weight复制前半部分，新建一个.weibo-weigth添加到文件最后</p>
-<pre><code>.widget-weibo
-     color: color-sidebar-text
-     text-shadow: 0 1px #fff
-     background: color-widget-background
-     box-shadow: 0 -1px 4px color-widget-border inset
-     border: 1px solid color-widget-border
-     border-radius: 3px
-</code></pre><h1 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h1><h2 id="hexo-d-g部署不上"><a href="#hexo-d-g部署不上" class="headerlink" title="hexo d -g部署不上"></a>hexo d -g部署不上</h2><pre><code>- 登陆自己的github查看更新时间是否符合
-- 查看blog目录下的_config.yml配置文件deploy分支，确认是否是github上所使用的分支
-- 
-</code></pre><h2 id="css部署不上"><a href="#css部署不上" class="headerlink" title="css部署不上"></a>css部署不上</h2><pre><code>-删除css中的注释试试
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://dmonster.top/2017/04/13/hexo+github创建自己的博客(1)/" data-id="cjescjkeu000r9ougwjf3sxw7" class="article-share-link" data-share="baidu" data-title="hexo+github搭建自己的博客">分享到</a>
-      
-
-      
-        <a href="http://dmonster.top/2017/04/13/hexo+github创建自己的博客(1)/#ds-thread" class="article-comment-link">评论</a>
       
 
       
@@ -2072,7 +1708,7 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/04/06/网络渗透与深度防御笔记/" data-id="cjescjkfk001e9oug9j6n94m5" class="article-share-link" data-share="baidu" data-title="网络渗透与深度防御笔记">分享到</a>
+        <a data-url="http://dmonster.top/2017/04/06/网络渗透与深度防御笔记/" data-id="cjexzmnni0018e4ug33x98s4n" class="article-share-link" data-share="baidu" data-title="网络渗透与深度防御笔记">分享到</a>
       
 
       
@@ -2102,7 +1738,7 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/实验/">实验</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/笔记/">笔记</a><span class="category-list-count">18</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/实验/">实验</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/笔记/">笔记</a><span class="category-list-count">14</span></li></ul>
     </div>
   </div>
 
@@ -2111,7 +1747,7 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCIE/">CCIE</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/">CCNA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/">CCNP</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/学习笔记/">学习笔记</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络安全/">网络安全</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCIE/">CCIE</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/">CCNA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/">CCNP</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/学习笔记/">学习笔记</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络安全/">网络安全</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -2120,7 +1756,7 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">8</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -2132,11 +1768,15 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
       <ul>
         
           <li>
-            <a href="/2017/12/02/网络安全/">网络安全</a>
+            <a href="/2018/03/19/django强行入门——链接mysql数据库/">django强行入门——链接mysql数据库</a>
           </li>
         
           <li>
-            <a href="/2017/12/02/网络安全(1)/">网络安全</a>
+            <a href="/2018/03/18/pycharm-professional安装遇到的小麻烦/">pycharm professional安装遇到的小麻烦</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/02/网络安全/">网络安全</a>
           </li>
         
           <li>
@@ -2145,10 +1785,6 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
         
           <li>
             <a href="/2017/11/25/多播/">多播</a>
-          </li>
-        
-          <li>
-            <a href="/2017/11/24/MPLS/">MPLS</a>
           </li>
         
       </ul>
