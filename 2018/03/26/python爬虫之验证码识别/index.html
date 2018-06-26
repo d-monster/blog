@@ -7,14 +7,13 @@
   <title>python爬虫之验证码识别 | dmonster&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="前言最近在做django的小项目，在提交表单登陆的问题上由于有验证码这个东西，产生了一个逻辑问题，就是怎么先获取验证码，返回到页面给用户，再提交，以开始是想用celery，但是好像不怎么好用celery本来是做异步提高效率的，于是索性直接在post请求的同时识别出验证码。">
-<meta name="keywords" content="python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="python爬虫之验证码识别">
 <meta property="og:url" content="http://dmonster.top/2018/03/26/python爬虫之验证码识别/index.html">
 <meta property="og:site_name" content="dmonster&#39;s blog">
 <meta property="og:description" content="前言最近在做django的小项目，在提交表单登陆的问题上由于有验证码这个东西，产生了一个逻辑问题，就是怎么先获取验证码，返回到页面给用户，再提交，以开始是想用celery，但是好像不怎么好用celery本来是做异步提高效率的，于是索性直接在post请求的同时识别出验证码。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-03-26T10:25:19.577Z">
+<meta property="og:updated_time" content="2018-06-26T09:47:26.957Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python爬虫之验证码识别">
 <meta name="twitter:description" content="前言最近在做django的小项目，在提交表单登陆的问题上由于有验证码这个东西，产生了一个逻辑问题，就是怎么先获取验证码，返回到页面给用户，再提交，以开始是想用celery，但是好像不怎么好用celery本来是做异步提高效率的，于是索性直接在post请求的同时识别出验证码。">
@@ -82,7 +81,7 @@
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/实验/">实验</a>
+    <a class="article-category-link" href="/categories/python3/">python3</a>
   </div>
 
   </div>
@@ -117,8 +116,6 @@
       
 
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
-
     </footer>
   </div>
   
@@ -157,7 +154,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/安全/">安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/实验/">实验</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/笔记/">笔记</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">9</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/安全/">安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">10</span></li></ul>
     </div>
   </div>
 
@@ -166,7 +163,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCIE/">CCIE</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/">CCNA</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/">CCNP</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/笔记/">笔记</a><span class="tag-list-count">13</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCIE/">CCIE</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/">CCNA</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/">CCNP</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/笔记/">笔记</a><span class="tag-list-count">14</span></li></ul>
     </div>
   </div>
 
@@ -175,7 +172,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 

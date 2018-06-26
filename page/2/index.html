@@ -781,7 +781,7 @@ por-chan load-bal ?   //物理接口中如何进行流量分配
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/笔记/">笔记</a>
+    <a class="article-category-link" href="/categories/网络/">网络</a>
   </div>
 
   </div>
@@ -1025,7 +1025,7 @@ set metric 100
       
 
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CCNP/">CCNP</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CCNP/">CCNP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
 
     </footer>
   </div>
@@ -1350,94 +1350,6 @@ red 协议 sub （metric-type X）（metric ？）
 
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CCNP/">CCNP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-CCNP--命令行" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/07/15/CCNP--命令行/" class="article-date">
-  <time datetime="2017-07-15T14:16:54.000Z" itemprop="datePublished">2017-07-15</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/笔记/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/15/CCNP--命令行/">CISCO CCNP PT命令行</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      <!-- Table of Contents -->
-      
-        <h1 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h1><ul>
-<li>enable            //从用户模式进入到特权模式</li>
-<li>configure terminal  //从特权模式进入到全局配置模式</li>
-<li>hostname R1      //修改主机名为R1</li>
-<li>no ip domain-lookup  //关闭CISCO IOS 域名查找功能，防止当用户输入错误命令行时，CISCO IOS 会将该命令行当做主机域名进行解析。</li>
-<li>line console 0 (换行) no exec-timeout     //关闭console 接口的空闲超时功能，这样当用户暂时离开设备并且在没有配置的情况下，系统也不会将当前用户踢出到用户模式以外。</li>
-<li>logging sync        //开启日志同步功能，在该命令输入后，系统日志提示信息不再会打断用户当前输入的指令，而是将用户当前指令整个复制并另起一行现实。</li>
-<li>exit               //从当前模式退出到上一模式</li>
-<li>clock time-zone GMT +8  //设置系统当前时区为 GMT （格林威治时区）并且设置为+8的时差</li>
-<li>clock set hh:mm:ss day month year //设置当前系统的时钟</li>
-<li>configure terminal  //从特权模式重新进入配置模式</li>
-<li>enable password cisco  //设置明文形式的ENABLE 特权密码</li>
-<li>enable secret CISCO   //设置密文形式的ENABLE 特权密码</li>
-<li>line console 0 (换行) password CCNA      //设置CONSOLE 接口密码</li>
-<li>line console 0 (换行) login              //使得CONSOLE 密码生效</li>
-<li>anner motd ! welcome to JUSTECH!  //设置登录提示信息内容</li>
-<li>interface serial 1/1  //进入接口配置模式</li>
-<li>ip address 1.1.1.1 255.255.255.0 // 配置当前接口IP 地址</li>
-<li>no shutdown         //激活该端口</li>
-<li>write            //保存当前配置</li>
-<li>show ip route   //查看本地路由器的路由表</li>
-</ul>
-<h1 id="show命令"><a href="#show命令" class="headerlink" title="show命令"></a>show命令</h1><p>##基础部分</p>
-<ul>
-<li>sh version  //查看路由版本，硬件状态</li>
-<li>sh ip int brief  //查看接口简要信息</li>
-<li>sh run  //查看当前运行配置</li>
-<li>sh start  //查看启动配置文件</li>
-<li>sh int fa0/0  //查看接口物理信息</li>
-<li>sh ip int fa0/0  //查看接口协议信息</li>
-</ul>
-<h2 id="路由协议部分"><a href="#路由协议部分" class="headerlink" title="路由协议部分"></a>路由协议部分</h2><ul>
-<li>sh ip protocols  //查看当前路由器运行的路由协议信息</li>
-<li>sh ip route  //查看路由器路由表</li>
-<li>sh ip eigrp/ospf neighbor  //查看eigrp/ospf邻接表</li>
-<li>sh ip eigrp topology  //查看eigrp拓扑表</li>
-<li>sh ospf database  //查看ospf的拓扑数据库</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://dmonster.top/2017/07/15/CCNP--命令行/" data-id="cjivhuznx0004o4ugc3574eze" class="article-share-link" data-share="baidu" data-title="CISCO CCNP PT命令行">分享到</a>
-      
-
-      
-        <a href="http://dmonster.top/2017/07/15/CCNP--命令行/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CCNP/">CCNP</a></li></ul>
 
     </footer>
   </div>
@@ -2002,7 +1914,7 @@ f.write(&apos;写入的内容&apos;)
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/实验/">实验</a>
+    <a class="article-category-link" href="/categories/python3/">python3</a>
   </div>
 
   </div>
@@ -2057,8 +1969,6 @@ print getImg(html)
       
 
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/爬虫/">爬虫</a></li></ul>
-
     </footer>
   </div>
   
@@ -2259,6 +2169,123 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
 
 
   
+    <article id="post-hexo+github创建自己的博客" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/13/hexo+github创建自己的博客/" class="article-date">
+  <time datetime="2017-04-13T07:15:45.000Z" itemprop="datePublished">2017-04-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/blog/">blog</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/13/hexo+github创建自己的博客/">hexo+github搭建自己的博客</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <!-- Table of Contents -->
+      
+        <h1 id="注册github"><a href="#注册github" class="headerlink" title="注册github"></a>注册github</h1><pre><code>- 创建一个项目，如xxx.github.io
+</code></pre><h1 id="本地配置"><a href="#本地配置" class="headerlink" title="本地配置"></a>本地配置</h1><pre><code>- 安装git和Node
+- 在本地创建一个文件夹，如blog
+- 右击blog文件夹点击git bash
+- 执行命令 npm install -g hexo 安装hexo
+- 执行命令 hexo init 初始化hexo
+</code></pre><h2 id="hexo常用命令"><a href="#hexo常用命令" class="headerlink" title="hexo常用命令"></a>hexo常用命令</h2><pre><code>- hexo n &quot;new bolg&quot; == hexo new &quot;new blog&quot; 新建文章
+- hexo p == hexo publish
+- hexo g == hexo generate  生成
+- hexo s == hexo server  启动服务预览
+    打开localhost:4000开启本地预览
+- hexo d == hexo deploy  部署
+- hexo clean  清除缓存
+</code></pre><h2 id="本地目录下-config-yml配置"><a href="#本地目录下-config-yml配置" class="headerlink" title="本地目录下_config.yml配置"></a>本地目录下_config.yml配置</h2><pre><code>- language: zh-CN
+- url: 自己申请的域名
+- repo： https://github.com/xxx/xxx.github.io.git
+- branch: master
+</code></pre><h1 id="markdown编辑器语法"><a href="#markdown编辑器语法" class="headerlink" title="markdown编辑器语法"></a>markdown编辑器语法</h1><p><a href="http://www.kancloud.cn/wizardforcel/markdown-simple-world/97375/" title="markdown 基本语法" target="_blank" rel="noopener">参考</a></p>
+<h1 id="主题及优化"><a href="#主题及优化" class="headerlink" title="主题及优化"></a>主题及优化</h1><h2 id="添加文章目录"><a href="#添加文章目录" class="headerlink" title="添加文章目录"></a>添加文章目录</h2><pre><code>1. 先找到themes/landscape/layout/_partial/article.ejs文件中的&lt;%- post.content %&gt;，在这一行下加入如下代码
+
+    &lt;!-- Table of Contents --&gt;
+     &lt;% if (!index &amp;&amp; post.toc){ %&gt;
+         &lt;div id=&quot;toc&quot; class=&quot;toc-article&quot;&gt;
+           &lt;strong class=&quot;toc-title&quot;&gt;文章目录&lt;/strong&gt;
+            &lt;%- toc(post.content) %&gt;
+          &lt;/div&gt;
+     &lt;% } %&gt;    
+
+2. 找到themes/landscape/source/css/_partial/article.styl文件，在其最后添加如下代码
+
+    .toc-article
+      background #eee
+      border 1px solid #bbb
+      border-radius 10px
+      margin 1.5em 0 0.3em 1.5em
+      padding 1.2em 1em 0 1em
+      max-width 28%
+    .toc-title
+      font-size 120%
+    #toc
+      line-height 1em
+      font-size 0.9em
+      float right
+      .toc
+     padding 0
+     margin 1em
+     line-height 1.8em
+     li
+       list-style-type none
+      .toc-child 
+     margin-left 1em
+
+3. 使用:在每篇文章开头添加 toc: true
+</code></pre><h2 id="微博秀"><a href="#微博秀" class="headerlink" title="微博秀"></a>微博秀</h2><p>进入<a href="http//http://open.weibo.com/">微博开放平台</a>找到微博秀，设置好后将复制代码,进入/blog/themes/layout/_weight文件夹，新建weibo.ejs文件，模仿其他文件编写weibo.ejs</p>
+<pre><code>&lt;% if (true){ %&gt; 
+&lt;div class=&quot;widget-wrap&quot;&gt; 
+    &lt;h3 class=&quot;widget-title&quot;&gt;Weibo show&lt;/h3&gt; 
+    &lt;div class=&quot;widget-weibo&quot;&gt; 
+        复制代码
+    &lt;/div&gt; 
+&lt;/div&gt; 
+&lt;% } %&gt;
+</code></pre><p>编辑themes/landscape/source/css/_partial/sidebar.styl文件，将其中的.weight复制前半部分，新建一个.weibo-weigth添加到文件最后<br>    .widget-weibo<br>          color: color-sidebar-text<br>          text-shadow: 0 1px #fff<br>          background: color-widget-background<br>          box-shadow: 0 -1px 4px color-widget-border inset<br>          border: 1px solid color-widget-border<br>          border-radius: 3px</p>
+<h1 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h1><h2 id="hexo-d-g部署不上"><a href="#hexo-d-g部署不上" class="headerlink" title="hexo d -g部署不上"></a>hexo d -g部署不上</h2><pre><code>- 登陆自己的github查看更新时间是否符合
+- 查看blog目录下的_config.yml配置文件deploy分支，确认是否是github上所使用的分支
+- 
+</code></pre><h2 id="css部署不上"><a href="#css部署不上" class="headerlink" title="css部署不上"></a>css部署不上</h2><pre><code>-删除css中的注释试试
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://dmonster.top/2017/04/13/hexo+github创建自己的博客/" data-id="cjivhuzr0000to4uglhldrga0" class="article-share-link" data-share="baidu" data-title="hexo+github搭建自己的博客">分享到</a>
+      
+
+      
+        <a href="http://dmonster.top/2017/04/13/hexo+github创建自己的博客/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
 
 
   <nav id="page-nav">
@@ -2272,7 +2299,7 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/安全/">安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/实验/">实验</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/笔记/">笔记</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">9</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/安全/">安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">10</span></li></ul>
     </div>
   </div>
 
@@ -2281,7 +2308,7 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCIE/">CCIE</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/">CCNA</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/">CCNP</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/笔记/">笔记</a><span class="tag-list-count">13</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCIE/">CCIE</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/">CCNA</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/">CCNP</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/笔记/">笔记</a><span class="tag-list-count">14</span></li></ul>
     </div>
   </div>
 
@@ -2290,7 +2317,7 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
