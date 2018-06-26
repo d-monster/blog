@@ -4,20 +4,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>网络渗透与深度防御笔记 | dmonster&#39;s blog</title>
+  <title>dmonster&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="翻墙：1. 免费代理服务器（工具——internet选项——连接——局域网设置） 2. 肉机 3. 2次vpn（91vpn） 入侵还原：- 利用漏洞 攻击方法： 溢出攻击：栈，堆。  远程溢出：溢出工具+对方服务器ip+cmdshell   （ms12-020：3389） 本地溢出：  程序——提权（ser-u ，360） 自动更新：已公布的 后门     汇编语言：  漏洞挖掘 破解分析   防">
-<meta name="keywords" content="网络安全">
-<meta property="og:type" content="article">
-<meta property="og:title" content="网络渗透与深度防御笔记">
-<meta property="og:url" content="http://dmonster.top/2017/04/06/网络渗透与深度防御笔记/index.html">
+  <meta name="description" content="none">
+<meta property="og:type" content="website">
+<meta property="og:title" content="dmonster&#39;s blog">
+<meta property="og:url" content="http://dmonster.top/page/3/index.html">
 <meta property="og:site_name" content="dmonster&#39;s blog">
-<meta property="og:description" content="翻墙：1. 免费代理服务器（工具——internet选项——连接——局域网设置） 2. 肉机 3. 2次vpn（91vpn） 入侵还原：- 利用漏洞 攻击方法： 溢出攻击：栈，堆。  远程溢出：溢出工具+对方服务器ip+cmdshell   （ms12-020：3389） 本地溢出：  程序——提权（ser-u ，360） 自动更新：已公布的 后门     汇编语言：  漏洞挖掘 破解分析   防">
+<meta property="og:description" content="none">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-03-15T02:02:16.099Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="网络渗透与深度防御笔记">
-<meta name="twitter:description" content="翻墙：1. 免费代理服务器（工具——internet选项——连接——局域网设置） 2. 肉机 3. 2次vpn（91vpn） 入侵还原：- 利用漏洞 攻击方法： 溢出攻击：栈，堆。  远程溢出：溢出工具+对方服务器ip+cmdshell   （ms12-020：3389） 本地溢出：  程序——提权（ser-u ，360） 自动更新：已公布的 后门     汇编语言：  漏洞挖掘 破解分析   防">
+<meta name="twitter:title" content="dmonster&#39;s blog">
+<meta name="twitter:description" content="none">
   
     <link rel="alternative" href="/atom.xml" title="dmonster&#39;s blog" type="application/atom+xml">
   
@@ -75,7 +73,126 @@
   </div>
 </header>
     <div class="outer">
-      <section id="main"><article id="post-网络渗透与深度防御笔记" class="article article-type-post" itemscope itemprop="blogPost">
+      <section id="main">
+  
+    <article id="post-hexo+github创建自己的博客" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/13/hexo+github创建自己的博客/" class="article-date">
+  <time datetime="2017-04-13T07:15:45.000Z" itemprop="datePublished">2017-04-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/笔记/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/13/hexo+github创建自己的博客/">hexo+github搭建自己的博客</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <!-- Table of Contents -->
+      
+        <h1 id="注册github"><a href="#注册github" class="headerlink" title="注册github"></a>注册github</h1><pre><code>- 创建一个项目，如xxx.github.io
+</code></pre><h1 id="本地配置"><a href="#本地配置" class="headerlink" title="本地配置"></a>本地配置</h1><pre><code>- 安装git和Node
+- 在本地创建一个文件夹，如blog
+- 右击blog文件夹点击git bash
+- 执行命令 npm install -g hexo 安装hexo
+- 执行命令 hexo init 初始化hexo
+</code></pre><h2 id="hexo常用命令"><a href="#hexo常用命令" class="headerlink" title="hexo常用命令"></a>hexo常用命令</h2><pre><code>- hexo n &quot;new bolg&quot; == hexo new &quot;new blog&quot; 新建文章
+- hexo p == hexo publish
+- hexo g == hexo generate  生成
+- hexo s == hexo server  启动服务预览
+    打开localhost:4000开启本地预览
+- hexo d == hexo deploy  部署
+- hexo clean  清除缓存
+</code></pre><h2 id="本地目录下-config-yml配置"><a href="#本地目录下-config-yml配置" class="headerlink" title="本地目录下_config.yml配置"></a>本地目录下_config.yml配置</h2><pre><code>- language: zh-CN
+- url: 自己申请的域名
+- repo： https://github.com/xxx/xxx.github.io.git
+- branch: master
+</code></pre><h1 id="markdown编辑器语法"><a href="#markdown编辑器语法" class="headerlink" title="markdown编辑器语法"></a>markdown编辑器语法</h1><p><a href="http://www.kancloud.cn/wizardforcel/markdown-simple-world/97375/" title="markdown 基本语法" target="_blank" rel="noopener">参考</a></p>
+<h1 id="主题及优化"><a href="#主题及优化" class="headerlink" title="主题及优化"></a>主题及优化</h1><h2 id="添加文章目录"><a href="#添加文章目录" class="headerlink" title="添加文章目录"></a>添加文章目录</h2><pre><code>1. 先找到themes/landscape/layout/_partial/article.ejs文件中的&lt;%- post.content %&gt;，在这一行下加入如下代码
+
+    &lt;!-- Table of Contents --&gt;
+     &lt;% if (!index &amp;&amp; post.toc){ %&gt;
+         &lt;div id=&quot;toc&quot; class=&quot;toc-article&quot;&gt;
+           &lt;strong class=&quot;toc-title&quot;&gt;文章目录&lt;/strong&gt;
+            &lt;%- toc(post.content) %&gt;
+          &lt;/div&gt;
+     &lt;% } %&gt;    
+
+2. 找到themes/landscape/source/css/_partial/article.styl文件，在其最后添加如下代码
+
+    .toc-article
+      background #eee
+      border 1px solid #bbb
+      border-radius 10px
+      margin 1.5em 0 0.3em 1.5em
+      padding 1.2em 1em 0 1em
+      max-width 28%
+    .toc-title
+      font-size 120%
+    #toc
+      line-height 1em
+      font-size 0.9em
+      float right
+      .toc
+     padding 0
+     margin 1em
+     line-height 1.8em
+     li
+       list-style-type none
+      .toc-child 
+     margin-left 1em
+
+3. 使用:在每篇文章开头添加 toc: true
+</code></pre><h2 id="微博秀"><a href="#微博秀" class="headerlink" title="微博秀"></a>微博秀</h2><p>进入<a href="http//http://open.weibo.com/">微博开放平台</a>找到微博秀，设置好后将复制代码,进入/blog/themes/layout/_weight文件夹，新建weibo.ejs文件，模仿其他文件编写weibo.ejs</p>
+<pre><code>&lt;% if (true){ %&gt; 
+&lt;div class=&quot;widget-wrap&quot;&gt; 
+    &lt;h3 class=&quot;widget-title&quot;&gt;Weibo show&lt;/h3&gt; 
+    &lt;div class=&quot;widget-weibo&quot;&gt; 
+        复制代码
+    &lt;/div&gt; 
+&lt;/div&gt; 
+&lt;% } %&gt;
+</code></pre><p>编辑themes/landscape/source/css/_partial/sidebar.styl文件，将其中的.weight复制前半部分，新建一个.weibo-weigth添加到文件最后<br>    .widget-weibo<br>          color: color-sidebar-text<br>          text-shadow: 0 1px #fff<br>          background: color-widget-background<br>          box-shadow: 0 -1px 4px color-widget-border inset<br>          border: 1px solid color-widget-border<br>          border-radius: 3px</p>
+<h1 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h1><h2 id="hexo-d-g部署不上"><a href="#hexo-d-g部署不上" class="headerlink" title="hexo d -g部署不上"></a>hexo d -g部署不上</h2><pre><code>- 登陆自己的github查看更新时间是否符合
+- 查看blog目录下的_config.yml配置文件deploy分支，确认是否是github上所使用的分支
+- 
+</code></pre><h2 id="css部署不上"><a href="#css部署不上" class="headerlink" title="css部署不上"></a>css部署不上</h2><pre><code>-删除css中的注释试试
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://dmonster.top/2017/04/13/hexo+github创建自己的博客/" data-id="cjivhuzr0000to4uglhldrga0" class="article-share-link" data-share="baidu" data-title="hexo+github搭建自己的博客">分享到</a>
+      
+
+      
+        <a href="http://dmonster.top/2017/04/13/hexo+github创建自己的博客/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-网络渗透与深度防御笔记" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/04/06/网络渗透与深度防御笔记/" class="article-date">
   <time datetime="2017-04-06T07:15:45.000Z" itemprop="datePublished">2017-04-06</time>
@@ -92,8 +209,8 @@
       <header class="article-header">
         
   
-    <h1 class="article-title" itemprop="name">
-      网络渗透与深度防御笔记
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/06/网络渗透与深度防御笔记/">网络渗透与深度防御笔记</a>
     </h1>
   
 
@@ -102,11 +219,6 @@
     <div class="article-entry" itemprop="articleBody">
       
       <!-- Table of Contents -->
-      
-        <div id="toc" class="toc-article">
-          <strong class="toc-title">文章目录</strong>
-          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#翻墙："><span class="toc-number">1.</span> <span class="toc-text">翻墙：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#入侵还原："><span class="toc-number">2.</span> <span class="toc-text">入侵还原：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#攻击方法："><span class="toc-number">3.</span> <span class="toc-text">攻击方法：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#sql注入："><span class="toc-number">4.</span> <span class="toc-text">sql注入：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#xss跨站："><span class="toc-number">5.</span> <span class="toc-text">xss跨站：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#dos-ddos："><span class="toc-number">6.</span> <span class="toc-text">dos/ddos：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#杀毒软件："><span class="toc-number">7.</span> <span class="toc-text">杀毒软件：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#免杀："><span class="toc-number">8.</span> <span class="toc-text">免杀：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#四无："><span class="toc-number">9.</span> <span class="toc-text">四无：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#WEB终极加固："><span class="toc-number">10.</span> <span class="toc-text">WEB终极加固：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#dos-ddos-拒绝服务-分布式拒绝服务"><span class="toc-number">11.</span> <span class="toc-text">dos/ddos  拒绝服务/分布式拒绝服务</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Xss跨站（客户端）"><span class="toc-number">12.</span> <span class="toc-text">Xss跨站（客户端）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#木马的隐藏"><span class="toc-number">13.</span> <span class="toc-text">木马的隐藏</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#手工杀马："><span class="toc-number">14.</span> <span class="toc-text">手工杀马：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#手工杀病毒："><span class="toc-number">15.</span> <span class="toc-text">手工杀病毒：</span></a></li></ol>
-        </div>
       
         <h1 id="翻墙："><a href="#翻墙：" class="headerlink" title="翻墙："></a>翻墙：</h1><pre><code>1. 免费代理服务器（工具——internet选项——连接——局域网设置）
 2. 肉机
@@ -384,28 +496,15 @@
     </footer>
   </div>
   
-    
-<nav id="article-nav">
-  
-    <a href="/2017/04/13/hexo+github创建自己的博客/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">
-        
-          hexo+github搭建自己的博客
-        
-      </div>
-    </a>
-  
-  
-</nav>
-
-  
 </article>
 
 
-  <section id="comments">
-    <div id="ds-thread" class="ds-thread" data-thread-key="2017/04/06/网络渗透与深度防御笔记/" data-title="网络渗透与深度防御笔记" data-url="http://dmonster.top/2017/04/06/网络渗透与深度防御笔记/"></div>
-  </section>
+  
+
+
+  <nav id="page-nav">
+    <a class="extend prev" rel="prev" href="/page/2/">&laquo; 上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+  </nav>
 </section>
       
       <aside id="sidebar">

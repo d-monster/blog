@@ -75,6 +75,267 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-centos上搭建shadowsocks的两种方法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/26/centos上搭建shadowsocks的两种方法/" class="article-date">
+  <time datetime="2018-06-26T09:24:59.000Z" itemprop="datePublished">2018-06-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/26/centos上搭建shadowsocks的两种方法/">centos上搭建shadowsocks的两种方法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <!-- Table of Contents -->
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://dmonster.top/2018/06/26/centos上搭建shadowsocks的两种方法/" data-id="cjivhuzpf000eo4ugcdagodwx" class="article-share-link" data-share="baidu" data-title="centos上搭建shadowsocks的两种方法">分享到</a>
+      
+
+      
+        <a href="http://dmonster.top/2018/06/26/centos上搭建shadowsocks的两种方法/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-CDN内容分发网络" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/26/CDN内容分发网络/" class="article-date">
+  <time datetime="2018-06-26T07:49:39.000Z" itemprop="datePublished">2018-06-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/26/CDN内容分发网络/">CDN内容分发网络</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <!-- Table of Contents -->
+      
+        <h1 id="CDN架构"><a href="#CDN架构" class="headerlink" title="CDN架构"></a>CDN架构</h1><p>最简单的CDN网络只需一台负责全局负载均衡的DNS和中心节点，边缘节点各节点一台Cache，即可运行。DNS支持根据用户源IP地址解析不同的IP，实现就近访问。为了保证高可用性等，CDN网管中心需要监控各节点的流量、健康状况等。一个节点的单台Cache承载数量不够时，才需要多台Cache，多台Cache同时工作时，才需要负载均衡器，使Cache群协同工作。</p>
+<h1 id="中心节点"><a href="#中心节点" class="headerlink" title="中心节点"></a>中心节点</h1><p>中心节点包括CDN网管中心和全局负载均衡DNS重定向解析系统，负责整个CDN网络的分发及管理。</p>
+<h2 id="CDN网管中心"><a href="#CDN网管中心" class="headerlink" title="CDN网管中心"></a>CDN网管中心</h2><p>CDN网管中心是整个CDN能够正常运转的基础保证，它不仅能对整个CDN网络中的各个子系统和设备进行实时监控，对各种故障产生相应的告警，还可以实时监测到系统中总的流量和各节点的流量，并保存在系统数据库中，使网管人员能够方便地进行进一步分析。一套完善的网管系统，允许用户按需对系统配置进行修改。</p>
+<h2 id="全局负载均衡DNS"><a href="#全局负载均衡DNS" class="headerlink" title="全局负载均衡DNS"></a>全局负载均衡DNS</h2><p>全局负载均衡DNS通过一组预先定义好的策略，将当时最接近用户的Cache节点地址提供给用户，使用户能够得到快速的服务。同时，它还与分布在各地的所有CDN节点保持持续通信，搜集各节点的通信状态，确保不会将用户的请求分发到不可用、或不健康的Cache节点上。</p>
+<h1 id="边缘节点"><a href="#边缘节点" class="headerlink" title="边缘节点"></a>边缘节点</h1><p>CDN边缘节点主要指异地分发节点，由负载均衡设备、高速缓存服务器两部分组成。</p>
+<h2 id="负载均衡设备"><a href="#负载均衡设备" class="headerlink" title="负载均衡设备"></a>负载均衡设备</h2><p>负载均衡设备负责每个节点中各个Cache的负载均衡，保证节点的工作效率；同时还负责收集节点与周围环境的信息，保持与全局负载均衡DNS的通信，实现整个系统的负载均衡。</p>
+<p>##高速缓存服务器<br>高速缓存服务器（Cache）负责存储客户网站的大量信息，就像一个靠近用户的网站服务器一样响应本地用户的访问请求。通过全局负载均衡DNS的控制，用户的请求被透明地指向离他最近的节点，节点中Cache服务器就像网站的原始服务器一样，响应终端用户的请求。因其距离用户更近，故其响应时间才更快。</p>
+<h1 id="CDN四大关键技术"><a href="#CDN四大关键技术" class="headerlink" title="CDN四大关键技术"></a>CDN四大关键技术</h1><h2 id="内容路由技术"><a href="#内容路由技术" class="headerlink" title="内容路由技术"></a>内容路由技术</h2><p>CDN负载均衡系统实现CDN的内容路由功能。它的作用是将用户的请求导向整个CDN网络中的最佳节点。最佳节点的选定可以根据多种策略，例如距离最近、节点负载最轻等。负载均衡系统是整个CDN的核心。</p>
+<ul>
+<li><p>通常负载均衡可以分为两个层次:全局负载均衡(GSLB)和本地负载均衡(SLB)。</p>
+<ul>
+<li><p>全局负载均衡(GSLB)主要的目的是在整个网络范围内将用户的请求定向到最近的节点(或者区域)。</p>
+<p>  对于全局负载均衡而言，为了执行就近性判断，通常可以采用两种方式，一种是静态的配置，例如根据静态的IP地址配置表进行IP地址到CDN节点的映射。另一种方式是动态的检测，例如实时地让CDN节点探测到目标IP的距离(可以采用RRT，Hops作为度量单位)，然后比较探测结果进行负载均衡。当然，静态和动态的方式也可以综合起来使用。</p>
+</li>
+<li><p>本地负载均衡一般局限于一定的区域范围内，其目标是在特定的区域范围内寻找一台最适合的节点提供服务，因此，CDN节点的健康性、负载情况、支持的媒体格式等运行状态是本地负载均衡进行决策的主要依据。</p>
+<p>  对于本地负载均衡而言，为了执行有效的决策，需要实时地获取Cache设备的运行状态。获取的方法一般有两种，一种是主动探测，一种是协议交互。主动探测针对SLB设备和Cache设备没有协议交互接口的情况，通过ping等命令主动发起探测，根据返回结果分析状态。另一种是协议交互，即SLB和Cache根据事先定义好的协议实时交换运行状态信息，以便进行负载均衡。比较而言，协议交互比探测方式要准确可靠，但是目前尚没有标准的协议，各厂家的实现一般仅是私有协议，互通比较困难。</p>
+</li>
+</ul>
+</li>
+<li>负载均衡可以通过多种方法实现，主要的方法包括DNS、应用层重定向、传输层重定向等等。</li>
+</ul>
+<h2 id="内容分发技术"><a href="#内容分发技术" class="headerlink" title="内容分发技术"></a>内容分发技术</h2><p>内容分发包含从源到CDN边缘的Cache的过程。从实现上看，有两种主流的内容分发技术:PUSH和PULL.</p>
+<ul>
+<li><p>push是一种主动分发技术</p>
+<p>  通常，push有内容管理系统发起，将内容从内容源芬达到边缘cache节点。分发协议可采用http/ftp等</p>
+</li>
+<li><p>pull是一种被动分发技术</p>
+<p>  PULL分发通常由用户请求驱动。当用户请求的内容在本地的边缘Cache上不存在(未命中)时，Cache启动PULL方法从内容源或者其他CDN节点实时获取内容。</p>
+</li>
+</ul>
+<h2 id="内容存储技术"><a href="#内容存储技术" class="headerlink" title="内容存储技术"></a>内容存储技术</h2><p>对于CDN系统而言，需要考虑两个方面的内容存储问题。一个是内容源的存储，一个是内容在Cache节点中的存储</p>
+<ul>
+<li>对于内容源的存储，由于内容的规模比较大(通常可以达到几个甚至几十个TB)，而且内容的吞吐量较大，因此，通常采用海量存储架构。如NAS和SON.</li>
+<li>对于在Cache节点中的存储，是Cache设计的一个关键问题。需要考虑的因素包括功能和性能两个方面:在功能上包括对各种内容格式的支持、对部分缓存的支持，在性能上包括支持的容量、多文件吞吐率、可靠性、稳定性。</li>
+</ul>
+<h2 id="内容管理技术"><a href="#内容管理技术" class="headerlink" title="内容管理技术"></a>内容管理技术</h2><ul>
+<li><p>本地内容索引。 本地内容管理首先依赖于对本地内容的了解。包括每个Cache设备上内容的名称、URL、更新时间、内容信息等。本地内容索引是实现基于内容感知的调度的关键。</p>
+</li>
+<li><p>本地内容拷贝。通常，为了提高存储效率，同一个内容在一个CDN节点中仅存储一份，即仅存储在某个特定的Cache上。但是一旦对该内容的访问超过该Cache的服务提供能力，就需要在本地(而不是通过PUSL的方式)实现内容的分发。这样可以大大提高效率。</p>
+</li>
+<li><p>本地内容访问状态信息收集。搜集各个Cache设备上各个内容访问的统计信息，Cache设备的可用服务提供能力及内容变化的情况。</p>
+</li>
+</ul>
+<p>可以看出，通过本地内容管理，可以将内容的管理从原来的Cache设备一级，提高到CDN节点一级，从而大大增加了CDN的可扩展性和综合能力。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://dmonster.top/2018/06/26/CDN内容分发网络/" data-id="cjivhuzr5000wo4ugbqmk792k" class="article-share-link" data-share="baidu" data-title="CDN内容分发网络">分享到</a>
+      
+
+      
+        <a href="http://dmonster.top/2018/06/26/CDN内容分发网络/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-python爬虫之验证码识别" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/03/26/python爬虫之验证码识别/" class="article-date">
+  <time datetime="2018-03-26T09:07:44.000Z" itemprop="datePublished">2018-03-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/实验/">实验</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/03/26/python爬虫之验证码识别/">python爬虫之验证码识别</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <!-- Table of Contents -->
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近在做django的小项目，在提交表单登陆的问题上由于有验证码这个东西，产生了一个逻辑问题，就是怎么先获取验证码，返回到页面给用户，再提交，以开始是想用celery，但是好像不怎么好用celery本来是做异步提高效率的，于是索性直接在post请求的同时识别出验证码。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://dmonster.top/2018/03/26/python爬虫之验证码识别/" data-id="cjivhuzre0014o4ugacshdre3" class="article-share-link" data-share="baidu" data-title="python爬虫之验证码识别">分享到</a>
+      
+
+      
+        <a href="http://dmonster.top/2018/03/26/python爬虫之验证码识别/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-windows下安装redis" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/03/25/windows下安装redis/" class="article-date">
+  <time datetime="2018-03-25T11:35:57.000Z" itemprop="datePublished">2018-03-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/笔记/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/03/25/windows下安装redis/">windows下安装redis</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <!-- Table of Contents -->
+      
+        <p>今天作死要用windows装redis，真的恶心到我了。其实主要是环境都在windows上，懒得搞，要是有条件的话真心推荐大家用linux环境</p>
+<ol>
+<li><p>下载redis</p>
+<p> 这一步很好做,点击<a href="https://github.com/MSOpenTech/redis/releases" target="_blank" rel="noopener">redis下载</a>就ok了</p>
+</li>
+<li><p>安装redis</p>
+<p> 痛苦的来了，首先最好用管理员权限打开cmd，输入</p>
+<pre><code>redis-server.exe redis.windows.conf
+</code></pre><p> 如果是这样的：</p>
+<p> <img src="https://i.imgur.com/ZAskIE0.png" alt=""></p>
+<p> 那就ojbk了，如果不是，报unkown error错误，或者找不到文件的错误，首先先cd到redis安装目录下，再试一次，如果还是不行，依次输入：</p>
+<pre><code>redis-cli.exe
+shutdown
+exit
+redis-server.exe redis.windows.conf
+</code></pre><p> 即把redis客户端关掉。</p>
+</li>
+<li><p>配置redis到服务</p>
+<p>  redis-server –service-install redis.windows.conf</p>
+<p> 如果报错：1073</p>
+<pre><code>[12116] 10 Dec 10:39:16.588 # HandleServiceCommands: system error caught. error code=1073, message = CreateService failed: unknown error
+</code></pre><p> 即已有此服务，依次输入：</p>
+<pre><code>redis-server --service-uninstall
+redis-server --service-install redis.windows.conf
+</code></pre><p> 卸载重装。</p>
+</li>
+</ol>
+<p>其余的问题也遇到过但是不记得了，太多了，以后再装时补充。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://dmonster.top/2018/03/25/windows下安装redis/" data-id="cjivhuzrv001ho4ug5jjmjms3" class="article-share-link" data-share="baidu" data-title="windows下安装redis">分享到</a>
+      
+
+      
+        <a href="http://dmonster.top/2018/03/25/windows下安装redis/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-django强行入门——链接mysql数据库" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/03/19/django强行入门——链接mysql数据库/" class="article-date">
@@ -133,7 +394,7 @@ class Book(models.Model):            //书类
     pub_date = models.DateTimeField(&apos;date published&apos;)
     publish = models.ForeignKey(Publisher, on_delete=models.CASCADE)
 </code></pre><p>  其中各个变量类型对应的方法为：</p>
-<p>  <img src="django+mysql.png" alt=""></p>
+<p>  <img src="https://i.imgur.com/fCOTKJd.png" alt=""></p>
 </li>
 </ul>
 <h2 id="同步数据库"><a href="#同步数据库" class="headerlink" title="同步数据库"></a>同步数据库</h2><pre><code>命令行cd到工程下
@@ -147,7 +408,7 @@ PS：这一步如果报错的话可百度，有很多解决方法。
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/03/19/django强行入门——链接mysql数据库/" data-id="cjey03llg000kvsugmq44exhk" class="article-share-link" data-share="baidu" data-title="django强行入门——链接mysql数据库">分享到</a>
+        <a data-url="http://dmonster.top/2018/03/19/django强行入门——链接mysql数据库/" data-id="cjivhuzqq000oo4ugrwakrj87" class="article-share-link" data-share="baidu" data-title="django强行入门——链接mysql数据库">分享到</a>
       
 
       
@@ -203,7 +464,7 @@ PS：这一步如果报错的话可百度，有很多解决方法。
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/03/18/pycharm-professional安装遇到的小麻烦/" data-id="cjey03lln000rvsug8lfgurec" class="article-share-link" data-share="baidu" data-title="pycharm professional安装遇到的小麻烦">分享到</a>
+        <a data-url="http://dmonster.top/2018/03/18/pycharm-professional安装遇到的小麻烦/" data-id="cjivhuzs7001ro4ugaenmcjar" class="article-share-link" data-share="baidu" data-title="pycharm professional安装遇到的小麻烦">分享到</a>
       
 
       
@@ -419,7 +680,7 @@ show access-list  //查看acl有没有被击中
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/12/02/网络安全/" data-id="cjey03lm80019vsug6j40gybq" class="article-share-link" data-share="baidu" data-title="网络安全">分享到</a>
+        <a data-url="http://dmonster.top/2017/12/02/网络安全/" data-id="cjivhuzry001ko4ugrfkw6c2u" class="article-share-link" data-share="baidu" data-title="网络安全">分享到</a>
       
 
       
@@ -632,7 +893,7 @@ net ...........(此条命令可被复敲，不会覆盖)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/11/25/ISIS/" data-id="cjey03ll4000bvsugr9vebc6q" class="article-share-link" data-share="baidu" data-title="ISIS">分享到</a>
+        <a data-url="http://dmonster.top/2017/11/25/ISIS/" data-id="cjivhuzp0000ao4ug0bwpfmkn" class="article-share-link" data-share="baidu" data-title="ISIS">分享到</a>
       
 
       
@@ -1036,7 +1297,7 @@ tcp/ip 卷2
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/11/25/多播/" data-id="cjey03llz0011vsug0f8v4331" class="article-share-link" data-share="baidu" data-title="多播">分享到</a>
+        <a data-url="http://dmonster.top/2017/11/25/多播/" data-id="cjivhuzrn001ao4uggtrqqu84" class="article-share-link" data-share="baidu" data-title="多播">分享到</a>
       
 
       
@@ -1729,7 +1990,7 @@ ASBR间启用MP-BGP PEER 关系（利用直连网络建立的BGP PEER 关系）
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/11/24/MPLS/" data-id="cjey03lld000hvsugxpv5lvwy" class="article-share-link" data-share="baidu" data-title="MPLS">分享到</a>
+        <a data-url="http://dmonster.top/2017/11/24/MPLS/" data-id="cjivhuzpp000go4ugyksqlfs0" class="article-share-link" data-share="baidu" data-title="MPLS">分享到</a>
       
 
       
@@ -1746,969 +2007,10 @@ ASBR间启用MP-BGP PEER 关系（利用直连网络建立的BGP PEER 关系）
 
 
   
-    <article id="post-CCNA" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/09/23/CCNA/" class="article-date">
-  <time datetime="2017-09-23T11:48:28.000Z" itemprop="datePublished">2017-09-23</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/笔记/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/23/CCNA/">CCNA</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      <!-- Table of Contents -->
-      
-        <h1 id="简单的流量操控"><a href="#简单的流量操控" class="headerlink" title="简单的流量操控"></a>简单的流量操控</h1><p>ACL 访问能控制链表 工作在在网络层和传输层</p>
-<ul>
-<li><p>标准acl 针对源ip 应用在接口之下，在每个接口针对每个方向的流量套用的acl只能用        一个</p>
-<ul>
-<li><p>配置：</p>
-<pre><code>/*数字编号*/
- acc X(1-99) deny 源ip 反掩码
- int X(接口编号)
- ip acc X out/int
-  /*命名*/
- ip acc standard X（名字）deny 源ip 反掩码
-</code></pre></li>
-</ul>
-</li>
-<li><p>扩展acl 针对协议（传输层，网络层），源ip，目的ip，端口号</p>
-<ul>
-<li><p>配置：</p>
-<pre><code>/*数字编号*/
- acc X(100-199) deny 协议 源ip 反掩码 目的ip/目的网段 反掩码 端口号
- acc X(100-199) deny 协议 源ip 反掩码 host 主机ip  端口号
- acc X permit any any            
-  /*命名*/
- ip acc extend X（名字）
-</code></pre></li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><p>不管是何种acl最后都会存在一条拒绝所有数据的命令，一般都会在结尾加上一条放行所有命令行 </p>
-<pre><code>acc X permint any
-</code></pre><p>acl顺序不可调整 </p>
-</li>
-<li><p>删除</p>
-<pre><code>no acc X
-</code></pre></li>
-<li><p>奇偶</p>
-<pre><code>奇数acc 1 per 172.16.1.0 0.0.254.255
-偶数acc 1 per 172.16.0.0 0.0.254.255
-</code></pre></li>
-</ul>
-<h1 id="远程登录-telnet"><a href="#远程登录-telnet" class="headerlink" title="远程登录 telnet"></a>远程登录 telnet</h1><p>端口号：23  ，要求ping的通</p>
-<pre><code>line vty 0 4 //0表示line从0开始，4表示一共有5个可供登录的单位
-
-password X
-</code></pre><p>同时配置，密文优先生效</p>
-<h1 id="nat：地址转换协议"><a href="#nat：地址转换协议" class="headerlink" title="nat：地址转换协议"></a>nat：地址转换协议</h1><p>进行地址转换，可将私网地址转成公网地址进行通讯，提升了ip地址空间的使用率</p>
-<ul>
-<li>内部本地地址：内部主机所获得的私网地址</li>
-<li><p>内部全局地址：转换成的公网地址</p>
-<ul>
-<li><p>配置方式</p>
-<p>  一对一：静态的手动指定</p>
-<ol>
-<li><p>定义接口角色：</p>
-<pre><code>int e0/0
-ip nat inside
-
-int e0/1
-ip nat outside
-</code></pre></li>
-<li><p>进行地址映射的配置</p>
-<pre><code>ip nat inside source static 私网内地址 公网出接口地址
-</code></pre><p>多对多：动态的</p>
-</li>
-<li><p>定义接口角色</p>
-</li>
-<li><p>定义抓取要转换的流量</p>
-<pre><code>acc 1 per 要转换的ip 反掩码8
-</code></pre></li>
-<li><p>定义转换后的地址</p>
-<pre><code>ip nat pool ?（名字） 转换后的地址 netmask 子网掩码        
-</code></pre></li>
-<li><p>进行地址映射</p>
-<pre><code>ip nat inside source list 1 pool ccnp
-</code></pre><p>多对一：（目前用的最多的）端口号：区分主机</p>
-</li>
-<li><p>定义接口角色</p>
-</li>
-<li><p>定义要转换的地址流量</p>
-</li>
-<li><p>进行地址映射</p>
-<pre><code>ip nat inside source list 1 int e0/0 overload  // e/0/0为出接口
-</code></pre></li>
-</ol>
-</li>
-</ul>
-</li>
-</ul>
-<h1 id="单臂路由"><a href="#单臂路由" class="headerlink" title="单臂路由"></a>单臂路由</h1><p>子接口： 将一个物理接口逻辑上划分成多个子接口使用，每一个划分出来的子接口和物理接口一样正常使用</p>
-<pre><code>进入接口
-no sh
-int e0/0.X
-en dot1q X(所要识别的标记)
-</code></pre><h1 id="stp生成树协议"><a href="#stp生成树协议" class="headerlink" title="stp生成树协议"></a>stp生成树协议</h1><p>路由器单点故障（冗余）</p>
-<ol>
-<li>广播风暴</li>
-<li>重复帧</li>
-<li><p>mac地址表的不稳定</p>
-<p> 解决方法：</p>
-<ol>
-<li>一个网络中选取一个根桥</li>
-<li>根桥上所有端口都为指定端口</li>
-<li>非根桥上选举一个根端口</li>
-<li>每一段选取一个指定端口</li>
-<li>非指定端口为阻塞端口</li>
-</ol>
-</li>
-</ol>
-<ul>
-<li>bpdu：桥协议数据单元 （只允许根桥产生，不允许非根桥产生，毎2s发送一次，维护本生成树的运行）<ol>
-<li>root id   = 优先级（默认为32768，越小越优，更改优先级时，优先级必须为4096的倍数 + 插进vlan信息数值） + 背板mac（表示交换机，越小越优）</li>
-<li>桥id （发送者桥id） = 优先级 + 背板mac，设置与root id一样</li>
-<li>cost</li>
-<li>port id  = 优先级（默认为128，越小越优，更改时必须为64的倍数） + 端口mac（发送者的端口mac）</li>
-</ol>
-</li>
-</ul>
-<ul>
-<li><p>pvst 毎vlan生成树</p>
-<p>  若20s内没有收到bpdu信息则交换机将所有端口置于listen状态，<br>  tcn bpdu ：拓扑变更信息，从跟端口向上转发，根桥回复ack确认信息，由根桥向下所有人发送信息，全部重选</p>
-<ol>
-<li>block</li>
-<li>init 初始化</li>
-<li>listen 15s过后切入learn</li>
-<li>learn  学习mac地址，完善mac地址表，15s后切入forword状态</li>
-<li>forword</li>
-</ol>
-</li>
-</ul>
-<ul>
-<li><p>端口</p>
-<ul>
-<li>指定端口：可以执行数据的转发，一台交换机上可以有多个指定端口（除跟端口和阻塞端口外，其余端口所有端口都为指定端口，根桥上所有端口都为指定端口）</li>
-<li>根端口（只在非根桥上选举，并且只选以一个，为距离根桥路径最短的端口）</li>
-<li><p>阻塞端口：逻辑上的阻塞，不执行数据的转发，但会持续侦听bpdu更新</p>
-<pre><code>sh spanning sum
-sh spa sum root port //查看谁是根
-sh spa 
-</code></pre></li>
-</ul>
-</li>
-</ul>
-<pre><code>span vlan 1,3,5,7,9 pri X（优先级值）
-
-span vlan 1,3,5,7,9 root X（pri（主根）/sec（副根））（所有交换机优先级大于4096才可执行）
-</code></pre><ul>
-<li><p>rstp 快速vlan生成树</p>
-<ul>
-<li><p>端口：</p>
-<ol>
-<li>根端口</li>
-<li>指定端口</li>
-<li>阻塞端口</li>
-<li>替代端口：替代根端口，从指定端口中选取</li>
-<li>备份端口：备份的指定端口，从阻塞端口中选取</li>
-</ol>
-</li>
-<li><p>状态：</p>
-<ol>
-<li>dis   丢弃状态： 周期性向外发送bpdu信息</li>
-<li>learning  学习状态  一边侦听一边学习</li>
-<li>forword  转发</li>
-</ol>
-</li>
-<li><p>协商/同意机制</p>
-<pre><code>特权模式下
-spa mo rapid
-</code></pre></li>
-</ul>
-</li>
-<li><p>mst </p>
-<p>  自动开启快速生成树（对快速生成树配置的优化），<br>  对vlan进行分组，一个组叫做一个实例（默认实例0）</p>
-<pre><code>span mo mst 
-span mst con
-ins X(实例编号) vlan 1,2,3,4,5,6
-</code></pre></li>
-<li><p>portfast 快速端口/边缘端口</p>
-<p>  将端口设为快速端口不参与生成树的选举之间进入到转发状态<br>  全局模式下</p>
-<pre><code>spa port def //将交换机上所有端口都置于快速端口
-
-接口下
-spa port  //针对单一的接口开启
-</code></pre></li>
-<li><p>bpdu guard  bpdu保护</p>
-<p>  置于快速的端口，若收到bpdu信息立马关闭，且必须管理员手动恢复（先sh，再no sh）</p>
-<pre><code>全局模式下
-spa por bpdug def
-
-接口下
-sw port mac-add mac地址    //绑定终端地址
-</code></pre></li>
-</ul>
-<ul>
-<li><p>接口角色</p>
-<ul>
-<li>inside：连接在内部广播域</li>
-<li>outside：连接公网</li>
-<li><p>配置：</p>
-<pre><code>1.定义接口角色：
-    int e0/0
-    ip nat inside
-
-    int e0/1
-    ip nat outside
-2.进行地址映射的配置
-    ip nat inside source static 私网内地址 公网出接口地址
-</code></pre></li>
-</ul>
-</li>
-</ul>
-<h1 id="DHCP：动态主机ip地址获得协议"><a href="#DHCP：动态主机ip地址获得协议" class="headerlink" title="DHCP：动态主机ip地址获得协议"></a>DHCP：动态主机ip地址获得协议</h1><pre><code>ip dhcp pool x（名字） 
-network 地址段    //宣告将要分配的地址段
-default-router 网关路由器地址
-
-ip dhcp excluded-add //不向外分配的ip地址
-
-/*指定分配ip*/
-路由器上
-ip dhcp pool X(名字)
-host 将要分配的地址 子网掩码
-def-ro 网关路由地址
-client-iden 01mac地址（小数点向前移2位）
-
-在主机上
-int e0/0
-ip add dhcp client-id e0/0
-</code></pre><ul>
-<li><p>dhcp中继</p>
-<p>  由中继路由器收到的rarp广播请求发给dhcp服务器</p>
-<pre><code>中继路由器上
-ip help- add dhcp服务器地址
-</code></pre></li>
-<li><p>arp绑定</p>
-<pre><code>arp 主机ip mac地址 arpa    
-</code></pre></li>
-</ul>
-<h1 id="网关冗余协议"><a href="#网关冗余协议" class="headerlink" title="网关冗余协议"></a>网关冗余协议</h1><ul>
-<li><p>GLBP</p>
-<ul>
-<li>思科私有，一个组最多可以有4台路由器</li>
-<li>虚拟网关所对应的虚拟mac 0007.b400b.02xx </li>
-<li>AVF：虚拟转发者</li>
-<li>AVG：网关管理者，分配由哪一台路由器去承载该数据流量</li>
-<li>优先级：默认100 越大越优</li>
-<li><p>接口ip地址：越大越优</p>
-<pre><code>sh gl bri
-int e0/0
-glbp X（组号） ip 虚拟网关ip地址 
-
-glbp 1 pre  //开启抢占功能（所有路由器）
-
-glbp 1 pri X（优先级）
-
-glbp 1 load-bal round-robin(默认，依次)/host（固定的主机定向，固定线路）/wei（按比例分配流量）
-glbp 1 wei X
-</code></pre></li>
-</ul>
-</li>
-<li><p>HSRP</p>
-<ul>
-<li>一个组中最多可以有12台路由器，组多只有一台转发，其他都为备份</li>
-<li>虚拟网关ip所对应的虚拟mac 0000.0c07.acxx (xx为组号)</li>
-<li>active：实际转发者</li>
-<li>standby：备份路由器</li>
-<li>优先级：默认100 越大越优</li>
-<li><p>接口ip地址：越大越优</p>
-<pre><code>standby X（组号） 虚拟网关
-standby X pree  //开启抢占功能
-standby X pri X（优先级）
-sh sta bri
-sta X tr 接口号 X（处罚值，当接口断开后从优先级上剪掉处罚值） //追踪接口
-</code></pre></li>
-</ul>
-</li>
-<li><p>VRRP    </p>
-<p>  对应的虚拟mac 0000.5e00.01xx</p>
-</li>
-<li><p>接口状态：</p>
-<ul>
-<li>down：没有开启网关冗余协议协议</li>
-<li>init：已开启，发送hello信息包</li>
-<li>learn：开启网关冗余，但是没有设置虚拟ip，学习同组虚拟ip</li>
-<li>listen：侦听hello信息包进行角色竞选</li>
-<li>standby：持续侦听hello信息，一边确定网络中的active路由器是否还在，他的竞选参数跟本地相比是否更优</li>
-<li>active：正常接收数据，转发，同时周期性的发送hello信息通告本地的存活状态及参数，毎2s发一次</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://dmonster.top/2017/09/23/CCNA/" data-id="cjey03ljr0000vsug14rktctb" class="article-share-link" data-share="baidu" data-title="CCNA">分享到</a>
-      
-
-      
-        <a href="http://dmonster.top/2017/09/23/CCNA/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CCNA/">CCNA</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-NA测试题小综合" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/09/10/NA测试题小综合/" class="article-date">
-  <time datetime="2017-09-10T03:12:59.000Z" itemprop="datePublished">2017-09-10</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/实验/">实验</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/10/NA测试题小综合/">NA测试题小综合</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      <!-- Table of Contents -->
-      
-        <p><img src="https://i.imgur.com/GgESZvp.png" alt=""></p>
-<h1 id="要求"><a href="#要求" class="headerlink" title="要求"></a>要求</h1><ol>
-<li>.路由器R1是企业边界路由器，企业内部不运行任何的路由选择协议。 </li>
-<li><p>公司内部有4台交换机，分别连接了公司的三个部门，分别是A部门B部门和C部门<br>，还有一个单独的公司网络管理者(vlan40)，要求部门与部门之间相互的独立，并且需要保持<br>，公司内部交换机设备配置的一致性。 </p>
-<pre><code>A部门   192.168.1.0/24
-B部门   192.168.2.0/24
-C部门   192.168.3.0/24
-网络管理者  192.168.10.0/24
-</code></pre></li>
-<li>公司内部所有的设备的远程管理都只能允许管理者一台PC访问。</li>
-<li>路由器R1从ISP获得到一个公网IP地址，被分配在R1的串行接口上，公司</li>
-<li>内部所有用户需要访问互联网的服务器(NAT) </li>
-<li>A,B,C三个部门主机地址需要由R1动态分配</li>
-<li>运营商内部是可以相互使用PING命令来测试网络连接性的，但是对于公司内部网络是不允许有任何的Ping数据包出现在公网之上的，但是不能影响到用户的正常数据。 </li>
-<li>网络中有两台HTTP服务器，所有用户都可以访问HTTP服务器，但是C部门的用户不能访问HTTP2服务器  </li>
-</ol>
-<h1 id="配置过程"><a href="#配置过程" class="headerlink" title="配置过程"></a>配置过程</h1><ol>
-<li><p>配置交换机的vl和trunk</p>
-<p> 以sw1为例</p>
-<pre><code>vtp do ccie
-vtp mo se
-vl 10
-vl 20
-vl 30
-
-int ran f0/3,f0/4,f0/5
-sw mo tr  //因为pt为思科模拟器所以不许选择trunk协议,trunk协议只需设置一边的接口即可
-</code></pre><p> 以sw2为例划分vl</p>
-<pre><code>int f0/1
-sw acc vl 10
-int f0/2
-sw acc cl 20
-</code></pre></li>
-</ol>
-<ol>
-<li><p>配置dhcp协议</p>
-<p> 在sw1上配置单臂路由</p>
-<pre><code>int f0/24
-sw mo tr
-</code></pre><p> 在r1上划分子接口</p>
-<pre><code>int f0/0.1
-en dot1q 10
-ip add 192.168.1.1 255.255.255.0
-
-int f0/0.2
-en dot1q 20
-ip add 192.168.2.1 255.255.255.0
-
-int f0/0.2
-en dot1q 30
-ip add 192.168.3.1 255.255.255.0
-</code></pre><p> 在r1上配置dhcp协议</p>
-<pre><code>ip dhcp pool v1
-network 192.168.1.0 255.255.255.0
-default-router 192.168.1.1  
-
-ip dhcp pool v2
-network 192.168.2.0 255.255.255.0
-default-router 192.168.2.1
-
-ip dhcp pool v3
-network 192.168.3.0 255.255.255.0
-default-roter 192.168.3.1
-</code></pre></li>
-<li><p>ospf配置</p>
-<p> 在r1上配置ip并设置缺省路由</p>
-<pre><code>ip route 0.0.0.0 0.0.0.0 se0/0/0
-</code></pre><p> 配置ospf，以isp1为例</p>
-<pre><code>int f0/0
-ip add 202.195.12.1 255.255.255.252
-ip os 1 a 0
-
-int f0/1
-ip add 202.195.12.2 255.255.255.252
-ip os 1 a 0
-</code></pre></li>
-<li><p>http服务器配置</p>
-<p> 配置http服务器ip，以ISP4的f0/1端口作为默认网关。<br> sw5上不做任何配置</p>
-</li>
-<li><p>访问控制链表配置</p>
-<p> nat地址转换，将私网地址转换成公网地址</p>
-<pre><code>acc 1 per 192.168.1.0 0.0.0.255
-acc 1 per 192.168.1.0 0.0.0.255
-acc 1 per 192.168.1.0 0.0.0.255
-ip nat inside source list 1 int s0/0/0 overload
-</code></pre><p> R1上s0/0/0端口</p>
-<pre><code>acc 100 deny icmp any any echo
-acc 100 per ip any any
-
-int s0/0/0
-ip acc 100 out
-</code></pre><p> R1上的f0/0.3端口</p>
-<pre><code>acc 101 deny tcp any host 202.195.40.2 eq www
-acc 101 per ip any any
-
-int f0/0.3
-ip acc 101 in
-</code></pre></li>
-</ol>
-<ol>
-<li><p>vlan40 管理者</p>
-<p> 管理者pc上配置地址为192.168.10.1 , 以SW1为例，在SW1上将f0/1配置</p>
-<pre><code>int vl40
-ip add 192.168.10.2 255.255.255.0
-
-int f0/1
-sw acc vl 40
-no sh
-
-测试SW1和管理者pc能ping通
-
-enable password ccie //配置SW1交换机密码（也可以为密文）
-line vty 0 4
-passwoed 123  //配置管理者pc的telnet登录密码
-</code></pre></li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://dmonster.top/2017/09/10/NA测试题小综合/" data-id="cjey03lla000fvsugjrjs7fsi" class="article-share-link" data-share="baidu" data-title="NA测试题小综合">分享到</a>
-      
-
-      
-        <a href="http://dmonster.top/2017/09/10/NA测试题小综合/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CCNA/">CCNA</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-CCNP--交换" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/08/14/CCNP--交换/" class="article-date">
-  <time datetime="2017-08-14T08:26:59.000Z" itemprop="datePublished">2017-08-14</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/笔记/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/14/CCNP--交换/">CCNP--交换</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      <!-- Table of Contents -->
-      
-        <h1 id="交换机"><a href="#交换机" class="headerlink" title="交换机"></a>交换机</h1><ul>
-<li><p>交换机只用mac地址，接口上不支持ip配置</p>
-</li>
-<li><p>交换机处理广播数据帧的方式 ：泛洪，除接受端口外，所有端口都向外发<br>回复：单播包</p>
-</li>
-<li><p>广播域：广播信息能够传递到的最大范围</p>
-</li>
-<li><p>冲突域：发生冲突之后所影响的范围</p>
-</li>
-<li><p>CSMA/CD    载波帧听多链路访问，可缓解冲突，在通讯时同时向其他设备发送正在通讯信息</p>
-</li>
-</ul>
-<ul>
-<li><p>交换机指示灯</p>
-<ul>
-<li><p>绿色</p>
-<p>  不闪：说明接口两端通讯没有问题，但是当前设备没有数据通过，<br>  不停的闪：说明这个接口正在接收和发送数据</p>
-</li>
-<li><p>橘红色</p>
-<p>  慢闪：说明当前端口没有问题，但是连接端口的线路或者对端端口有问题<br>  快闪：接口和对端连接没问题，正在协商建立连接的参数</p>
-</li>
-<li><p>黄色</p>
-<p>  闪动：物理接口有问题，尝试重启<br>  不闪：物理接口有问题，无法通信</p>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><ul>
-<li><p>将交换机的端口分为两种：access trunk</p>
-</li>
-<li><p>vlan：虚拟的局域网 sh vlan</p>
-<p>  用来分隔管广播域，交换机中可以划分的端口为2-1001<br>  初始化状态下，所有接口属于vlan1（默认vlan，不允许删除）<br>  1002-4096：保留vlan不做分配</p>
-<pre><code>在全局配置模式下
-vlan 50 
-name X（名字）
-
-int f0/0
-switch acc vlan 50
-在交换网络中一个接口只能属于一个vlan
-
-vlan data
-vlan X（编号）
-apply（或ex退出）
-</code></pre></li>
-<li><p>native vlan：本帧vlan（只在当trunk协议为802.1Q时存在）</p>
-<p>  默认为1，一半不建议修改，若要修改保持本网络上本帧vlan设置一致</p>
-<pre><code>sh int trunk
-
-trunk接口下
-switch trunk native vlan X
-</code></pre></li>
-<li><p>trunk：干道协议</p>
-<ol>
-<li>isl 思科私有协议（目前思科也不采用）通过在封装工作</li>
-<li>802.1Q 通过tag </li>
-</ol>
-<ul>
-<li><p>两端必须都为trunk</p>
-<p>  int f0/0<br>  switch trunk enca X(isl/dot1q)  //选择trunk协议<br>  switch mode trunk </p>
-</li>
-</ul>
-</li>
-<li><p>trunk下vlan流量过滤</p>
-<pre><code>trunk接口下
-switch trunk all vlan 1-9,11-4094    //拒绝vlan10
-</code></pre></li>
-<li><p>vtp虚拟传输协议</p>
-<ul>
-<li><p>用于同步同一网络中交换机上vlan信息</p>
-</li>
-<li><p>将网络中的交换机选出一台作为服务器，其他交换机被动同步其中的vlan信息</p>
-</li>
-<li><p>生效的前提：trunk正常工作</p>
-<p>模式</p>
-<ol>
-<li><p>server服务端：创建，修改，维护，传递，删除，同步vlan信息<br> 存储与nvram</p>
-</li>
-<li><p>client客户端：传递，同步vlan信息<br> 存储于ram</p>
-</li>
-<li><p>transparent透明模式：创建，修改，维护，传递，删除vlan，并且本地创建，修改，维护，删除的vlan信息只在本地有效，不会向外传递<br> 存储于nvram</p>
-<p>vtp domain X<br>vtp mode server/client/trans</p>
-</li>
-</ol>
-</li>
-<li><p>sh vtp status //查找configuration revision配置修订号，若大，则其他交换机要同步本台的vlan</p>
-</li>
-<li>若要在网络中接入新的交换机，先设置成tans模式，查看其配置修订号，配置修订号只能加，不能减</li>
-</ul>
-</li>
-</ul>
-<h1 id="三层交换"><a href="#三层交换" class="headerlink" title="三层交换"></a>三层交换</h1><ul>
-<li><p>企业连接运营商（isp）的方式</p>
-<ul>
-<li>单宿：从一个运营商拉一根线</li>
-<li>多宿：从多个运营商每个运营商拉一根线</li>
-<li>双宿：从同一个运营商拉多根线</li>
-<li>双多宿：从多个运营商拉多根线</li>
-</ul>
-</li>
-</ul>
-<h2 id="配置-1"><a href="#配置-1" class="headerlink" title="配置"></a>配置</h2><ul>
-<li><p>svi端口</p>
-<p>  虚拟的vlan接口，广播域的出口，不受物理接口的限制，只受整台交换机性能的限制，<br>  前提：本地存在vlan</p>
-<pre><code>int vlan 10   //进入vlan10接口，只能识别vl 10 的流
-</code></pre></li>
-</ul>
-<h2 id="EC-以太网链路聚合"><a href="#EC-以太网链路聚合" class="headerlink" title="EC:以太网链路聚合"></a>EC:以太网链路聚合</h2><p>企业园区网络中将整个企业网络分为三层</p>
-<ul>
-<li>核心层：服务器集群和出口路由器所在，与汇聚层之间用物理线连接多根，用EC技术逻辑上捆绑成一根，这跟线路集成了这些线路的性能总和<ul>
-<li>使用前提<ul>
-<li>所有接口物理性能必须保持一致</li>
-<li>接口下所有配置必须相同</li>
-<li>链路两端物理性能和配置保持一致</li>
-</ul>
-</li>
-<li>汇聚层：与接入层之间的链路最少为万兆，可以进行数据的操控（分段，分组）</li>
-<li>接入层：用户数据的接入，接入层设备（交换机）数量最多，性能最差，接入层连接的大部分为百兆网</li>
-</ul>
-</li>
-</ul>
-<h3 id="EC协议"><a href="#EC协议" class="headerlink" title="EC协议"></a>EC协议</h3><p>EC接口由两端协商建立，但是必须手动指定物理接口所属模式</p>
-<ul>
-<li>pagp：思科私有<ul>
-<li>接口模式<ul>
-<li>on：不协商，强制成为EC通道</li>
-<li>auto：有意愿成为EC通道，但不主动协商（默认）</li>
-<li>active：有意愿成为EC通道，主动发起协商</li>
-<li>off：不成为EC通道</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>lacp：默认</p>
-<pre><code>- on: on
-- off: off
-- passive:auto
-- desirable:active
-
-channel-pro 协议 
-channel-group X（组号） mode 接口模式
-int port-chan X(组号)
-por-chan load-bal ?   //物理接口中如何进行流量分配
-</code></pre></li>
-</ul>
-<p>每一台二层交换机可以配置一个ip地址（只能配一个）用来进行设备的管理，ip的配置启用在svi端口之下，配置ip的vlan叫做本台交换机的管理vlan</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://dmonster.top/2017/08/14/CCNP--交换/" data-id="cjey03lkb0004vsug1lhn84up" class="article-share-link" data-share="baidu" data-title="CCNP--交换">分享到</a>
-      
-
-      
-        <a href="http://dmonster.top/2017/08/14/CCNP--交换/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CCNP/">CCNP</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-CCNP--路由EGP" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/08/14/CCNP--路由EGP/" class="article-date">
-  <time datetime="2017-08-14T07:43:55.000Z" itemprop="datePublished">2017-08-14</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/笔记/">笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/14/CCNP--路由EGP/">CCNP--路由EGP</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      <!-- Table of Contents -->
-      
-        <h1 id="BGP协议"><a href="#BGP协议" class="headerlink" title="BGP协议"></a>BGP协议</h1><ol>
-<li>属于EGP（边界网关）协议</li>
-<li>全称：边界网关</li>
-<li>工作类型：路径矢量路由选择协议</li>
-<li>基于tcp连接（三次握手）</li>
-<li><p>三张表</p>
-<ul>
-<li><p>邻居表   </p>
-<pre><code>邻居关系建立的几种状态
-idle：本地路由器向外发起tcp请求并等待恢复
-connect：tcp连接已经建立
-active：tcp连接建立不成功，在此状态下，会再次请求连接建立
-opensend：在此状态下，会互相发送open信息，协商邻居关系的各项参数，并等待确认
-openconfirm：收到对方的确认信息，进行参数对比，若失败，进入idl状态
-establish：建立完成
-keeplive：维持对等体关系的建立  60s发一次，180s收不到断开连接
-</code></pre></li>
-<li>bgp表</li>
-</ul>
-</li>
-</ol>
-<pre><code>    通过updata更新包互相发送路由更新条目，第一次更新完成后，不会周期性更新，只会增量更新或触发更新（将变化的内容发送出去）
-
-- 路由表
-
-       13条选路原则，需掌握6条
-</code></pre><ol>
-<li><p>为什么要使用bgp</p>
-<ol>
-<li>igp路由表只能容纳千条，bgp路由表中可容纳归纳上万条条目，可以支持庞大的网络规模</li>
-<li>丰富的路径属性给我们提供了更为丰富的路由操控策略</li>
-</ol>
-</li>
-<li><p>缺点</p>
-<ol>
-<li>对路由器的性能要求高</li>
-<li>配置程序复杂            </li>
-<li>一般情况下，小网络不建议使用bgp</li>
-</ol>
-</li>
-<li><p>bgp AS定义：基于路由器，一台路由器只允许属于一个AS（1-65535）（私有AS 65412-65535）（公有AS 1-65411 IANA）</p>
-</li>
-<li><p>邻居类型</p>
-<ul>
-<li>iBGP：处于同一AS内的BGP路由器所建立的BGP对等体关系</li>
-<li>eBGP：处于不同AS的BGP路由器所建立的对等体关系</li>
-</ul>
-</li>
-<li><p>bgp的防环机制</p>
-<p>AS-path</p>
-<ul>
-<li>bgp对等体路由器收到ibg路由不会发给其他ibgp对等体关系</li>
-<li>bgp路由器收到ebgp路由时会原封不动的传给其他路由器</li>
-</ul>
-</li>
-<li><p>bgp路由黑洞</p>
-<p>bgp路由更新是单播的，基于tcp目标端口179发送的，路由更新的源ip是本地或指定的，目标ip是nei后边跟着的地址，沿途设备如果没有参与bgp，只是将是举报视为常规数据发给目的地，传递更新的设备委比学习路由，但却会成为路径沿途中必须经过的下一跳，这就是路由黑洞</p>
-<ul>
-<li>解决方法<ol>
-<li>重分发（一版不建议）</li>
-<li>全互联的网络拓扑（两两之间建立bgp关系）</li>
-</ol>
-</li>
-</ul>
-</li>
-</ol>
-<ul>
-<li><p>路由来自于ebgp，bgp路由如何处理</p>
-<p>  当前设备会关注更新懈怠的as-path信息，判断是否有环路存在</p>
-</li>
-<li><p>路由来自于ibgp，bgp如何处理</p>
-<ol>
-<li>bgp先判断同步开否，如果开了，bgp要求更新网路必须满足同步要求，否则不学习，同步是指接收bgp更新的路由器，不光bgp学习该网络，当前设备所处的as底层协议也需要学习，同步是为了避免黑洞，但是同步却要被关闭，因为底层协议的管理距离小于ibgp的管理距离，最终会取代bgp</li>
-<li><p>bgp判断来自于ibgp peer的路由更新下一跳，并且要确认下一跳可达</p>
-<ol>
-<li>路由更新来自于as外，路由更新通告者是ebgp peer，那么下一跳就是ebgp peer。</li>
-<li>路由更新源自于as外，路由更新通告者却是ibgp peer，那么下一跳还是ebgp peer。</li>
-<li><p>路由更新来自于as内，路由更新通告者是ibgp peer，那么下一跳还是ibgp peer。</p>
-<p>经常判断出下一跳就是ebgp peer地址，但是下一跳不可大，所以才需要配置next-hop-self</p>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-</ul>
-<ol>
-<li>bgp错误信息通告： notification</li>
-</ol>
-<h2 id="BGP的基本配置"><a href="#BGP的基本配置" class="headerlink" title="BGP的基本配置"></a>BGP的基本配置</h2><pre><code>sh ip bgp sum
-</code></pre><ol>
-<li><p>对等体关系的建立 （邻居表）</p>
-<ol>
-<li><p>所有对等体关系必须互相手动指定并且制定的地址必须可达 </p>
-<pre><code>router bgp X（as号）
-nei ip地址（必须可达）remote-as ？（对端as号）
-</code></pre></li>
-<li><p>环回口建立时，一段必须指定更新源，建议两端都指定 </p>
-</li>
-</ol>
-</li>
-</ol>
-<pre><code>    用环回口建稳定性好，不会出故障，若到达环回口有多条路径可达，其中一条断开，不会影响bgp对等体关系的建立，问题：源地址参数不对，解决放法：手动指定更新源（指定一端即可）一般不建议使用环回口建立ebgp协议
-
-        nei ip地址（必须可达）updata-so 更新源接口
-
-- bgp路由器用环回口建立ibgp对等体关系时， bgp路由器赋予open信息包ttl值为255
-- bgp路由器用环回口建立ebgp对等体关系时， bgp路由器赋予open信息包ttl值为1  （手动设置ttl值：ebgp多跳，两端都要设置 ）
-
-        nei 环回口ip edgp-mul X（ttl值）
-</code></pre><ol>
-<li><p>BGP表的建立</p>
-<pre><code>sh ip bgp
-</code></pre><ul>
-<li><p>内部条目通过宣告或者重分发带入所得</p>
-<pre><code>bgp宣告的条目可以使本地直连网段，也可以是本地通过IGP协议所学到的网段，即宣告的网段必须存在于本地路由表中
-
-  net 网段 mask 子网掩码
-</code></pre><p>  bgp表中下一跳地址为0.0.0.0 代表这条路由起源于本地</p>
-</li>
-<li><p>网络边界，往内做 </p>
-<pre><code>nei ip地址 next-hop-self
-</code></pre></li>
-</ul>
-</li>
-<li><p>路由反射器（RR路由器）</p>
-</li>
-</ol>
-<pre><code>nei ip地址 router-reflected-clier
-</code></pre><ol>
-<li><p>清除</p>
-<pre><code>clear ip bgp * //硬清除：拆除tcp连接重新建立
-clear ip bgp * soft //软清除：清除路由更新
-</code></pre></li>
-<li><p>聚合（汇总）</p>
-<p> 起源于本地的路由不能聚合</p>
-<pre><code>router bgp X
-aggregate-address 聚合后的网段 聚合后的子网掩码 （summary—only 只发送聚合后的路由）
-</code></pre></li>
-<li><p>用对等体组建立bgp对等体关系</p>
-<pre><code>router bgp X
-nei 组名 peer-group    //创建对等体组
-nei ip peer-group 组名    //加入组
-</code></pre></li>
-</ol>
-<h2 id="bgp选路原则"><a href="#bgp选路原则" class="headerlink" title="bgp选路原则"></a>bgp选路原则</h2><ol>
-<li><p>weight 权重值（cisco私有）   越大越优   </p>
-<pre><code>sh ip bgp 
-</code></pre><ol>
-<li>权重值只在本地有效，影响本地的选路</li>
-<li>默认权重值<ul>
-<li>起源于本地的路由条目默认权重：32768<ul>
-<li>通过bgp学习到的路由条目默认权重值为：0</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>更改</p>
-<pre><code>1.
-router bgp X
-    nei ip地址 wei X（权重值+X）
-
-2.
-route-map we pe 10
-   set wei 10 
-   router bgp X
-nei ip地址 router-map we in 
-</code></pre></li>
-</ol>
-</li>
-</ol>
-<ol>
-<li><p>localpreference 本地优先级（默认100）</p>
-<p> 只在同一个AS内生效，影响的是本地AS到外部的选路，默认优先级为100 优先级越大越优</p>
-<pre><code>1.
-router bgp X
-bgp defa local-prefer X（优先级值）
-
-route-map locaper per 10
-set local-per X（优先级值）
-</code></pre></li>
-</ol>
-<ol>
-<li><p>起源于本地的路由（与权重值冲突）    无法修改</p>
-</li>
-<li><p>as-path </p>
-<p> 路径短的优先，修改时只能加不能减，并且只能在ebgp对等体关系之间进行修改</p>
-<pre><code>in 加在本来AS的后面（左面）
-out加在本来AS的前面（右面）
-
-route-map aspath per 10
-set as-path prend X（as号）
-</code></pre></li>
-<li><p>起源代码</p>
-<p> 在起源路由器上通过宣告得到的路由的起源属性 i,<br> 通过重分发得到的路由的起源属性 X ,i优于X</p>
-<pre><code>route-map origin per 10
-set origin incommple
-</code></pre></li>
-<li><p>med值（metric）</p>
-<ul>
-<li>影响相邻AS到本AS的选路</li>
-<li>越小越优</li>
-<li>默认情况下metric都为空即0</li>
-<li>建议在出方向上做</li>
-<li><p>起源属性优于med值</p>
-<pre><code>route-map med per 10
-set metric 100
-</code></pre></li>
-</ul>
-</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://dmonster.top/2017/08/14/CCNP--路由EGP/" data-id="cjey03lkq0006vsugbdwubhjm" class="article-share-link" data-share="baidu" data-title="CCNP--路由EGP">分享到</a>
-      
-
-      
-        <a href="http://dmonster.top/2017/08/14/CCNP--路由EGP/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CCNP/">CCNP</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">下一页 &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">下一页 &raquo;</a>
   </nav>
 </section>
       
@@ -2718,7 +2020,7 @@ set metric 100
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/实验/">实验</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/笔记/">笔记</a><span class="category-list-count">15</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/实验/">实验</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/笔记/">笔记</a><span class="category-list-count">15</span></li></ul>
     </div>
   </div>
 
@@ -2727,7 +2029,7 @@ set metric 100
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCIE/">CCIE</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/">CCNA</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/">CCNP</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/学习笔记/">学习笔记</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络安全/">网络安全</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCIE/">CCIE</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/">CCNA</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/">CCNP</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/学习笔记/">学习笔记</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络安全/">网络安全</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -2736,7 +2038,7 @@ set metric 100
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -2748,23 +2050,23 @@ set metric 100
       <ul>
         
           <li>
+            <a href="/2018/06/26/centos上搭建shadowsocks的两种方法/">centos上搭建shadowsocks的两种方法</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/26/CDN内容分发网络/">CDN内容分发网络</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/26/python爬虫之验证码识别/">python爬虫之验证码识别</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/25/windows下安装redis/">windows下安装redis</a>
+          </li>
+        
+          <li>
             <a href="/2018/03/19/django强行入门——链接mysql数据库/">django强行入门——链接mysql数据库</a>
-          </li>
-        
-          <li>
-            <a href="/2018/03/18/pycharm-professional安装遇到的小麻烦/">pycharm professional安装遇到的小麻烦</a>
-          </li>
-        
-          <li>
-            <a href="/2017/12/02/网络安全/">网络安全</a>
-          </li>
-        
-          <li>
-            <a href="/2017/11/25/ISIS/">ISIS</a>
-          </li>
-        
-          <li>
-            <a href="/2017/11/25/多播/">多播</a>
           </li>
         
       </ul>
