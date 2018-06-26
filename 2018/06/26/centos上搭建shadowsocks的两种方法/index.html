@@ -6,17 +6,18 @@
   
   <title>centos上搭建shadowsocks的两种方法 | dmonster&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="none">
+  <meta name="description" content="这两个月刚好在XXX公司实习，给了我一个账号买主机实验用，于是利用工作之便搭建了一个shadowsocks的服务器。github上找了一下，大概发现两个可用的。  ps：主机为centosos6.5   方法一 python这个方法搭建的服务器只能以进程运行，不能搭建服务。  安装pip yum install python-pip  使用pip安装shadowsocks pip install">
+<meta name="keywords" content="小玩意">
 <meta property="og:type" content="article">
 <meta property="og:title" content="centos上搭建shadowsocks的两种方法">
 <meta property="og:url" content="http://dmonster.top/2018/06/26/centos上搭建shadowsocks的两种方法/index.html">
 <meta property="og:site_name" content="dmonster&#39;s blog">
-<meta property="og:description" content="none">
+<meta property="og:description" content="这两个月刚好在XXX公司实习，给了我一个账号买主机实验用，于是利用工作之便搭建了一个shadowsocks的服务器。github上找了一下，大概发现两个可用的。  ps：主机为centosos6.5   方法一 python这个方法搭建的服务器只能以进程运行，不能搭建服务。  安装pip yum install python-pip  使用pip安装shadowsocks pip install">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-06-26T09:24:59.801Z">
+<meta property="og:updated_time" content="2018-06-26T13:08:25.875Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="centos上搭建shadowsocks的两种方法">
-<meta name="twitter:description" content="none">
+<meta name="twitter:description" content="这两个月刚好在XXX公司实习，给了我一个账号买主机实验用，于是利用工作之便搭建了一个shadowsocks的服务器。github上找了一下，大概发现两个可用的。  ps：主机为centosos6.5   方法一 python这个方法搭建的服务器只能以进程运行，不能搭建服务。  安装pip yum install python-pip  使用pip安装shadowsocks pip install">
   
     <link rel="alternative" href="/atom.xml" title="dmonster&#39;s blog" type="application/atom+xml">
   
@@ -98,7 +99,82 @@
       
       <!-- Table of Contents -->
       
-        
+        <p>这两个月刚好在XXX公司实习，给了我一个账号买主机实验用，于是利用工作之便搭建了一个shadowsocks的服务器。github上找了一下，大概发现两个可用的。</p>
+<ul>
+<li>ps：主机为centosos6.5 </li>
+</ul>
+<h2 id="方法一-python"><a href="#方法一-python" class="headerlink" title="方法一 python"></a>方法一 python</h2><p>这个方法搭建的服务器只能以进程运行，不能搭建服务。</p>
+<ol>
+<li><p>安装pip</p>
+<pre><code>yum install python-pip
+</code></pre></li>
+<li><p>使用pip安装shadowsocks</p>
+<pre><code>pip install shadowsocks
+</code></pre></li>
+<li><p>配置Shdowsocks服务,并启动</p>
+<p> 用vim新建 /etc/shadowsocks.json 文件, 并写入以下内容</p>
+<pre><code>{
+&quot;server&quot;:&quot;0.0.0.0&quot;,  //指定连接的ip（所有人都可连接就为0.0.0.0）
+&quot;server_port&quot;:443,    //指定服务端口
+&quot;local_address&quot;:&quot;127.0.0.1&quot;,
+&quot;local_port&quot;:1080,
+&quot;password&quot;:&quot;your-passwd&quot;,    //设置密码
+&quot;timeout&quot;:300,
+&quot;method&quot;:&quot;aes-256-cfb&quot;,    //设置加密方式
+&quot;fast_open&quot;:false,
+&quot;workers&quot;:5        //启动的进程数
+}
+</code></pre><p> 还有多用户模式的配置我就不弄了，可自行百度，因为就我自己用，而且单用户也可以多方连接。</p>
+<pre><code>启动:ssserver -c /etc/shadowsocks.json -d start 
+关闭:ssserver -c /etc/shadowsocks.json -d stop
+</code></pre></li>
+</ol>
+<h2 id="方法二-脚本搭建"><a href="#方法二-脚本搭建" class="headerlink" title="方法二 脚本搭建"></a>方法二 脚本搭建</h2><p>这个方法可以启服务</p>
+<ol>
+<li><p>下载安装</p>
+<pre><code>cd /tmp
+wget --no-check-certificate https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks-libev.sh
+chmod +x shadowsocks-libev.sh
+./shadowsocks-libev.sh 2&gt;&amp;1 | tee shadowsocks-libev.log
+</code></pre></li>
+<li><p>按照提示步骤安装即可</p>
+<p> 看到enjoy it！就说明完成了</p>
+</li>
+<li><p>查看是否安装完成</p>
+<pre><code>ps -ef | grep ss-server | grep -v ps | grep -v grep
+</code></pre></li>
+<li><p>配置<br>配置文件在 /etc/shadowsocks-libev/config.json</p>
+<pre><code>{
+   &quot;server&quot;:[&quot;[::0]&quot;,&quot;0.0.0.0&quot;], //ipv4/ipv6
+&quot;server_port&quot;:your_server_port,
+&quot;local_address&quot;:&quot;127.0.0.1&quot;,
+&quot;local_port&quot;:1080,
+&quot;password&quot;:&quot;your_password&quot;,
+&quot;timeout&quot;:600,
+&quot;method&quot;:&quot;aes-256-cfb&quot;
+}
+</code></pre><p> 基本相同，只不过支持ipv6</p>
+</li>
+<li><p>卸载</p>
+<pre><code>cd /tmp  # 进入 shadowsocks-libev.sh 所在目录
+./shadowsocks-libev.sh uninstall
+</code></pre></li>
+<li><p>启动</p>
+<pre><code>service shadowsocks start   # 启动
+service shadowsocks stop    # 停止
+service shadowsocks restart # 重启
+</code></pre></li>
+</ol>
+<h2 id="故障排查"><a href="#故障排查" class="headerlink" title="故障排查"></a>故障排查</h2><ul>
+<li><p>问题：访问谷歌出现505/500报错，不能翻</p>
+<p>  因为我是在云主机上搭建的，云主机外网ip在pnat设备上，不再本机，有外设防火墙，所以要到控制台上设置一下规则，允许设置的端口走tcp流量</p>
+</li>
+<li><p>指定端口时不建议用常用端口，容易被墙</p>
+</li>
+<li><p>如果要在云主机上搭建，主机配置最低就行，但是eip最好带宽大一点，不然速度慢</p>
+</li>
+</ul>
+
       
     </div>
     <footer class="article-footer">
@@ -111,6 +187,8 @@
       
 
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/小玩意/">小玩意</a></li></ul>
+
     </footer>
   </div>
   
@@ -149,7 +227,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCIE/">CCIE</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/">CCNA</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/">CCNP</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/笔记/">笔记</a><span class="tag-list-count">14</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCIE/">CCIE</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/">CCNA</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/">CCNP</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/小玩意/">小玩意</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/笔记/">笔记</a><span class="tag-list-count">14</span></li></ul>
     </div>
   </div>
 
