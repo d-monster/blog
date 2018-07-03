@@ -14,7 +14,7 @@
 <meta property="og:site_name" content="dmonster&#39;s blog">
 <meta property="og:description" content="MPLS ARP  地址解析协议：用已知6的ip地址来求未知目的mac地址  arp隶属于icmp协议，icmp：互联消息控制管理协议  icmp通过一系列消息实现各种工具功能，如ping和arp  arp包含两个消息 一个叫广播请求，一个叫单播回应  proxy arp ：代理arp  路由器接口默认启用代理arp，代理arp替代目标给请求者回应，同时代理arp帮助路由器请求目标mac   实际">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-06-26T09:39:55.147Z">
+<meta property="og:updated_time" content="2018-07-03T07:20:53.542Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MPLS">
 <meta name="twitter:description" content="MPLS ARP  地址解析协议：用已知6的ip地址来求未知目的mac地址  arp隶属于icmp协议，icmp：互联消息控制管理协议  icmp通过一系列消息实现各种工具功能，如ping和arp  arp包含两个消息 一个叫广播请求，一个叫单播回应  proxy arp ：代理arp  路由器接口默认启用代理arp，代理arp替代目标给请求者回应，同时代理arp帮助路由器请求目标mac   实际">
@@ -158,7 +158,7 @@
 
     RIB时FIB素材的提供者，ADJ-table的内容来自于FIB的请求结果，数据抵达后先看FIB 利用FIB和ADJ-table 完成数据转发
 
-- cef缺陷
+5. cef缺陷
 
     cef本身的匹配查找还是逐条最长匹配，所以效率特别低
 </code></pre><ol>
@@ -218,7 +218,6 @@
 <pre><code>    2. LDP：标签分发协议
 
     TDP和LDP实际上就是负责标签分配，分发，关联，维护的技术
-
 5. 标签的操作
 
     压入，交换，移出，弹出
@@ -292,73 +291,55 @@
 <li>移除</li>
 </ol>
 </li>
+<li><p>MPLS的表项</p>
+<ol>
+<li><p>LIB：标签信息库</p>
+<p> 所有目标网络的本地标签信息，和邻居分享过来的远程标签都存储在这    </p>
+</li>
+<li><p>标签转发信息库</p>
+<p> 目标网络本地标签、本地标签、关联结果、出口、下一跳 存放于这里</p>
+</li>
 </ol>
+</li>
+<li>MPLS表项与RIB、FIB的关系</li>
+<li><p>补充知识</p>
+<p> MPLS的控制平台与数据传输平台</p>
+<p> MPLS的控制平台负责完成所有数据传输所需的表项</p>
+<p> MPLS的传输平台</p>
+</li>
+<li><p>MPLS的配置流程</p>
+<ol>
+<li><p>确保CEF开启</p>
+<pre><code>router（config）# ip cef
+</code></pre></li>
+<li><p>设定MPLS的相关参数</p>
+<pre><code>mpls label protocol &lt;ldp/tdp&gt;   //选择MPLS的标签分配分发协议
+mpls ldp router-id &lt;looback x&gt;    //手动设定MPLS的LDP RID
+mpls label range &lt;xx yy&gt;           //设定MLS的标签取值范围
+</code></pre><p> 这些命令都是可选配置，不是一定要配置</p>
+</li>
+<li><p>接口下启用MPLS</p>
+<pre><code>interface x
+ip mpls
+</code></pre></li>
+</ol>
+</li>
+<li><p>MPLS校验流程</p>
+<pre><code>show mpls ldp discovery detail  //确认MPLS LDP是否发现邻居
+show mpls ldp neighbor            //确认MPLS LDP 邻居表是否建立
+show mpls ldp binding              // 查看MPLS LIB表
+show mpls forwarding-table      //查看MPLS LFIB表
+show adj detail
+</code></pre></li>
+<li><p>网络中哪些接口和设备需要参与和启用MPLS</p>
+<p> 需要形成LDP邻居关系的，需要分发标签的，才启用MPLS</p>
 </li>
 </ol>
 </li>
 </ol>
-<pre><code>4. MPLS的表项
-
-    1. LIB：标签信息库
-
-        所有目标网络的本地标签信息，和邻居分享过来的远程标签都存储在这
-
-    2. 标签转发信息库
-
-        目标网络本地标签、本地标签、关联结果、出口、下一跳 存放于这里
-
-5. MPLS表项与RIB、FIB的关系
-
-
-6. 补充知识
-
-    MPLS的控制平台与数据传输平台
-
-    MPLS的控制平台负责完成所有数据传输所需的表项
-
-    MPLS的传输平台
-
-7. MPLS的配置流程
-
-    1. 确保CEF开启
-
-            router（config）# ip cef
-
-    2. 设定MPLS的相关参数
-
-            mpls label protocol &lt;ldp/tdp&gt;   //选择MPLS的标签分配分发协议
-
-            mpls ldp router-id &lt;looback x&gt;    //手动设定MPLS的LDP RID
-
-            mpls label range &lt;xx yy&gt;           //设定MLS的标签取值范围
-
-        这些命令都是可选配置，不是一定要配置
-
-    3. 接口下启用MPLS
-
-            interface x
-            ip mpls
-
-
-8. MPLS校验流程
-
-        show mpls ldp discovery detail  //确认MPLS LDP是否发现邻居
-
-        show mpls ldp neighbor            //确认MPLS LDP 邻居表是否建立
-
-        show mpls ldp binding              // 查看MPLS LIB表
-
-        show mpls forwarding-table      //查看MPLS LFIB表
-
-        show adj detail
-
-9. 网络中哪些接口和设备需要参与和启用MPLS
-
-    需要形成LDP邻居关系的，需要分发标签的，才启用MPLS
-
-
-10. 补充知识
-
+</li>
+</ol>
+<pre><code>10. 补充知识
     MPLS transport address ： MPLS传输地址
 
     MPLS邻接关系，实际上是利用传输地址完成的，LDP RID 默认就是传输地址
@@ -366,8 +347,6 @@
     no host router to transport address ：这个提示不是报错，而是说没有主机路由抵达
 
     no route to transport addr:这个提示%100报错
-
-
 
 11. 补充知识
 
@@ -384,8 +363,8 @@
 </code></pre><h1 id="MPLS-VPN"><a href="#MPLS-VPN" class="headerlink" title="MPLS VPN"></a>MPLS VPN</h1><ol>
 <li><p>什么是vpn </p>
 <p> 虚拟的专用网络，VPN可以分成两种： 数据加密、对等体认证</p>
-<pre><code>不加密数据，也不做认证，只组建专有网络
-</code></pre></li>
+<p> 不加密数据，也不做认证，只组建专有网络</p>
+</li>
 <li><p>MPLS VPN的作用</p>
 <p> 运营商网络是MPLS VPN的核心，通过共享客户网络的路由信息，实现专用通信访问</p>
 </li>
@@ -509,30 +488,25 @@ show ip bgp vpnv4 all summary  //查看mp-bgp对等体关系
 
 clear ip bgp vpnv4 unicast 1 soft out   //mpbgp软清除
 </code></pre><p> 2和3一定不能配反，否则mpls-vpn无法正常工作</p>
+<pre><code>router bgp &lt;as-id&gt;
+neighbor &lt;peer-address&gt; default-information //向对等体发送一条缺省路由
+</code></pre></li>
+<li><p>完成pe设备上vrf的创建，并且将接口划入vrf</p>
+<pre><code>ip vrf &lt;name&gt;     //创建指定名称的vrf表
+rd &lt;x:x&gt;
+route-target &lt;both/import/outport&gt;    //定义了rt的导入导出值
+interface &lt;intf-id&gt;
+ip vrf forwarding &lt;vrfname&gt;  //接口划入vrf（接口划入vrf中，会将ip抹除一次）
+ip address &lt;xxxxx&gt; &lt;xxxxx&gt; 
+
+show ip vrf   //查看当前设备的vrf以及有没有设备隶属于他
+</code></pre><p> 一定是接口先划入vrf，再加ip</p>
 </li>
 </ol>
 </li>
-</ol>
-<pre><code>        router bgp &lt;as-id&gt;
-        neighbor &lt;peer-address&gt; default-information //向对等体发送一条缺省路由
-
-4. 完成pe设备上vrf的创建，并且将接口划入vrf
-
-        ip vrf &lt;name&gt;     //创建指定名称的vrf表
-        rd &lt;x:x&gt;
-        route-target &lt;both/import/outport&gt;    //定义了rt的导入导出值
-        interface &lt;intf-id&gt;
-        ip vrf forwarding &lt;vrfname&gt;  //接口划入vrf（接口划入vrf中，会将ip抹除一次）
-        ip address &lt;xxxxx&gt; &lt;xxxxx&gt; 
-
-        show ip vrf   //查看当前设备的vrf以及有没有设备隶属于他
-
-    一定是接口先划入vrf，再加ip
-</code></pre><ol>
 <li><p>完成c-network的配置</p>
 </li>
-<li><p>完成ce和pe间的路由信息共享</p>
-</li>
+<li>完成ce和pe间的路由信息共享</li>
 <li><p>在pe设备上将vrf路由和mp-bgp路由进行双向重分发    </p>
 <ol>
 <li><p>静态、rip、eigrp、ospf、重分发进mp-bgp</p>
@@ -558,8 +532,6 @@ show ip bgp vpnv4 all label  //查看栈底标签
 <p>  yntag在mpls vpn中会移除所有标签，这会引起数据无法传递，所以如果mpls vpn底层协议是ospf，loopback接口务必 </p>
 <pre><code>ip ospf network point-to-point
 </code></pre></li>
-</ul>
-<ul>
 <li><p>RT的设置</p>
 <p>  RT不管是出，还是入都可以是多个值</p>
 </li>
@@ -657,59 +629,53 @@ no bgp default router-targetfilter
 </li>
 </ol>
 </li>
+<li><p>option B 2B</p>
+<p> ASBR关闭RT筛选</p>
+<p> ASBR直连网络启用MPLS </p>
+<p> ASBR对着对端LOOPBACK 0接口配置静态路由</p>
+<p> ASBR之间建立EBGP PEER 的MP-BGP关系</p>
+<ol>
+<li>注意：ASBR对着各自AS内的RR配置NEXT-HOP-SELF或者将静态路由重分发进入底层协议。</li>
+<li><p>2b和2a应用场景不同，2A ASBR之间必须直接链接，没有其他设备了。2B ASBR之间可以有其他若干设备，所以才需要MPLS，栈顶标签，帮忙穿越。</p>
+<p>！！！要设置EBGP多跳（因为EBGP之间默认是1跳，用的是环回口）</p>
+<p> show ip bgp vpnv4 all<br> show ip bgp vpnv4 all tabel</p>
+</li>
+</ol>
+</li>
+<li><p>OPTION  C</p>
+<ol>
+<li>ASBR形成直连网络的EBGP  PEER关系，并且共享标签信息。</li>
+<li>ASBR上将各自AS的PE设备和RR设备lo 0接口而宣告进BGP</li>
+<li><p>各自AS设备RR利用LOOPBACK接口创建BGP和MP-BGP PEER关系，MP-BGP  PEER 关系中设置NEXT-HOP-UNCHANGE(下一跳不改变)</p>
+<p> ！！EBGP PEER 间交换路由信息时，会改变下一跳地址，更新发送者会成为新下一跳，NEXT-HOP-UNCHANGE就是不允许改变下一跳地址。</p>
+</li>
+<li>ASBR上将从对端学习的BGP路由重分发进底层。</li>
+<li><p>注意</p>
+<ol>
+<li><p>send-label的作用</p>
+<p> 关于下一跳的栈顶标签和目标网络的栈底标签都发送给对端BGP  PEER</p>
+</li>
+<li><p>ASBR 间 常规BGP的作用</p>
+<p> 宣告各自AS  PE 和RR的地址，让对方学习。</p>
+<p> 目的是为了帮助RR利用地址建立MP-BGP  PEER 关系</p>
+<p> 宣告PE的地址是为了 NEXT-HOP-UNCHANGE后，下一跳可达，也是为了对方将这个下一跳地址重分发进底层协议。</p>
+</li>
+<li><p>ASBR BGP 下设置权重</p>
+<p>目的是为了保障ASBR抵达对端路由，永远走正确的路径</p>
+</li>
+<li><p>RR建立MP-BGP PEER关系和NEXT-HOP-UNCHANGE目的</p>
+<p> RR通常是P-NETWORK的核心设备，核心设备直接交换路由信息，再反射给PE</p>
+<p> NEXT-HOP-UNCHANGE为了让PE感受是在直接交换路由。</p>
+</li>
+<li><p>PE设备上将BGP路由重分发进IGPS</p>
+<p>目的是为了LDP给这些路由分配标签。</p>
+</li>
 </ol>
 </li>
 </ol>
-<pre><code>3. option B 2B
-
-    ASBR关闭RT筛选
-
-    ASBR直连网络启用MPLS 
-
-    ASBR对着对端LOOPBACK 0接口配置静态路由
-
-    ASBR之间建立EBGP PEER 的MP-BGP关系
-
-    1. 注意：ASBR对着各自AS内的RR配置NEXT-HOP-SELF或者将静态路由重分发进入底层协议。
-    2. 2b和2a应用场景不同，2A ASBR之间必须直接链接，没有其他设备了。2B ASBR之间可以有其他若干设备，所以才需要MPLS，栈顶标签，帮忙穿越。
-
-
-    ！！！要设置EBGP多跳（因为EBGP之间默认是1跳，用的是环回口）
-
-        show ip bgp vpnv4 all
-        show ip bgp vpnv4 all tabel
-
-4. OPTION  C
-    1. ASBR形成直连网络的EBGP  PEER关系，并且共享标签信息。
-    2. ASBR上将各自AS的PE设备和RR设备lo 0接口而宣告进BGP
-    3. 各自AS设备RR利用LOOPBACK接口创建BGP和MP-BGP PEER关系，MP-BGP  PEER 关系中设置NEXT-HOP-UNCHANGE(下一跳不改变)
-
-        ！！EBGP PEER 间交换路由信息时，会改变下一跳地址，更新发送者会成为新下一跳，NEXT-HOP-UNCHANGE就是不允许改变下一跳地址。
-    4. ASBR上将从对端学习的BGP路由重分发进底层。
-    5. 注意
-
-        1. send-label的作用
-
-            关于下一跳的栈顶标签和目标网络的栈底标签都发送给对端BGP  PEER
-        2. ASBR 间 常规BGP的作用
-
-            宣告各自AS  PE 和RR的地址，让对方学习。
-
-            目的是为了帮助RR利用地址建立MP-BGP  PEER 关系
-
-            宣告PE的地址是为了 NEXT-HOP-UNCHANGE后，下一跳可达，也是为了对方将这个下一跳地址重分发进底层协议。
-        3.     ASBR BGP 下设置权重
-
-            目的是为了保障ASBR抵达对端路由，永远走正确的路径
-        4. RR建立MP-BGP PEER关系和NEXT-HOP-UNCHANGE目的
-
-            RR通常是P-NETWORK的核心设备，核心设备直接交换路由信息，再反射给PE
-
-            NEXT-HOP-UNCHANGE为了让PE感受是在直接交换路由。
-        5.    PE设备上将BGP路由重分发进IGPS
-
-            目的是为了LDP给这些路由分配标签。
-</code></pre><ol>
+</li>
+</ol>
+</li>
 <li><p>跨域的MPLS  VPN总结</p>
 <ol>
 <li><p>ORTION  C：方法C</p>
@@ -756,7 +722,7 @@ ASBR间启用MP-BGP PEER 关系（利用直连网络建立的BGP PEER 关系）
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/11/24/MPLS/" data-id="cjizrklev000m0gugkbiunjnb" class="article-share-link" data-share="baidu" data-title="MPLS">分享到</a>
+        <a data-url="http://dmonster.top/2017/11/24/MPLS/" data-id="cjj5d71ea000ea8ugtzjcff72" class="article-share-link" data-share="baidu" data-title="MPLS">分享到</a>
       
 
       
@@ -804,7 +770,7 @@ ASBR间启用MP-BGP PEER 关系（利用直连网络建立的BGP PEER 关系）
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/安全/">安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">10</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/安全/">安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">10</span></li></ul>
     </div>
   </div>
 
@@ -822,7 +788,7 @@ ASBR间启用MP-BGP PEER 关系（利用直连网络建立的BGP PEER 关系）
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -834,6 +800,14 @@ ASBR间启用MP-BGP PEER 关系（利用直连网络建立的BGP PEER 关系）
       <ul>
         
           <li>
+            <a href="/2018/07/03/mysql误删恢复（更新）/">mysql误删恢复（更新）</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/03/mysql登陆问题/">mysql登陆问题</a>
+          </li>
+        
+          <li>
             <a href="/2018/06/28/mysql-prox搭建以及遇到的问题/">mysql-prox搭建以及遇到的问题</a>
           </li>
         
@@ -843,14 +817,6 @@ ASBR间启用MP-BGP PEER 关系（利用直连网络建立的BGP PEER 关系）
         
           <li>
             <a href="/2018/06/26/CDN内容分发网络/">CDN内容分发网络</a>
-          </li>
-        
-          <li>
-            <a href="/2018/03/26/python爬虫之验证码识别/">python爬虫之验证码识别</a>
-          </li>
-        
-          <li>
-            <a href="/2018/03/25/windows下安装redis/">windows下安装redis</a>
           </li>
         
       </ul>

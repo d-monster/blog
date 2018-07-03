@@ -75,6 +75,270 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-python爬虫入门实验" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/19/python爬虫入门实验/" class="article-date">
+  <time datetime="2017-04-19T14:32:51.000Z" itemprop="datePublished">2017-04-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python3/">python3</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/19/python爬虫入门实验/">python爬虫入门实验</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <!-- Table of Contents -->
+      
+        <p>爬百度贴吧里的图片</p>
+<pre><code>#!/usr/bin/python
+import re
+import urllib //加载模块
+
+def getHtml(url):    // 获取地址
+    page = urllib.urlopen(url)    //打开
+    html = page.read()    //读取
+    return html
+
+def getImg(html):    //获取并下载图片
+    reg = r&apos;&lt;img class=&quot;BDE_Image&quot; src=&quot;(.*?)&quot; &apos;    //关键！！！查看页面元素写正则表达式
+    imgre = re.compile(reg)        //预编译
+    imglist = re.findall(imgre,html)    //匹配
+    x = 0
+    for imgurl in imglist:
+        urllib.urlretrieve(imgurl,&apos;%s.jpg&apos; %x)    //下载函数
+        x+=1
+
+html =  getHtml(&quot;https://tieba.baidu.com/p/2237770604&quot;)
+print getImg(html)
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://dmonster.top/2017/04/19/python爬虫入门实验/" data-id="cjj5d71hr002fa8ughpxeiec3" class="article-share-link" data-share="baidu" data-title="python爬虫入门实验">分享到</a>
+      
+
+      
+        <a href="http://dmonster.top/2017/04/19/python爬虫入门实验/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/小玩意/">小玩意</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-正则表达式" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/19/正则表达式/" class="article-date">
+  <time datetime="2017-04-19T09:28:45.000Z" itemprop="datePublished">2017-04-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python3/">python3</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/19/正则表达式/">正则表达式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <!-- Table of Contents -->
+      
+        <h1 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h1><p>python标准库为使用正则表达式提供了re模块</p>
+<ul>
+<li><p>re.search使用：</p>
+<pre><code>re.search(r&apos;fox&apos;,&apos;the quick brown fox jumped&apos;)
+//从字符串中寻找fox返回发现的第一个匹配,若找不到则返回none
+</code></pre></li>
+<li><p>mach 对象</p>
+<pre><code>re.search(r&apos;fox&apos;,&apos;the quick brown fox jumped&apos;)
+</code></pre><ul>
+<li><p>group方法</p>
+<pre><code>match.group() //输出 fox
+</code></pre></li>
+</ul>
+</li>
+<li><p>找到多个匹配</p>
+<pre><code>re.search(r&apos;o&apos;,&apos;the quick brown fox jumped&apos;)
+//返回  [&apos;o&apos;,&apos;o&apos;]
+</code></pre></li>
+</ul>
+<h1 id="基本正则表达式"><a href="#基本正则表达式" class="headerlink" title="基本正则表达式"></a>基本正则表达式</h1><ul>
+<li><p>字符组</p>
+<pre><code>re.search(r&apos;[Pp]ython&apos;,&apos;python 3&apos;) //匹配到 python
+re.search(r&apos;[Pp]ython&apos;,&apos;Python 3&apos;) //匹配到 Python
+</code></pre><ul>
+<li><p>区间</p>
+<pre><code>re.search(r&apos;[a-zA-Z]&apos;,&apos;x&apos;) //匹配到 x
+re.search(r&apos;[a-zA-Z]&apos;,&apos;B&apos;) //匹配到 B
+</code></pre></li>
+<li><p>取反</p>
+<pre><code>re.search(r&apos;[^a-z]&apos;,&apos;4&apos;) //匹配到 4
+</code></pre></li>
+<li><p>快捷方式</p>
+<ul>
+<li><p>\w :匹配所有字符</p>
+<pre><code>re.search(r&apos;\w&apos;,&apos;python 3&apos;) //匹配到 p
+re.findall(r&apos;\w&apos;,&apos;python 3&apos;) //匹配到 [&apos;p&apos;,&apos;y&apos;,&apos;h&apos;,&apos;o&apos;,&apos;n&apos;]
+</code></pre></li>
+<li><p>\d :匹配所有数字字符</p>
+</li>
+<li>\s :匹配所有空白字符</li>
+<li>. ：匹配任意字符</li>
+<li>取反： \W, \d, \S</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>字符串的开始与结束</p>
+<ul>
+<li><p>开始</p>
+<pre><code>re.search(r&apos;^python&apos;,&apos;python 3&apos;) //匹配到 python
+re.search(r&apos;^python&apos;,&apos;hello python &apos;) //不是以pyhon开头，匹配不到
+</code></pre></li>
+<li><p>结束</p>
+<pre><code>re.search(r&apos;python$&apos;,&apos;hello python&apos;) //匹配到python
+re.search(r&apos;python$&apos;,&apos;python 3&apos;) //匹配不到，不是以python结束
+</code></pre></li>
+</ul>
+</li>
+<li><p>可选字符</p>
+<pre><code>re.search(r&apos;honou?r&apos;,&apos;He served with honor.&apos;) //匹配到honor
+re.search(r&apos;honou?r&apos;,&apos;He served with honour.&apos;) //匹配到honour
+</code></pre></li>
+<li><p>重复</p>
+<pre><code>re.search(r&apos;[\d]{3}-[\d]{4}&apos;,&apos;867-5309 / J&apos;) //匹配到 867-5309
+</code></pre><ul>
+<li><p>重复区间</p>
+<pre><code>re.search(r&apos;[\d]{3,4}&apos;,&apos;123&apos;) //匹配到123
+re.search(r&apos;[\d]{3,4}&apos;,&apos;1234&apos;) //匹配到 1234
+</code></pre></li>
+<li><p>开闭区间</p>
+<pre><code>re.search(r&apos;[\d]{1, }&apos;,&apos;1000000&apos;) //匹配到1000000
+</code></pre></li>
+<li><p>速写</p>
+<ul>
+<li>用 + 代替 {1, }</li>
+<li>用 * 代替 {0, }</li>
+</ul>
+</li>
+<li><p>分组</p>
+<pre><code>match = re.search(r&apos;[\d]{3}-[\d]{4}&apos;,&apos;867-5309 / J&apos;)
+
+match.group() //输出（&apos;867-5309&apos;）
+match.groups() //输出（&apos;867&apos;,&apos;5309&apos;）
+match.groups(1) //输出（&apos;867&apos;）
+</code></pre></li>
+</ul>
+</li>
+<li><p>零分组<br>如果group()不带参数，则默认参数为0，所以输出分组参数从1开始。</p>
+</li>
+<li><p>命名分组<br>命名语法?P<group name\=""></group></p>
+<pre><code>match = re.seach(&apos;r&apos;(?P&lt;first_three&gt;[\d]{3})-(?P&lt;last_four&gt;[\d]{4})&apos;,&apos;867-5309&apos;)
+
+match.group(&apos;first_three&apos;) //输出&quot;867&quot;
+</code></pre></li>
+</ul>
+<p>此外，match提供一个groupdict方法，该方法在大多数方面和groups类似，但是他返回的是一个字典不是元组。</p>
+<ul>
+<li>引用已经存在的分组</li>
+</ul>
+<h1 id="先行断言"><a href="#先行断言" class="headerlink" title="先行断言"></a>先行断言</h1><ul>
+<li><p>取反先行断言</p>
+<pre><code>re.search(r&apos;n(?!e)&apos;,&apos;final&apos;) // 匹配到 n
+//不同于取反，不返回取反的字符
+</code></pre></li>
+<li><p>正向先行断言</p>
+<pre><code>re.search(r&apos;n(?=e)&apos;,&apos;jasmine&apos;) //匹配到 n
+</code></pre></li>
+</ul>
+<h1 id="标记"><a href="#标记" class="headerlink" title="标记"></a>标记</h1><ul>
+<li><p>不区分大小写</p>
+<p>  re.IGNORECASE / re.I</p>
+<pre><code>re.search(r&apos;python&apos;, &apos;PYTHON IS OS GOOD&apos;, re.IGNORECASE) // 匹配到 python
+</code></pre></li>
+<li><p>点匹配换行符</p>
+<p>  re.DOTALL / re.S</p>
+<pre><code>re.search(r&apos;.+&apos;,&apos;foo\nbar&apos;) //匹配到foo 
+re.search(r&apos;.+&apos;,&apos;foo\nbar&apos;,re.DOTALL) //匹配到foo/nbar
+</code></pre></li>
+<li><p>多行模式</p>
+<p>  re.MULTILINE / re.M</p>
+<pre><code>re.search(r&apos;^bar&apos;,&apos;foo\nbar&apos;) //因为nabr在下一行，所以匹配不到
+re.search(r&apos;^bar&apos;,&apos;foo\nbar&apos;,re.MULTILINE) //匹配到bar
+</code></pre></li>
+<li><p>详细模式</p>
+<p>  re.VERBOSE / re.X</p>
+</li>
+<li><p>调试模式</p>
+<p>  re.DEBUG</p>
+<pre><code>match = re.seach(&apos;r&apos;(?P&lt;first_three&gt;[\d]{3})-(?P&lt;last_four&gt;[\d]{4})&apos;,&apos;867-5309&apos;,re.DEBUG) //输出调试信息
+</code></pre></li>
+<li><p>使用多个标记</p>
+<pre><code>re.S | re.M
+</code></pre></li>
+</ul>
+<h1 id="替换"><a href="#替换" class="headerlink" title="替换"></a>替换</h1><p>从一个字符串中剥离无关数据</p>
+<pre><code>re.sub(r&apos;\+?1&apos;?[ .-]?\(?([\d]{3})\)?[ .-]?([\d]{3})[ .-]?([\d]{4})&apos;,r&apos;\2\3\4&apos;,&apos;213-867-5309&apos;) //匹配到2138675309
+
+re.sub(r&apos;\+?1&apos;?[ .-]?\(?([\d]{3})\)?[ .-]?([\d]{3})[ .-]?([\d]{4})&apos;,r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到(213) 867-5309
+</code></pre><p>（ ()\1 表示重复正则第一个圆括号内匹配到的内容 ）</p>
+<h1 id="已编译的正则表达式"><a href="#已编译的正则表达式" class="headerlink" title="已编译的正则表达式"></a>已编译的正则表达式</h1><pre><code>regex = re.compile(r&apos;\+?1&apos;?[ .-]?\(?([\d]{3})\)?[ .-]?([\d]{3})[ .-]?([\d]{4})&apos;)
+
+regex.search(&apos;213-867-5309&apos;) //匹配到 213-867-5309
+regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213) 867-5309
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://dmonster.top/2017/04/19/正则表达式/" data-id="cjj5d71gy001va8ugesgi2xrm" class="article-share-link" data-share="baidu" data-title="正则表达式">分享到</a>
+      
+
+      
+        <a href="http://dmonster.top/2017/04/19/正则表达式/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-hexo+github创建自己的博客" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/04/13/hexo+github创建自己的博客/" class="article-date">
@@ -175,7 +439,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/04/13/hexo+github创建自己的博客/" data-id="cjizrklia001m0gugs35z45fi" class="article-share-link" data-share="baidu" data-title="hexo+github搭建自己的博客">分享到</a>
+        <a data-url="http://dmonster.top/2017/04/13/hexo+github创建自己的博客/" data-id="cjj5d71fd000sa8ug09nh4rn2" class="article-share-link" data-share="baidu" data-title="hexo+github搭建自己的博客">分享到</a>
       
 
       
@@ -483,7 +747,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/04/06/网络渗透与深度防御笔记/" data-id="cjizrklie001o0gug2gmkmu9g" class="article-share-link" data-share="baidu" data-title="网络渗透与深度防御笔记">分享到</a>
+        <a data-url="http://dmonster.top/2017/04/06/网络渗透与深度防御笔记/" data-id="cjj5d71h60021a8ugmpqsd8jz" class="article-share-link" data-share="baidu" data-title="网络渗透与深度防御笔记">分享到</a>
       
 
       
@@ -513,7 +777,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/安全/">安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">10</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/安全/">安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">10</span></li></ul>
     </div>
   </div>
 
@@ -531,7 +795,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -543,6 +807,14 @@
       <ul>
         
           <li>
+            <a href="/2018/07/03/mysql误删恢复（更新）/">mysql误删恢复（更新）</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/03/mysql登陆问题/">mysql登陆问题</a>
+          </li>
+        
+          <li>
             <a href="/2018/06/28/mysql-prox搭建以及遇到的问题/">mysql-prox搭建以及遇到的问题</a>
           </li>
         
@@ -552,14 +824,6 @@
         
           <li>
             <a href="/2018/06/26/CDN内容分发网络/">CDN内容分发网络</a>
-          </li>
-        
-          <li>
-            <a href="/2018/03/26/python爬虫之验证码识别/">python爬虫之验证码识别</a>
-          </li>
-        
-          <li>
-            <a href="/2018/03/25/windows下安装redis/">windows下安装redis</a>
           </li>
         
       </ul>

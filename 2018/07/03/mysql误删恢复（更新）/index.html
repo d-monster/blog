@@ -4,18 +4,19 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives: 2018 | dmonster&#39;s blog</title>
+  <title>mysql误删恢复（更新） | dmonster&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="none">
-<meta property="og:type" content="website">
-<meta property="og:title" content="dmonster&#39;s blog">
-<meta property="og:url" content="http://dmonster.top/archives/2018/index.html">
+  <meta name="description" content="觉得这个还挺重要的，就看了一下，还有很多情况和相应的操作，以后遇到了再更新 mysqlbinlog恢复因为mysqlbinlog在mysql中是默认不开启的，所以需要先开启mysqlbinlog，不再多说。  首先找到mysqlbinlog目录，默认是在/var/lib/mysql下的，可用ll查找binlog文件的创建日期来判断使用哪个binlog文件 查看binlog文件（binlog文件中有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql误删恢复（更新）">
+<meta property="og:url" content="http://dmonster.top/2018/07/03/mysql误删恢复（更新）/index.html">
 <meta property="og:site_name" content="dmonster&#39;s blog">
-<meta property="og:description" content="none">
+<meta property="og:description" content="觉得这个还挺重要的，就看了一下，还有很多情况和相应的操作，以后遇到了再更新 mysqlbinlog恢复因为mysqlbinlog在mysql中是默认不开启的，所以需要先开启mysqlbinlog，不再多说。  首先找到mysqlbinlog目录，默认是在/var/lib/mysql下的，可用ll查找binlog文件的创建日期来判断使用哪个binlog文件 查看binlog文件（binlog文件中有">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-07-03T06:32:38.490Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="dmonster&#39;s blog">
-<meta name="twitter:description" content="none">
+<meta name="twitter:title" content="mysql误删恢复（更新）">
+<meta name="twitter:description" content="觉得这个还挺重要的，就看了一下，还有很多情况和相应的操作，以后遇到了再更新 mysqlbinlog恢复因为mysqlbinlog在mysql中是默认不开启的，所以需要先开启mysqlbinlog，不再多说。  首先找到mysqlbinlog目录，默认是在/var/lib/mysql下的，可用ll查找binlog文件的创建日期来判断使用哪个binlog文件 查看binlog文件（binlog文件中有">
   
     <link rel="alternative" href="/atom.xml" title="dmonster&#39;s blog" type="application/atom+xml">
   
@@ -73,192 +74,92 @@
   </div>
 </header>
     <div class="outer">
-      <section id="main">
-  
-  
+      <section id="main"><article id="post-mysql误删恢复（更新）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/03/mysql误删恢复（更新）/" class="article-date">
+  <time datetime="2018-07-03T05:05:03.000Z" itemprop="datePublished">2018-07-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/mysql/">mysql</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
     
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      mysql误删恢复（更新）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
       
+      <!-- Table of Contents -->
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
+        <div id="toc" class="toc-article">
+          <strong class="toc-title">文章目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#mysqlbinlog恢复"><span class="toc-number">1.</span> <span class="toc-text">mysqlbinlog恢复</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用最近一次的备份文件恢复"><span class="toc-number">2.</span> <span class="toc-text">使用最近一次的备份文件恢复</span></a></li></ol>
         </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2018/07/03/mysql误删恢复（更新）/" class="archive-article-date">
-  <time datetime="2018-07-03T05:05:03.000Z" itemprop="datePublished">7月 3</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/07/03/mysql误删恢复（更新）/">mysql误删恢复（更新）</a>
-    </h1>
-  
+        <p>觉得这个还挺重要的，就看了一下，还有很多情况和相应的操作，以后遇到了再更新</p>
+<h1 id="mysqlbinlog恢复"><a href="#mysqlbinlog恢复" class="headerlink" title="mysqlbinlog恢复"></a>mysqlbinlog恢复</h1><p>因为mysqlbinlog在mysql中是默认不开启的，所以需要先开启mysqlbinlog，不再多说。</p>
+<ol>
+<li>首先找到mysqlbinlog目录，默认是在/var/lib/mysql下的，可用ll查找binlog文件的创建日期来判断使用哪个binlog文件</li>
+<li>查看binlog文件（binlog文件中有很多二进制数），用–start-date 或者 –start-position指定需要恢复的段，将误操作/误删除的sql语句剔除或者导出后手工剔除，然后导出为textlog.sql文件</li>
+<li><p>导入恢复表</p>
+<pre><code>mysql -uroot -p &lt; textlog.sql
+</code></pre></li>
+</ol>
+<h1 id="使用最近一次的备份文件恢复"><a href="#使用最近一次的备份文件恢复" class="headerlink" title="使用最近一次的备份文件恢复"></a>使用最近一次的备份文件恢复</h1><ul>
+<li><p>完整备份</p>
+<pre><code>mysqldump -uroot -p Test_DB &gt; /data/mysqlbackup/Test_DB_bk.sql  //将Test——BD完整备份为Test_DB_bk.sql
+</code></pre></li>
+<li>剔除误操作/误删除语句</li>
+<li><p>恢复</p>
+<pre><code>mysqldump -uroot -p Test_DB &lt; /data/mysqlbackup/Test_DB_bk.sql    //将Test_DB_bk.sql备份文件导入Test_DB
+</code></pre></li>
+<li>注意：如果真的使用最近的一次备份文件去做的话，一定是在万不得已的情况（比如binlog 被删除，整个硬盘挂掉、、、 想想都可怕。。。）</li>
+</ul>
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2018/07/03/mysql登陆问题/" class="archive-article-date">
-  <time datetime="2018-07-03T04:05:47.000Z" itemprop="datePublished">7月 3</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/07/03/mysql登陆问题/">mysql登陆问题</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2018/06/28/mysql-prox搭建以及遇到的问题/" class="archive-article-date">
-  <time datetime="2018-06-28T06:03:19.000Z" itemprop="datePublished">6月 28</time>
-</a>
+    </div>
+    <footer class="article-footer">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/06/28/mysql-prox搭建以及遇到的问题/">mysql-prox搭建以及遇到的问题</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2018/06/26/centos上搭建shadowsocks的两种方法/" class="archive-article-date">
-  <time datetime="2018-06-26T09:24:59.000Z" itemprop="datePublished">6月 26</time>
-</a>
+        <a data-url="http://dmonster.top/2018/07/03/mysql误删恢复（更新）/" data-id="cjj5d71h2001ya8ug2g9p4ljy" class="article-share-link" data-share="baidu" data-title="mysql误删恢复（更新）">分享到</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/06/26/centos上搭建shadowsocks的两种方法/">centos上搭建shadowsocks的两种方法</a>
-    </h1>
-  
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2018/06/26/CDN内容分发网络/" class="archive-article-date">
-  <time datetime="2018-06-26T07:49:39.000Z" itemprop="datePublished">6月 26</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/06/26/CDN内容分发网络/">CDN内容分发网络</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2018/03/26/python爬虫之验证码识别/" class="archive-article-date">
-  <time datetime="2018-03-26T09:07:44.000Z" itemprop="datePublished">3月 26</time>
-</a>
+        <a href="http://dmonster.top/2018/07/03/mysql误删恢复（更新）/#ds-thread" class="article-comment-link">评论</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/26/python爬虫之验证码识别/">python爬虫之验证码识别</a>
-    </h1>
-  
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2018/03/25/windows下安装redis/" class="archive-article-date">
-  <time datetime="2018-03-25T11:35:57.000Z" itemprop="datePublished">3月 25</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/25/windows下安装redis/">windows下安装redis</a>
-    </h1>
-  
-
-    </header>
+    </footer>
   </div>
-</article>
   
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2018/03/19/django强行入门——链接mysql数据库/" class="archive-article-date">
-  <time datetime="2018-03-19T08:17:29.000Z" itemprop="datePublished">3月 19</time>
-</a>
-      
+<nav id="article-nav">
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/19/django强行入门——链接mysql数据库/">django强行入门——链接mysql数据库</a>
-    </h1>
   
+    <a href="/2018/07/03/mysql登陆问题/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">mysql登陆问题</div>
+    </a>
+  
+</nav>
 
-    </header>
-  </div>
+  
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2018/03/18/pycharm-professional安装遇到的小麻烦/" class="archive-article-date">
-  <time datetime="2018-03-18T05:31:47.000Z" itemprop="datePublished">3月 18</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/18/pycharm-professional安装遇到的小麻烦/">pycharm professional安装遇到的小麻烦</a>
-    </h1>
-  
 
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
 
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2018/07/03/mysql误删恢复（更新）/" data-title="mysql误删恢复（更新）" data-url="http://dmonster.top/2018/07/03/mysql误删恢复（更新）/"></div>
+  </section>
 </section>
       
       <aside id="sidebar">

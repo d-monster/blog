@@ -75,6 +75,623 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-ISIS" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/25/ISIS/" class="article-date">
+  <time datetime="2017-11-25T03:43:04.000Z" itemprop="datePublished">2017-11-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/网络/">网络</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/25/ISIS/">ISIS</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <!-- Table of Contents -->
+      
+        <h1 id="IS-IS"><a href="#IS-IS" class="headerlink" title="IS-IS"></a>IS-IS</h1><ol>
+<li>中间系统到中间系统（属于igps内部网关协议集），link state链路状态协议（如ospf）</li>
+<li><p>发展历程 </p>
+<ul>
+<li>有链接      cons    ip网络标识 -&gt; tcp -&gt; 路由协议</li>
+<li>无连接    clns    clnp无连接的网络协议，是clns网络标识 -&gt; clns无连接的网络服务机制，后改名为udp -&gt; 路由协议（IS-IS/集成的IS-IS/双栈的IS-IS）</li>
+</ul>
+</li>
+<li><p>clnp标识</p>
+<ol>
+<li>NET网络实体标识（类似ip+mac）</li>
+<li>NASP网络服务接入点（类似ip+mac+port_num端口号）</li>
+<li><p>CLNP标识格式</p>
+<pre><code>AFI.0000.sys-id.00
+地址格式授权组织.域标识（AS）区域标识.系统id（mac地址）.端口号
+</code></pre><p> 最后一部分若为00则为NET，若为非00则为NSAP，<br> IS-IS启用的时候必须要有一个NET地址</p>
+</li>
+</ol>
+</li>
+<li><p>IS-IS术语</p>
+<ol>
+<li>ES终端设备</li>
+<li>IS：router</li>
+<li>clnp无连接网络协议 </li>
+<li>clns无连接网络服务</li>
+<li>dis指定中间系统（类似DR）</li>
+<li>IS-IS中路由器的类型（IS-IS router type）<ol>
+<li>所有启用IS-IS的路由器默认类型为L1/L2（类似ABR）</li>
+<li>L1:区域内路由器<br>3 .L2:骨干区域路由器</li>
+</ol>
+</li>
+<li><p>IS-IS neighbor type </p>
+<ol>
+<li>L1/L2</li>
+<li>L2</li>
+<li><p>L1</p>
+<pre><code>相同区域id            不同区域id          
+L1-L1-L1/L2            L1--/--L1/L2
+L1-L1-L1            L1--/--L1
+L1--/--L2            L1--/--L2
+//L1设备只能跟相同区域内带L1角色的设备形成L1邻居关系即区域内邻居关系
+L1/L2--L1或L2--L1/L2        L1/L2--L2--L1/L2
+//L1是区域内邻居关系，L2首先是区域间邻居关系，但也可以是区域内邻居关系
+L1/L2--L2--L2        L1/L2--L2--L2
+</code></pre></li>
+</ol>
+</li>
+<li><p>IS-IS特性</p>
+<ol>
+<li>IS-IS中dis特点<br>ospf中dr作用    1.减少不必要的邻接关系；<pre><code>2.统筹发送更新过程
+</code></pre><ol>
+<li>dis的选举     先比较优先级（默认是64，最大127，大则优）<pre><code>再比较sys-id
+</code></pre></li>
+<li>没有bdis，且dis可以虽已被替代</li>
+<li>所有非dis之间都可以形成正常邻接关系</li>
+</ol>
+</li>
+<li>IS-IS中区域的特点 IS-IS也是层次化的设计，骨干层，常规层，同样也有骨干区域和常规区域        <ol>
+<li>不要求骨干区域编号一定是0</li>
+<li>不要求所有常规区域和骨干区域连接</li>
+</ol>
+</li>
+<li>IS-IS区域的边界是在路由器，ospf是在接口，ospf中更改区域号必定终端网络，IS-IS中可以先启好区域在删除原有区域</li>
+<li>ospf中拥有特殊区域stub nssa， IS-IS区域内设备只要路由器角色改为L1，他所连接的L1/L2设备自动给他一条缺省，并且不会将区域间路由和外部路由放入区域内</li>
+</ol>
+</li>
+<li><p>is-is路劲度量值计算，计算方法和ospf一样，cost ，默认情况下所有接口都被赋予10的开销</p>
+</li>
+<li><p>IS-IS的消息和消息类型</p>
+<ol>
+<li>IIH：IS-IS hello 分为L1和L2</li>
+<li>LSP： link state pdu 分为L1和L2</li>
+</ol>
+<p>IS-IS数据库也分L1和L2</p>
+</li>
+<li><p>IS-IS的配置</p>
+<ul>
+<li><p>步骤1：启用Is-IS平设定NET地址</p>
+<pre><code>router isis
+net 49.0.0000.0000.00000001.00
+log-adjacency-changes//让控制台以日志的形式提醒IS-IS邻接关系的变化
+</code></pre></li>
+<li><p>步骤2：接口加入IS-IS</p>
+<pre><code>interface &lt;intf-id&gt;
+ip router isis
+</code></pre></li>
+</ul>
+</li>
+<li><p>IS-IS的查看</p>
+<ol>
+<li><p>查看路由表中IsIS的条目</p>
+<pre><code>show ip route isis
+: i L1 区域内路由
+    i L2 区域间路由/外部路由
+</code></pre><p>IS-IS管理距离全是115</p>
+</li>
+<li><p>查看邻接关系是否建立，以及邻接关系的类型</p>
+<pre><code>show clns neighbor
+</code></pre></li>
+<li><p>查看dis  (circuit id ==dis)</p>
+<pre><code>show isis neighbor
+</code></pre></li>
+</ol>
+</li>
+<li><p>改路由器的类型</p>
+<pre><code>router isis 
+is-type level-1 //将路由器类型改为L1
+</code></pre></li>
+<li><p>修改优先级和开销</p>
+<pre><code>interface x 
+isis priority 127   //优先级
+
+isis metric x        //开销
+</code></pre></li>
+<li><p>IS-IS重分发</p>
+<p>外部网络进入IS-IS默认是L2类型，默认开销是10</p>
+<pre><code>router isis
+redistribute &lt;协议&gt; metric &lt;指定外部路由初始度量值&gt; &lt;level-1/level-2/level-1-2&gt; //指定外部路由是什么类型进入isis
+
+redistribute ospf pid metric-type &lt;external ospf 的外部路由/internal ospf 的区域内或区域间路由&gt;
+</code></pre><p>路由器角色为L1，那么重分发不允许做在这样的设备上，如果L1设备需要配置上重分发，那么务必在后加上level-1</p>
+</li>
+<li><p>IS-IS的手动汇总</p>
+<p>汇总配置在L1/L2角色上，汇总后路由默认类型为L2，开销为10</p>
+<p>L1设备上默认无法对本地isisL1路由直接汇总，本地L1网络以外部路由形式进入，再对L1路由汇总</p>
+<pre><code>router isis
+summary-address &lt;汇总后的网络&gt; &lt;汇总后的子网掩码&gt; level-1/level-2
+</code></pre></li>
+<li><p>IS-IS认证</p>
+<ol>
+<li><p>链路认证</p>
+<p> 该认证是通过iih完成的，所以认证不通过影响邻接关系建立</p>
+<pre><code>interface x
+isis password xxx
+</code></pre></li>
+<li><p>区域认证</p>
+<p> 该认证是利用lsp完成的，认证不通过只影响陆游的学习，不影响邻接关系</p>
+<pre><code>router isis
+area-password xxxx
+</code></pre></li>
+<li><p>域认证</p>
+<pre><code>router isis
+domanin-password xxxx
+</code></pre><p> 该认证作用于区域间，如果不通过不影响邻接关系，只影响路由学习</p>
+</li>
+</ol>
+</li>
+<li><p>IS-IS路由泄露</p>
+<p>L1/L2默认不允许L2数据库信息进入L1数据库，变成更新发送</p>
+<p>路由泄露的配置流程</p>
+<p>步骤1：L1/L2设备上编写acl，匹配泄漏的目标路由</p>
+<p>步骤2：L1/L2设备上编写router-map引用acl</p>
+<p>步骤3：L1/L2设备上做isis到isis的重分发，并且指定是利用router-map完成L2数据条目到L1数据库条目的泄漏 </p>
+<pre><code>redistribute isis ip level-2 into level-1 route-map 2T1
+</code></pre></li>
+<li><p>IS-IS的不同区域迁移</p>
+<p>IS-IS允许一个设备属于不同的区域</p>
+<pre><code>router isis
+net ...........(此条命令可被复敲，不会覆盖)
+</code></pre></li>
+</ol>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://dmonster.top/2017/11/25/ISIS/" data-id="cjj5d71e10009a8ugi9229ys6" class="article-share-link" data-share="baidu" data-title="ISIS">分享到</a>
+      
+
+      
+        <a href="http://dmonster.top/2017/11/25/ISIS/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CCIE/">CCIE</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-多播" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/25/多播/" class="article-date">
+  <time datetime="2017-11-25T01:24:49.000Z" itemprop="datePublished">2017-11-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/网络/">网络</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/25/多播/">多播</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <!-- Table of Contents -->
+      
+        <h1 id="多播"><a href="#多播" class="headerlink" title="多播"></a>多播</h1><ol>
+<li><p>数据传播方式</p>
+<ol>
+<li><p>单播 ： unicast        </p>
+<p> 1对1，源和目的都是已知的</p>
+</li>
+<li><p>广播 ： broadcast</p>
+<p> 1对all 源已知，目的通常未知</p>
+</li>
+<li><p>多播 ： mutiplecast（iphone iptv ipmeet）</p>
+<p> 1对many或者many对1 源已知，目的通常未知</p>
+</li>
+</ol>
+</li>
+<li><p>设备处理</p>
+<ol>
+<li><p>router</p>
+<ol>
+<li>单播</li>
+<li>广播 路由器默认阻止广播流穿越，除非有特殊的进程或协议</li>
+<li>多播 默认不允许传递，除非有特殊的进程或协议</li>
+</ol>
+</li>
+<li><p>switch</p>
+<ol>
+<li>单播帧<ol>
+<li>已知目的mac单播帧 ： 定向转发</li>
+<li>未知目的mac单播帧 ： 泛洪</li>
+</ol>
+</li>
+<li>广播帧 泛洪</li>
+<li>多播帧 泛洪</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>多播的术语</p>
+<ol>
+<li>多播源（可能是多个）</li>
+<li>多播的成员 组成员</li>
+<li>组group </li>
+<li>树 路径（router提供）</li>
+<li>源树：树根基于源</li>
+<li>共享树：双层，下游设备基于rp算路径，rp基于源算路径</li>
+<li>集合点rp</li>
+</ol>
+</li>
+<li><p>多播图</p>
+<ol>
+<li><p>igmp 互联网组管理协议</p>
+<p> igmp帮助路由器发现直连子网内的组成员</p>
+<p> igm帮助终端主动申告是不是组成员</p>
+<ol>
+<li><p>igmpv1 </p>
+<ol>
+<li><p>report 报告消息，源于pc 毎60s发一次</p>
+<p> 作用： 回应，申告</p>
+</li>
+<li><p>request 查询消息 源于路由器 </p>
+<p> 查询回应等待时间10s</p>
+<p> 老化时间180s</p>
+</li>
+<li><p>重大缺点</p>
+<ol>
+<li>显性加入，隐性离开</li>
+<li>多查询者</li>
+<li>多个转发者</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>igmpv2</p>
+<ol>
+<li>request</li>
+<li>report</li>
+<li>leave 来自pc 显性离开</li>
+<li>sq 特定查询消息 等待时间3s—-report</li>
+<li><p>查询者竞选机制</p>
+<p> 源ip越小越优</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>多播的ip和多播的mac</p>
+<ol>
+<li><p>多播的目的ip</p>
+<p> 224.xxx.0-239.xxx</p>
+<p> 多播ip标识的不是数据接收设备，是服务或应用</p>
+<pre><code>224.0.0.1 所有pc接收
+224.0.0.2 所有路由器侦听
+224.0.0.9 代表ripv2
+224.0.0.10 代表eigrp
+</code></pre></li>
+<li><p>多播的mac</p>
+<p> 01005E.后6个16进制书利用多播ip进行计算</p>
+<p> ！！注意 ： 多播mac地址可能因为多播ip的后23bit一致，而重复</p>
+</li>
+</ol>
+</li>
+<li><p>多播路由协议</p>
+<p> 主要负责计算多播路径（树），同时维护</p>
+<ol>
+<li><p>多播路由协议的种类</p>
+<ol>
+<li>dvmrp：距离矢量多播路由协议：淘汰</li>
+<li>mospf：多播的ospf ：淘汰</li>
+<li>cbt：基于核心的树：淘汰</li>
+<li>pim：协议独立的多播路由协议：主流</li>
+<li>M-BGP：多播的bgp</li>
+<li>msdp：快于多播时使用，多播源发现协议</li>
+</ol>
+</li>
+<li><p>PIM </p>
+<p> as内负责多播树构建的协议</p>
+<ol>
+<li><p>pim的模式</p>
+<ol>
+<li><p>密集模式：路径都是源树</p>
+<p> 子网内多播组成员占比重</p>
+<p> pim dense mode 使用的是igmpv1</p>
+</li>
+<li><p>稀疏模式：路径都是共享树</p>
+<p> pim sparse mode 使用的是igmpv2</p>
+</li>
+<li><p>注意</p>
+<p> pim的密集模式现在用的也是igmpv2</p>
+</li>
+<li><p>pim的密集模式详解</p>
+<ol>
+<li><p>密集模式的消息  扩散–修剪</p>
+<ol>
+<li>hello消息：用于建立pim邻居关系</li>
+<li>jion消息：当前路由器发给上游设备，告诉上游路径将直连路径加入多播树</li>
+<li>prune消息：修剪消息，当前路由器发给上游设备，告知上游设备将直连网络从树中移开</li>
+<li>graft消息：接枝消息，上游设备发送给上游，将之前移开的直连网络请求再加进去</li>
+<li>graft-ack：接枝确认消息，上游发给下游设备，告知路径已经接回来</li>
+<li>assert：禁言消息</li>
+</ol>
+</li>
+<li><p>pim的密集模式的禁言消息</p>
+<p> pim assert消息实际上是竞选转发者所用</p>
+<p> assert消息里携带3个参数</p>
+<ol>
+<li>转发多播流设备使用的底层协议管理距离 小优</li>
+<li>转发多播流设备蒂法多播源的路径开销 小优</li>
+<li>转发多播流接口IP地址 ip地址大优</li>
+</ol>
+</li>
+<li><p>pim密集模式中的dr（指定路由器）</p>
+<p> pim的密集模式使用的是ibmpv1，pim的密集模式会在连接的子网一段竞选bdr，有dr最终负责查训工作。</p>
+<p> dr竞选过程：优先级和接口ip，优先级越大越优，接口ip越大越优</p>
+<p> pim的密集模式现在使用的是igmpv2，igmpv2小优，dr是ip大优，两者冲突，最终igmpv2决定一切</p>
+</li>
+</ol>
+</li>
+<li><p>pim稀疏模式： </p>
+<ol>
+<li><p>pim稀疏模式消息</p>
+<ol>
+<li>hello</li>
+<li>jion</li>
+<li>prune</li>
+<li>graft</li>
+<li>graft-ack</li>
+<li>assert</li>
+<li><p>register 注册消息 ：第一跳路由器发送给rp</p>
+<p> 注册消息实际上是第一跳路由器将接收的多播流二次封装成单播流量，以抵达rp的最短路径发给rp，触发rp计算抵达多播源的最短路径计算</p>
+</li>
+<li><p>register-stop 注册停止消息 rp反发给第一跳路由器</p>
+<p> rp以源为根，计算完毕最短路径后，利用注册停止信息，告诉第一跳路由器，不需要二次封装发送数据，路径完成可以多播形式发送</p>
+<p> 多播源主动注册，下游主动加入</p>
+</li>
+</ol>
+</li>
+<li><p>pim sparse mode中dr的作用</p>
+<p> 下游设备dr负责发送加入消息，</p>
+<p> 多个第一跳设备dr负责发送注册消息</p>
+</li>
+<li><p>共享树切换成源树</p>
+<p> 启用pimsm的设备接收超过4个字节的多播流之后，就会尝试以原为根计算最短路径，用该路径代替之前的共享树</p>
+<p> pimsm最终稳定之后实际上能看到的都是源树</p>
+<p> ！！注意：既然最终都切换到源树，那干嘛还要rp共享树呢 ： rp就是无扩散多播流得到多播路径的精髓，有了rp，有了共享树，有了更高效计算路径的方式，但未必路径最优，才需要切到源树</p>
+</li>
+<li><p>多播防环机制</p>
+<p> rpf revense path forward：默认开启帮助多播避环的机制，接收多播流的接口必须是单播路径上抵达多播源的出后，接口才可以接收，流量接收后，才允许被发送</p>
+</li>
+<li><p>稀疏模式的rp由来</p>
+<ol>
+<li><p>人为手动指定， 维护不易，没有必要的冗余备份</p>
+<pre><code>ip pim rp-address &lt;xxxx&gt;
+</code></pre></li>
+<li><p>动态竞选</p>
+<ol>
+<li><p>auto-rp：思科私有</p>
+<p> c-rp：：候选rp，所有期望成为rp的角色</p>
+<p> rp-agent：rp代理，获取c-rp信息，裁决出结果，共享给所有pim路由器</p>
+<p> rp-agent实干梨园手动指定，没有备份</p>
+<p> c-rp的竞选参数是c-rp的id，这个id通常是loopback接口IP管理员指定c-rp id越大越有可能成为rp</p>
+<ol>
+<li><p>auto-rp使用地址</p>
+<p> 224.0.1.39 RP-AGENT侦听，C-RP将信息发向这里。<br> 224.0.1.40 所有启用PIM的路由器侦听，RP-AGENT将结果发向这里。</p>
+<p> ！！注意    ，RP-AGENGT消息的传播范围TTL：默认是1（必须改范围最大255），路由器对待RP-AGENT消息的方式：接收后并不继续传递。</p>
+</li>
+<li><p>auto-rp listen</p>
+<p> 路由器开启该功能，路由器不光接收RP-AGENT，还会在TTL允许的情况下继续传递。</p>
+</li>
+<li><p>rp-agent的配置</p>
+<pre><code>Ip pim send-rp-discovery loopback 0 scope 255
+Ip pim send-rp-an lo 0 sc 255（C-RP配置C-RP）
+ip pim autorp listener（路由侦听）
+</code></pre></li>
+</ol>
+</li>
+<li><p>bsr boot strap router ：自荐路由器</p>
+<p> c-rp</p>
+<p> c-bsr：候选bsr，负责收集c-rp信息，但是不裁决，当c-rp信息集发送给所有pim路由器，由他们自己完成裁决</p>
+<p> bsr竞选机制：先比较优先级（大优），再比较bsr id（大优）</p>
+<p> rp竞选机制：优先级（小优），hash长度（越长越好，但是现在不用了），c-rp id（大优）</p>
+<pre><code>ip pim bsr-candidate lo 0  0(hsah) 0（优先级）
+show ip pim bsr router  //看谁是bsr
+ip pim rp-candicate lo0 priority 1  //设置c-rp
+interface 
+ip pim dr-proiority xxx//改dr优先级    
+</code></pre></li>
+<li><p>注意</p>
+<p> 静态RP使用的LOOPBACK接口不需要参加PIM，AUTO-RP，BSR,作为ID的LOOPBACK接口必须参与PIM。</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>pim混合模式：sparse-dense-mode 混合模式</p>
+<p> 混合模式下，稀疏模式先工作，稀疏模式崩溃后，密集模式工作</p>
+<p> ！！补充：官方提供了命令，可以不允许混合模式下，稀疏退回密集</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>多播路由表的查看</p>
+<pre><code>show ip mroute //查看多播路由表  
+show ip igmp group //查看组成员
+show ip igmp interface &lt;intf-id&gt;  //查看接口的igmp参数
+show ip pim neighbor //查看pim邻居
+show ip rpf &lt;真实源ip&gt; //查看rpf 
+clear ip mroute *  //清除mroute
+show ip pim rp //查看rp是否跟组关联了
+show ip pim rp mapping //查看当前设备是否有rp信息
+ip pim spt-threshold infinity //使稀疏模式不切回密集模式
+</code></pre><p> 多播路由表条目几乎都是流量触发而来</p>
+<p> 每个条目的老化时间是3分钟</p>
+<ol>
+<li><p>多播路由表中的副条目和子条目</p>
+<ol>
+<li><p>多播路由表的父条目不负责转发数据，子条目才负责转发数据</p>
+<pre><code>（源信息，组信息）老化计时器
+incoming interface （上游接口，接收多播流的接口）  状态（forward/prune）/模式（dense/sparse）
+outgoing interface （下游接口，转发多播流量接口）  状态/模式
+</code></pre></li>
+<li><p>如何区分父条目，子条目</p>
+<p> 通常父条目源是* 上游接口为空，子条目是真正的多播源，上下游都有详细的信息</p>
+<p> 路由器收到report消息，就会针对特定组创建父条目，子条目基本都是真是的多播流创建</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>多播配置流程</p>
+<ol>
+<li><p>将路由器模拟成多播组成员</p>
+<pre><code>ip igmp jion-group &lt;多播地址&gt;
+</code></pre><p> 该命令可以变化参与，然后反复的录入，让一个接口十多个不同组的成员</p>
+</li>
+<li><p>路由器开启多播路由功能</p>
+<pre><code>ip multicast-routing
+</code></pre></li>
+<li><p>接口下启用pim</p>
+<pre><code>ip pim dense-mode
+ip pim sparse-mode
+ip pim sparse-dense-mode
+</code></pre></li>
+<li><p>那些接口参与pim </p>
+<ol>
+<li>连接子网成员的接口必须参与（参与之后igmp就在路由器开启了）</li>
+<li><p>连接多播流的接口必须参与</p>
+<p> 因为接口想要成功的接收多播流，必须满足两个条件：第一：参与pim，第二：通过rpf检测</p>
+</li>
+<li>最终需要传递多播流的路径两端接口必须参与</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>路由器、交换机处理单，广，多播数据的方式</li>
+<li>igmp的版本 v1v2消息，工作机制，优缺点</li>
+<li>igmpv2的查询者竞选机制</li>
+<li>pim密集模式和稀疏模式的运用场景</li>
+<li>pim dm中dr作用</li>
+<li>pim sm中dr作用</li>
+<li>pim dr的竞选</li>
+<li>pim dm树构建的过程</li>
+<li>pim sm树构建过程</li>
+<li>pim rp的获取方式</li>
+<li>pim dm sm中禁言消息的作用</li>
+<li>多播路由表中的父子条目</li>
+<li>如何影响多播路径</li>
+<li>rpf作用</li>
+</ol>
+<h1 id="跨域多播"><a href="#跨域多播" class="headerlink" title="跨域多播"></a>跨域多播</h1><ol>
+<li>跨域多播遇到的挑战，<ol>
+<li>靠近源的设备，收到注册消息，计算出抵达源的spt（最短路径树）但是得不到后半段路径消息</li>
+<li>靠近组成员的设备，收到join后，只能算出后半段路径，缺乏抵达源的路径信息</li>
+</ol>
+</li>
+<li><p>msdp：多播源发现协议</p>
+<pre><code>ip msdp peer xxxx connect-source lo 100
+show ip msdp summ    //看msdp邻居关系
+show ip msdp sa-cache //看有没有sa消息
+</code></pre><p> msdp配置在不同域的rp上，msdp会建立基于tcp的邻接关系，靠近源一侧的msdp收到注册消息后，会利用msdp sa消息，告诉靠近组成员一侧的rp，谁是源</p>
+<p> ！！注意：跨域多播中还需要考虑rpf的问题，接收多播流的接口必须通过ref检测，否则不接受转发多播流</p>
+</li>
+<li><p>m-bgp </p>
+<p> m-bgp是帮助参与多播的设备通过rpf检测的手段</p>
+<p> ！！rpf的作用</p>
+<p> rpf会避免多播流一环路方式传递</p>
+<p> rpf也会限制接口接收多播流</p>
+<p> 源网络可以通过传递的协议学习，比如： rip 。。。。，还可以通过m-bgp学习。</p>
+<p> m-bgp学习的网络进入m-bgp转发表，但不进入路由表</p>
+</li>
+<li><p>m-bgp的配置</p>
+<p> router bgp <as-id><br> nei <peer> remote xx<br> address ipv4 multicast<br> nei xxxx act</peer></as-id></p>
+<p> show ip bgp ipv4 muliticast //m-bgp转发表<br> cle ip bgp ipv4 1 soft out</p>
+</li>
+</ol>
+<ol>
+<li><p>anycast 范播</p>
+<p> 完全基于msdp，多播中利用anycast，可以提升rp切换的效率</p>
+</li>
+<li><p>IGMP SNOOPING（嗅探） 和CGMP (思科组管理协议)</p>
+<p> cgmp和igmp snooping 是运行在路由器和交换机上的，将多播流发送给该发送的设备</p>
+<pre><code>switch ： ip cgmp enable
+router ： ip cgmp emable
+</code></pre></li>
+</ol>
+<h2 id="参考书籍"><a href="#参考书籍" class="headerlink" title="参考书籍"></a>参考书籍</h2><pre><code>ip 多播网络的设计与部署
+tcp/ip 卷2
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://dmonster.top/2017/11/25/多播/" data-id="cjj5d71ht002ga8ugo7afynh4" class="article-share-link" data-share="baidu" data-title="多播">分享到</a>
+      
+
+      
+        <a href="http://dmonster.top/2017/11/25/多播/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CCIE/">CCIE</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-MPLS" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/11/24/MPLS/" class="article-date">
@@ -153,7 +770,7 @@
 
     RIB时FIB素材的提供者，ADJ-table的内容来自于FIB的请求结果，数据抵达后先看FIB 利用FIB和ADJ-table 完成数据转发
 
-- cef缺陷
+5. cef缺陷
 
     cef本身的匹配查找还是逐条最长匹配，所以效率特别低
 </code></pre><ol>
@@ -213,7 +830,6 @@
 <pre><code>    2. LDP：标签分发协议
 
     TDP和LDP实际上就是负责标签分配，分发，关联，维护的技术
-
 5. 标签的操作
 
     压入，交换，移出，弹出
@@ -287,73 +903,55 @@
 <li>移除</li>
 </ol>
 </li>
+<li><p>MPLS的表项</p>
+<ol>
+<li><p>LIB：标签信息库</p>
+<p> 所有目标网络的本地标签信息，和邻居分享过来的远程标签都存储在这    </p>
+</li>
+<li><p>标签转发信息库</p>
+<p> 目标网络本地标签、本地标签、关联结果、出口、下一跳 存放于这里</p>
+</li>
 </ol>
+</li>
+<li>MPLS表项与RIB、FIB的关系</li>
+<li><p>补充知识</p>
+<p> MPLS的控制平台与数据传输平台</p>
+<p> MPLS的控制平台负责完成所有数据传输所需的表项</p>
+<p> MPLS的传输平台</p>
+</li>
+<li><p>MPLS的配置流程</p>
+<ol>
+<li><p>确保CEF开启</p>
+<pre><code>router（config）# ip cef
+</code></pre></li>
+<li><p>设定MPLS的相关参数</p>
+<pre><code>mpls label protocol &lt;ldp/tdp&gt;   //选择MPLS的标签分配分发协议
+mpls ldp router-id &lt;looback x&gt;    //手动设定MPLS的LDP RID
+mpls label range &lt;xx yy&gt;           //设定MLS的标签取值范围
+</code></pre><p> 这些命令都是可选配置，不是一定要配置</p>
+</li>
+<li><p>接口下启用MPLS</p>
+<pre><code>interface x
+ip mpls
+</code></pre></li>
+</ol>
+</li>
+<li><p>MPLS校验流程</p>
+<pre><code>show mpls ldp discovery detail  //确认MPLS LDP是否发现邻居
+show mpls ldp neighbor            //确认MPLS LDP 邻居表是否建立
+show mpls ldp binding              // 查看MPLS LIB表
+show mpls forwarding-table      //查看MPLS LFIB表
+show adj detail
+</code></pre></li>
+<li><p>网络中哪些接口和设备需要参与和启用MPLS</p>
+<p> 需要形成LDP邻居关系的，需要分发标签的，才启用MPLS</p>
 </li>
 </ol>
 </li>
 </ol>
-<pre><code>4. MPLS的表项
-
-    1. LIB：标签信息库
-
-        所有目标网络的本地标签信息，和邻居分享过来的远程标签都存储在这
-
-    2. 标签转发信息库
-
-        目标网络本地标签、本地标签、关联结果、出口、下一跳 存放于这里
-
-5. MPLS表项与RIB、FIB的关系
-
-
-6. 补充知识
-
-    MPLS的控制平台与数据传输平台
-
-    MPLS的控制平台负责完成所有数据传输所需的表项
-
-    MPLS的传输平台
-
-7. MPLS的配置流程
-
-    1. 确保CEF开启
-
-            router（config）# ip cef
-
-    2. 设定MPLS的相关参数
-
-            mpls label protocol &lt;ldp/tdp&gt;   //选择MPLS的标签分配分发协议
-
-            mpls ldp router-id &lt;looback x&gt;    //手动设定MPLS的LDP RID
-
-            mpls label range &lt;xx yy&gt;           //设定MLS的标签取值范围
-
-        这些命令都是可选配置，不是一定要配置
-
-    3. 接口下启用MPLS
-
-            interface x
-            ip mpls
-
-
-8. MPLS校验流程
-
-        show mpls ldp discovery detail  //确认MPLS LDP是否发现邻居
-
-        show mpls ldp neighbor            //确认MPLS LDP 邻居表是否建立
-
-        show mpls ldp binding              // 查看MPLS LIB表
-
-        show mpls forwarding-table      //查看MPLS LFIB表
-
-        show adj detail
-
-9. 网络中哪些接口和设备需要参与和启用MPLS
-
-    需要形成LDP邻居关系的，需要分发标签的，才启用MPLS
-
-
-10. 补充知识
-
+</li>
+</ol>
+<pre><code>10. 补充知识
     MPLS transport address ： MPLS传输地址
 
     MPLS邻接关系，实际上是利用传输地址完成的，LDP RID 默认就是传输地址
@@ -361,8 +959,6 @@
     no host router to transport address ：这个提示不是报错，而是说没有主机路由抵达
 
     no route to transport addr:这个提示%100报错
-
-
 
 11. 补充知识
 
@@ -379,8 +975,8 @@
 </code></pre><h1 id="MPLS-VPN"><a href="#MPLS-VPN" class="headerlink" title="MPLS VPN"></a>MPLS VPN</h1><ol>
 <li><p>什么是vpn </p>
 <p> 虚拟的专用网络，VPN可以分成两种： 数据加密、对等体认证</p>
-<pre><code>不加密数据，也不做认证，只组建专有网络
-</code></pre></li>
+<p> 不加密数据，也不做认证，只组建专有网络</p>
+</li>
 <li><p>MPLS VPN的作用</p>
 <p> 运营商网络是MPLS VPN的核心，通过共享客户网络的路由信息，实现专用通信访问</p>
 </li>
@@ -504,30 +1100,25 @@ show ip bgp vpnv4 all summary  //查看mp-bgp对等体关系
 
 clear ip bgp vpnv4 unicast 1 soft out   //mpbgp软清除
 </code></pre><p> 2和3一定不能配反，否则mpls-vpn无法正常工作</p>
+<pre><code>router bgp &lt;as-id&gt;
+neighbor &lt;peer-address&gt; default-information //向对等体发送一条缺省路由
+</code></pre></li>
+<li><p>完成pe设备上vrf的创建，并且将接口划入vrf</p>
+<pre><code>ip vrf &lt;name&gt;     //创建指定名称的vrf表
+rd &lt;x:x&gt;
+route-target &lt;both/import/outport&gt;    //定义了rt的导入导出值
+interface &lt;intf-id&gt;
+ip vrf forwarding &lt;vrfname&gt;  //接口划入vrf（接口划入vrf中，会将ip抹除一次）
+ip address &lt;xxxxx&gt; &lt;xxxxx&gt; 
+
+show ip vrf   //查看当前设备的vrf以及有没有设备隶属于他
+</code></pre><p> 一定是接口先划入vrf，再加ip</p>
 </li>
 </ol>
 </li>
-</ol>
-<pre><code>        router bgp &lt;as-id&gt;
-        neighbor &lt;peer-address&gt; default-information //向对等体发送一条缺省路由
-
-4. 完成pe设备上vrf的创建，并且将接口划入vrf
-
-        ip vrf &lt;name&gt;     //创建指定名称的vrf表
-        rd &lt;x:x&gt;
-        route-target &lt;both/import/outport&gt;    //定义了rt的导入导出值
-        interface &lt;intf-id&gt;
-        ip vrf forwarding &lt;vrfname&gt;  //接口划入vrf（接口划入vrf中，会将ip抹除一次）
-        ip address &lt;xxxxx&gt; &lt;xxxxx&gt; 
-
-        show ip vrf   //查看当前设备的vrf以及有没有设备隶属于他
-
-    一定是接口先划入vrf，再加ip
-</code></pre><ol>
 <li><p>完成c-network的配置</p>
 </li>
-<li><p>完成ce和pe间的路由信息共享</p>
-</li>
+<li>完成ce和pe间的路由信息共享</li>
 <li><p>在pe设备上将vrf路由和mp-bgp路由进行双向重分发    </p>
 <ol>
 <li><p>静态、rip、eigrp、ospf、重分发进mp-bgp</p>
@@ -553,8 +1144,6 @@ show ip bgp vpnv4 all label  //查看栈底标签
 <p>  yntag在mpls vpn中会移除所有标签，这会引起数据无法传递，所以如果mpls vpn底层协议是ospf，loopback接口务必 </p>
 <pre><code>ip ospf network point-to-point
 </code></pre></li>
-</ul>
-<ul>
 <li><p>RT的设置</p>
 <p>  RT不管是出，还是入都可以是多个值</p>
 </li>
@@ -652,59 +1241,53 @@ no bgp default router-targetfilter
 </li>
 </ol>
 </li>
+<li><p>option B 2B</p>
+<p> ASBR关闭RT筛选</p>
+<p> ASBR直连网络启用MPLS </p>
+<p> ASBR对着对端LOOPBACK 0接口配置静态路由</p>
+<p> ASBR之间建立EBGP PEER 的MP-BGP关系</p>
+<ol>
+<li>注意：ASBR对着各自AS内的RR配置NEXT-HOP-SELF或者将静态路由重分发进入底层协议。</li>
+<li><p>2b和2a应用场景不同，2A ASBR之间必须直接链接，没有其他设备了。2B ASBR之间可以有其他若干设备，所以才需要MPLS，栈顶标签，帮忙穿越。</p>
+<p>！！！要设置EBGP多跳（因为EBGP之间默认是1跳，用的是环回口）</p>
+<p> show ip bgp vpnv4 all<br> show ip bgp vpnv4 all tabel</p>
+</li>
+</ol>
+</li>
+<li><p>OPTION  C</p>
+<ol>
+<li>ASBR形成直连网络的EBGP  PEER关系，并且共享标签信息。</li>
+<li>ASBR上将各自AS的PE设备和RR设备lo 0接口而宣告进BGP</li>
+<li><p>各自AS设备RR利用LOOPBACK接口创建BGP和MP-BGP PEER关系，MP-BGP  PEER 关系中设置NEXT-HOP-UNCHANGE(下一跳不改变)</p>
+<p> ！！EBGP PEER 间交换路由信息时，会改变下一跳地址，更新发送者会成为新下一跳，NEXT-HOP-UNCHANGE就是不允许改变下一跳地址。</p>
+</li>
+<li>ASBR上将从对端学习的BGP路由重分发进底层。</li>
+<li><p>注意</p>
+<ol>
+<li><p>send-label的作用</p>
+<p> 关于下一跳的栈顶标签和目标网络的栈底标签都发送给对端BGP  PEER</p>
+</li>
+<li><p>ASBR 间 常规BGP的作用</p>
+<p> 宣告各自AS  PE 和RR的地址，让对方学习。</p>
+<p> 目的是为了帮助RR利用地址建立MP-BGP  PEER 关系</p>
+<p> 宣告PE的地址是为了 NEXT-HOP-UNCHANGE后，下一跳可达，也是为了对方将这个下一跳地址重分发进底层协议。</p>
+</li>
+<li><p>ASBR BGP 下设置权重</p>
+<p>目的是为了保障ASBR抵达对端路由，永远走正确的路径</p>
+</li>
+<li><p>RR建立MP-BGP PEER关系和NEXT-HOP-UNCHANGE目的</p>
+<p> RR通常是P-NETWORK的核心设备，核心设备直接交换路由信息，再反射给PE</p>
+<p> NEXT-HOP-UNCHANGE为了让PE感受是在直接交换路由。</p>
+</li>
+<li><p>PE设备上将BGP路由重分发进IGPS</p>
+<p>目的是为了LDP给这些路由分配标签。</p>
+</li>
 </ol>
 </li>
 </ol>
-<pre><code>3. option B 2B
-
-    ASBR关闭RT筛选
-
-    ASBR直连网络启用MPLS 
-
-    ASBR对着对端LOOPBACK 0接口配置静态路由
-
-    ASBR之间建立EBGP PEER 的MP-BGP关系
-
-    1. 注意：ASBR对着各自AS内的RR配置NEXT-HOP-SELF或者将静态路由重分发进入底层协议。
-    2. 2b和2a应用场景不同，2A ASBR之间必须直接链接，没有其他设备了。2B ASBR之间可以有其他若干设备，所以才需要MPLS，栈顶标签，帮忙穿越。
-
-
-    ！！！要设置EBGP多跳（因为EBGP之间默认是1跳，用的是环回口）
-
-        show ip bgp vpnv4 all
-        show ip bgp vpnv4 all tabel
-
-4. OPTION  C
-    1. ASBR形成直连网络的EBGP  PEER关系，并且共享标签信息。
-    2. ASBR上将各自AS的PE设备和RR设备lo 0接口而宣告进BGP
-    3. 各自AS设备RR利用LOOPBACK接口创建BGP和MP-BGP PEER关系，MP-BGP  PEER 关系中设置NEXT-HOP-UNCHANGE(下一跳不改变)
-
-        ！！EBGP PEER 间交换路由信息时，会改变下一跳地址，更新发送者会成为新下一跳，NEXT-HOP-UNCHANGE就是不允许改变下一跳地址。
-    4. ASBR上将从对端学习的BGP路由重分发进底层。
-    5. 注意
-
-        1. send-label的作用
-
-            关于下一跳的栈顶标签和目标网络的栈底标签都发送给对端BGP  PEER
-        2. ASBR 间 常规BGP的作用
-
-            宣告各自AS  PE 和RR的地址，让对方学习。
-
-            目的是为了帮助RR利用地址建立MP-BGP  PEER 关系
-
-            宣告PE的地址是为了 NEXT-HOP-UNCHANGE后，下一跳可达，也是为了对方将这个下一跳地址重分发进底层协议。
-        3.     ASBR BGP 下设置权重
-
-            目的是为了保障ASBR抵达对端路由，永远走正确的路径
-        4. RR建立MP-BGP PEER关系和NEXT-HOP-UNCHANGE目的
-
-            RR通常是P-NETWORK的核心设备，核心设备直接交换路由信息，再反射给PE
-
-            NEXT-HOP-UNCHANGE为了让PE感受是在直接交换路由。
-        5.    PE设备上将BGP路由重分发进IGPS
-
-            目的是为了LDP给这些路由分配标签。
-</code></pre><ol>
+</li>
+</ol>
+</li>
 <li><p>跨域的MPLS  VPN总结</p>
 <ol>
 <li><p>ORTION  C：方法C</p>
@@ -751,7 +1334,7 @@ ASBR间启用MP-BGP PEER 关系（利用直连网络建立的BGP PEER 关系）
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/11/24/MPLS/" data-id="cjizrklev000m0gugkbiunjnb" class="article-share-link" data-share="baidu" data-title="MPLS">分享到</a>
+        <a data-url="http://dmonster.top/2017/11/24/MPLS/" data-id="cjj5d71ea000ea8ugtzjcff72" class="article-share-link" data-share="baidu" data-title="MPLS">分享到</a>
       
 
       
@@ -1089,7 +1672,7 @@ sta X tr 接口号 X（处罚值，当接口断开后从优先级上剪掉处罚
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/09/23/CCNA/" data-id="cjizrkle300070gugua8oo6pz" class="article-share-link" data-share="baidu" data-title="CCNA">分享到</a>
+        <a data-url="http://dmonster.top/2017/09/23/CCNA/" data-id="cjj5d71ds0005a8ug2byzc08t" class="article-share-link" data-share="baidu" data-title="CCNA">分享到</a>
       
 
       
@@ -1255,7 +1838,7 @@ passwoed 123  //配置管理者pc的telnet登录密码
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/09/10/NA测试题小综合/" data-id="cjizrklh600140gugt0z731hd" class="article-share-link" data-share="baidu" data-title="NA测试题小综合">分享到</a>
+        <a data-url="http://dmonster.top/2017/09/10/NA测试题小综合/" data-id="cjj5d71f5000oa8ug3qmw4im3" class="article-share-link" data-share="baidu" data-title="NA测试题小综合">分享到</a>
       
 
       
@@ -1450,7 +2033,7 @@ por-chan load-bal ?   //物理接口中如何进行流量分配
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/08/14/CCNP--交换/" data-id="cjizrklbo00000gugipdacmxm" class="article-share-link" data-share="baidu" data-title="CCNP--交换">分享到</a>
+        <a data-url="http://dmonster.top/2017/08/14/CCNP--交换/" data-id="cjj5d71cr0000a8ugs9tl4px6" class="article-share-link" data-share="baidu" data-title="CCNP--交换">分享到</a>
       
 
       
@@ -1710,7 +2293,7 @@ set metric 100
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/08/14/CCNP--路由EGP/" data-id="cjizrklea000a0gugjcue0pke" class="article-share-link" data-share="baidu" data-title="CCNP--路由EGP">分享到</a>
+        <a data-url="http://dmonster.top/2017/08/14/CCNP--路由EGP/" data-id="cjj5d71de0001a8ugj6uloexn" class="article-share-link" data-share="baidu" data-title="CCNP--路由EGP">分享到</a>
       
 
       
@@ -2034,7 +2617,7 @@ red 协议 sub （metric-type X）（metric ？）
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/07/16/CCNP--路由IGP/" data-id="cjizrklel000f0gug733hb8fq" class="article-share-link" data-share="baidu" data-title="CCNP路由IGP">分享到</a>
+        <a data-url="http://dmonster.top/2017/07/16/CCNP--路由IGP/" data-id="cjj5d71e4000aa8ugyr7ezw4q" class="article-share-link" data-share="baidu" data-title="CCNP路由IGP">分享到</a>
       
 
       
@@ -2274,7 +2857,7 @@ print soup.select(&apos;a[class=&quot;sister&quot;]&apos;)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/04/23/BeautifulSoup库/" data-id="cjizrkled000c0gugiwaoratt" class="article-share-link" data-share="baidu" data-title="BeautifulSoup库">分享到</a>
+        <a data-url="http://dmonster.top/2017/04/23/BeautifulSoup库/" data-id="cjj5d71do0004a8ug295ix8b7" class="article-share-link" data-share="baidu" data-title="BeautifulSoup库">分享到</a>
       
 
       
@@ -2583,275 +3166,11 @@ f.write(&apos;写入的内容&apos;)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/04/19/python学习笔记/" data-id="cjizrkli0001f0gugta021a5n" class="article-share-link" data-share="baidu" data-title="pyhon学习笔记">分享到</a>
+        <a data-url="http://dmonster.top/2017/04/19/python学习笔记/" data-id="cjj5d71gp001pa8ugwkxwxdiw" class="article-share-link" data-share="baidu" data-title="pyhon学习笔记">分享到</a>
       
 
       
         <a href="http://dmonster.top/2017/04/19/python学习笔记/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-python爬虫入门实验" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/04/19/python爬虫入门实验/" class="article-date">
-  <time datetime="2017-04-19T14:32:51.000Z" itemprop="datePublished">2017-04-19</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/python3/">python3</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/19/python爬虫入门实验/">python爬虫入门实验</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      <!-- Table of Contents -->
-      
-        <p>爬百度贴吧里的图片</p>
-<pre><code>#!/usr/bin/python
-import re
-import urllib //加载模块
-
-def getHtml(url):    // 获取地址
-    page = urllib.urlopen(url)    //打开
-    html = page.read()    //读取
-    return html
-
-def getImg(html):    //获取并下载图片
-    reg = r&apos;&lt;img class=&quot;BDE_Image&quot; src=&quot;(.*?)&quot; &apos;    //关键！！！查看页面元素写正则表达式
-    imgre = re.compile(reg)        //预编译
-    imglist = re.findall(imgre,html)    //匹配
-    x = 0
-    for imgurl in imglist:
-        urllib.urlretrieve(imgurl,&apos;%s.jpg&apos; %x)    //下载函数
-        x+=1
-
-html =  getHtml(&quot;https://tieba.baidu.com/p/2237770604&quot;)
-print getImg(html)
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://dmonster.top/2017/04/19/python爬虫入门实验/" data-id="cjizrklhd00150gug6kab8m9n" class="article-share-link" data-share="baidu" data-title="python爬虫入门实验">分享到</a>
-      
-
-      
-        <a href="http://dmonster.top/2017/04/19/python爬虫入门实验/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/小玩意/">小玩意</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-正则表达式" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/04/19/正则表达式/" class="article-date">
-  <time datetime="2017-04-19T09:28:45.000Z" itemprop="datePublished">2017-04-19</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/python3/">python3</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/19/正则表达式/">正则表达式</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      <!-- Table of Contents -->
-      
-        <h1 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h1><p>python标准库为使用正则表达式提供了re模块</p>
-<ul>
-<li><p>re.search使用：</p>
-<pre><code>re.search(r&apos;fox&apos;,&apos;the quick brown fox jumped&apos;)
-//从字符串中寻找fox返回发现的第一个匹配,若找不到则返回none
-</code></pre></li>
-<li><p>mach 对象</p>
-<pre><code>re.search(r&apos;fox&apos;,&apos;the quick brown fox jumped&apos;)
-</code></pre><ul>
-<li><p>group方法</p>
-<pre><code>match.group() //输出 fox
-</code></pre></li>
-</ul>
-</li>
-<li><p>找到多个匹配</p>
-<pre><code>re.search(r&apos;o&apos;,&apos;the quick brown fox jumped&apos;)
-//返回  [&apos;o&apos;,&apos;o&apos;]
-</code></pre></li>
-</ul>
-<h1 id="基本正则表达式"><a href="#基本正则表达式" class="headerlink" title="基本正则表达式"></a>基本正则表达式</h1><ul>
-<li><p>字符组</p>
-<pre><code>re.search(r&apos;[Pp]ython&apos;,&apos;python 3&apos;) //匹配到 python
-re.search(r&apos;[Pp]ython&apos;,&apos;Python 3&apos;) //匹配到 Python
-</code></pre><ul>
-<li><p>区间</p>
-<pre><code>re.search(r&apos;[a-zA-Z]&apos;,&apos;x&apos;) //匹配到 x
-re.search(r&apos;[a-zA-Z]&apos;,&apos;B&apos;) //匹配到 B
-</code></pre></li>
-<li><p>取反</p>
-<pre><code>re.search(r&apos;[^a-z]&apos;,&apos;4&apos;) //匹配到 4
-</code></pre></li>
-<li><p>快捷方式</p>
-<ul>
-<li><p>\w :匹配所有字符</p>
-<pre><code>re.search(r&apos;\w&apos;,&apos;python 3&apos;) //匹配到 p
-re.findall(r&apos;\w&apos;,&apos;python 3&apos;) //匹配到 [&apos;p&apos;,&apos;y&apos;,&apos;h&apos;,&apos;o&apos;,&apos;n&apos;]
-</code></pre></li>
-<li><p>\d :匹配所有数字字符</p>
-</li>
-<li>\s :匹配所有空白字符</li>
-<li>. ：匹配任意字符</li>
-<li>取反： \W, \d, \S</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>字符串的开始与结束</p>
-<ul>
-<li><p>开始</p>
-<pre><code>re.search(r&apos;^python&apos;,&apos;python 3&apos;) //匹配到 python
-re.search(r&apos;^python&apos;,&apos;hello python &apos;) //不是以pyhon开头，匹配不到
-</code></pre></li>
-<li><p>结束</p>
-<pre><code>re.search(r&apos;python$&apos;,&apos;hello python&apos;) //匹配到python
-re.search(r&apos;python$&apos;,&apos;python 3&apos;) //匹配不到，不是以python结束
-</code></pre></li>
-</ul>
-</li>
-<li><p>可选字符</p>
-<pre><code>re.search(r&apos;honou?r&apos;,&apos;He served with honor.&apos;) //匹配到honor
-re.search(r&apos;honou?r&apos;,&apos;He served with honour.&apos;) //匹配到honour
-</code></pre></li>
-<li><p>重复</p>
-<pre><code>re.search(r&apos;[\d]{3}-[\d]{4}&apos;,&apos;867-5309 / J&apos;) //匹配到 867-5309
-</code></pre><ul>
-<li><p>重复区间</p>
-<pre><code>re.search(r&apos;[\d]{3,4}&apos;,&apos;123&apos;) //匹配到123
-re.search(r&apos;[\d]{3,4}&apos;,&apos;1234&apos;) //匹配到 1234
-</code></pre></li>
-<li><p>开闭区间</p>
-<pre><code>re.search(r&apos;[\d]{1, }&apos;,&apos;1000000&apos;) //匹配到1000000
-</code></pre></li>
-<li><p>速写</p>
-<ul>
-<li>用 + 代替 {1, }</li>
-<li>用 * 代替 {0, }</li>
-</ul>
-</li>
-<li><p>分组</p>
-<pre><code>match = re.search(r&apos;[\d]{3}-[\d]{4}&apos;,&apos;867-5309 / J&apos;)
-
-match.group() //输出（&apos;867-5309&apos;）
-match.groups() //输出（&apos;867&apos;,&apos;5309&apos;）
-match.groups(1) //输出（&apos;867&apos;）
-</code></pre></li>
-</ul>
-</li>
-<li><p>零分组<br>如果group()不带参数，则默认参数为0，所以输出分组参数从1开始。</p>
-</li>
-<li><p>命名分组<br>命名语法?P<group name\=""></group></p>
-<pre><code>match = re.seach(&apos;r&apos;(?P&lt;first_three&gt;[\d]{3})-(?P&lt;last_four&gt;[\d]{4})&apos;,&apos;867-5309&apos;)
-
-match.group(&apos;first_three&apos;) //输出&quot;867&quot;
-</code></pre></li>
-</ul>
-<p>此外，match提供一个groupdict方法，该方法在大多数方面和groups类似，但是他返回的是一个字典不是元组。</p>
-<ul>
-<li>引用已经存在的分组</li>
-</ul>
-<h1 id="先行断言"><a href="#先行断言" class="headerlink" title="先行断言"></a>先行断言</h1><ul>
-<li><p>取反先行断言</p>
-<pre><code>re.search(r&apos;n(?!e)&apos;,&apos;final&apos;) // 匹配到 n
-//不同于取反，不返回取反的字符
-</code></pre></li>
-<li><p>正向先行断言</p>
-<pre><code>re.search(r&apos;n(?=e)&apos;,&apos;jasmine&apos;) //匹配到 n
-</code></pre></li>
-</ul>
-<h1 id="标记"><a href="#标记" class="headerlink" title="标记"></a>标记</h1><ul>
-<li><p>不区分大小写</p>
-<p>  re.IGNORECASE / re.I</p>
-<pre><code>re.search(r&apos;python&apos;, &apos;PYTHON IS OS GOOD&apos;, re.IGNORECASE) // 匹配到 python
-</code></pre></li>
-<li><p>点匹配换行符</p>
-<p>  re.DOTALL / re.S</p>
-<pre><code>re.search(r&apos;.+&apos;,&apos;foo\nbar&apos;) //匹配到foo 
-re.search(r&apos;.+&apos;,&apos;foo\nbar&apos;,re.DOTALL) //匹配到foo/nbar
-</code></pre></li>
-<li><p>多行模式</p>
-<p>  re.MULTILINE / re.M</p>
-<pre><code>re.search(r&apos;^bar&apos;,&apos;foo\nbar&apos;) //因为nabr在下一行，所以匹配不到
-re.search(r&apos;^bar&apos;,&apos;foo\nbar&apos;,re.MULTILINE) //匹配到bar
-</code></pre></li>
-<li><p>详细模式</p>
-<p>  re.VERBOSE / re.X</p>
-</li>
-<li><p>调试模式</p>
-<p>  re.DEBUG</p>
-<pre><code>match = re.seach(&apos;r&apos;(?P&lt;first_three&gt;[\d]{3})-(?P&lt;last_four&gt;[\d]{4})&apos;,&apos;867-5309&apos;,re.DEBUG) //输出调试信息
-</code></pre></li>
-<li><p>使用多个标记</p>
-<pre><code>re.S | re.M
-</code></pre></li>
-</ul>
-<h1 id="替换"><a href="#替换" class="headerlink" title="替换"></a>替换</h1><p>从一个字符串中剥离无关数据</p>
-<pre><code>re.sub(r&apos;\+?1&apos;?[ .-]?\(?([\d]{3})\)?[ .-]?([\d]{3})[ .-]?([\d]{4})&apos;,r&apos;\2\3\4&apos;,&apos;213-867-5309&apos;) //匹配到2138675309
-
-re.sub(r&apos;\+?1&apos;?[ .-]?\(?([\d]{3})\)?[ .-]?([\d]{3})[ .-]?([\d]{4})&apos;,r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到(213) 867-5309
-</code></pre><p>（ ()\1 表示重复正则第一个圆括号内匹配到的内容 ）</p>
-<h1 id="已编译的正则表达式"><a href="#已编译的正则表达式" class="headerlink" title="已编译的正则表达式"></a>已编译的正则表达式</h1><pre><code>regex = re.compile(r&apos;\+?1&apos;?[ .-]?\(?([\d]{3})\)?[ .-]?([\d]{3})[ .-]?([\d]{4})&apos;)
-
-regex.search(&apos;213-867-5309&apos;) //匹配到 213-867-5309
-regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213) 867-5309
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://dmonster.top/2017/04/19/正则表达式/" data-id="cjizrklii001s0gugwrlai8a0" class="article-share-link" data-share="baidu" data-title="正则表达式">分享到</a>
-      
-
-      
-        <a href="http://dmonster.top/2017/04/19/正则表达式/#ds-thread" class="article-comment-link">评论</a>
       
 
       
@@ -2877,7 +3196,7 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/安全/">安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">10</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/安全/">安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">10</span></li></ul>
     </div>
   </div>
 
@@ -2895,7 +3214,7 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -2907,6 +3226,14 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
       <ul>
         
           <li>
+            <a href="/2018/07/03/mysql误删恢复（更新）/">mysql误删恢复（更新）</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/03/mysql登陆问题/">mysql登陆问题</a>
+          </li>
+        
+          <li>
             <a href="/2018/06/28/mysql-prox搭建以及遇到的问题/">mysql-prox搭建以及遇到的问题</a>
           </li>
         
@@ -2916,14 +3243,6 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
         
           <li>
             <a href="/2018/06/26/CDN内容分发网络/">CDN内容分发网络</a>
-          </li>
-        
-          <li>
-            <a href="/2018/03/26/python爬虫之验证码识别/">python爬虫之验证码识别</a>
-          </li>
-        
-          <li>
-            <a href="/2018/03/25/windows下安装redis/">windows下安装redis</a>
           </li>
         
       </ul>
