@@ -14,7 +14,7 @@
 <meta property="og:site_name" content="dmonster&#39;s blog">
 <meta property="og:description" content="MPLS ARP  地址解析协议：用已知6的ip地址来求未知目的mac地址  arp隶属于icmp协议，icmp：互联消息控制管理协议  icmp通过一系列消息实现各种工具功能，如ping和arp  arp包含两个消息 一个叫广播请求，一个叫单播回应  proxy arp ：代理arp  路由器接口默认启用代理arp，代理arp替代目标给请求者回应，同时代理arp帮助路由器请求目标mac   实际">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-07-03T07:20:53.542Z">
+<meta property="og:updated_time" content="2018-07-03T07:30:54.212Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MPLS">
 <meta name="twitter:description" content="MPLS ARP  地址解析协议：用已知6的ip地址来求未知目的mac地址  arp隶属于icmp协议，icmp：互联消息控制管理协议  icmp通过一系列消息实现各种工具功能，如ping和arp  arp包含两个消息 一个叫广播请求，一个叫单播回应  proxy arp ：代理arp  路由器接口默认启用代理arp，代理arp替代目标给请求者回应，同时代理arp帮助路由器请求目标mac   实际">
@@ -151,17 +151,14 @@
 </li>
 </ol>
 </li>
-</ol>
+<li><p>路由器上RIB、FIB、ADJ-table关系</p>
+<p> RIB时FIB素材的提供者，ADJ-table的内容来自于FIB的请求结果，数据抵达后先看FIB 利用FIB和ADJ-table 完成数据转发</p>
+</li>
+<li><p>cef缺陷</p>
+<p> cef本身的匹配查找还是逐条最长匹配，所以效率特别低</p>
 </li>
 </ol>
-<pre><code>4. 路由器上RIB、FIB、ADJ-table关系
-
-    RIB时FIB素材的提供者，ADJ-table的内容来自于FIB的请求结果，数据抵达后先看FIB 利用FIB和ADJ-table 完成数据转发
-
-5. cef缺陷
-
-    cef本身的匹配查找还是逐条最长匹配，所以效率特别低
-</code></pre><ol>
+</li>
 <li><p>mpls</p>
 <ol>
 <li><p>mpls概述</p>
@@ -207,21 +204,19 @@
 </li>
 <li><p>TDP、LDP</p>
 <ol>
-<li>TDP：标记分发协议</li>
+<li>TDP：标记分发协议    </li>
+<li><p>LDP：标签分发协议</p>
+<p>TDP和LDP实际上就是负责标签分配，分发，关联，维护的技术</p>
+</li>
 </ol>
+</li>
+<li><p>标签的操作</p>
+<p> 压入，交换，移出，弹出</p>
 </li>
 </ol>
 </li>
 </ol>
 </li>
-</ol>
-<pre><code>    2. LDP：标签分发协议
-
-    TDP和LDP实际上就是负责标签分配，分发，关联，维护的技术
-5. 标签的操作
-
-    压入，交换，移出，弹出
-</code></pre><ol>
 <li><p>作用</p>
 <ol>
 <li>是一个更快速的数据转发技术</li>
@@ -334,33 +329,29 @@ show adj detail
 <li><p>网络中哪些接口和设备需要参与和启用MPLS</p>
 <p> 需要形成LDP邻居关系的，需要分发标签的，才启用MPLS</p>
 </li>
+<li><p>补充知识<br>MPLS transport address ： MPLS传输地址</p>
+<p>MPLS邻接关系，实际上是利用传输地址完成的，LDP RID 默认就是传输地址</p>
+<p>no host router to transport address ：这个提示不是报错，而是说没有主机路由抵达</p>
+<p>no route to transport addr:这个提示%100报错</p>
+</li>
+<li><p>补充知识</p>
+<ol>
+<li><p>偏移列表</p>
+<p> 偏移列表是rip和eigrp用的，用于将路由封信的开销进行累加</p>
+<p> 先编写acl，再在rigrp下offset</p>
+<pre><code>acc 2 per 2.2.2.0 0.0.0.255
+router eigrp 1
+offset 1 in 100000 fa 0/0
+net 12.12.12.0 0.0.0.255
+</code></pre></li>
 </ol>
 </li>
 </ol>
 </li>
 </ol>
-<pre><code>10. 补充知识
-    MPLS transport address ： MPLS传输地址
-
-    MPLS邻接关系，实际上是利用传输地址完成的，LDP RID 默认就是传输地址
-
-    no host router to transport address ：这个提示不是报错，而是说没有主机路由抵达
-
-    no route to transport addr:这个提示%100报错
-
-11. 补充知识
-
-    1. 偏移列表
-
-        偏移列表是rip和eigrp用的，用于将路由封信的开销进行累加
-
-        先编写acl，再在rigrp下offset
-
-            acc 2 per 2.2.2.0 0.0.0.255
-            router eigrp 1
-            offset 1 in 100000 fa 0/0
-            net 12.12.12.0 0.0.0.255
-</code></pre><h1 id="MPLS-VPN"><a href="#MPLS-VPN" class="headerlink" title="MPLS VPN"></a>MPLS VPN</h1><ol>
+</li>
+</ol>
+<h1 id="MPLS-VPN"><a href="#MPLS-VPN" class="headerlink" title="MPLS VPN"></a>MPLS VPN</h1><ol>
 <li><p>什么是vpn </p>
 <p> 虚拟的专用网络，VPN可以分成两种： 数据加密、对等体认证</p>
 <p> 不加密数据，也不做认证，只组建专有网络</p>
@@ -465,9 +456,8 @@ neighbor &lt;xxx&gt; remote-as &lt;as-id&gt;
 </li>
 </ol>
 </li>
-</ol>
-<ol>
-<li>将pe设备上vrf路由带入mp-bgp同时将mp-bgp路由带入vrf（类似双向重分发）</li>
+<li><p>将pe设备上vrf路由带入mp-bgp同时将mp-bgp路由带入vrf（类似双向重分发）</p>
+</li>
 </ol>
 <h2 id="mpls-vpn的配置流程"><a href="#mpls-vpn的配置流程" class="headerlink" title="mpls vpn的配置流程"></a>mpls vpn的配置流程</h2><ol>
 <li><p>从p-net开始配置</p>

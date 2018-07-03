@@ -106,8 +106,10 @@
         <p>觉得这个还挺重要的，就看了一下，还有很多情况和相应的操作，以后遇到了再更新</p>
 <h1 id="mysqlbinlog恢复"><a href="#mysqlbinlog恢复" class="headerlink" title="mysqlbinlog恢复"></a>mysqlbinlog恢复</h1><p>因为mysqlbinlog在mysql中是默认不开启的，所以需要先开启mysqlbinlog，不再多说。</p>
 <ol>
-<li>首先找到mysqlbinlog目录，默认是在/var/lib/mysql下的，可用ll查找binlog文件的创建日期来判断使用哪个binlog文件</li>
-<li>查看binlog文件（binlog文件中有很多二进制数），用–start-date 或者 –start-position指定需要恢复的段，将误操作/误删除的sql语句剔除或者导出后手工剔除，然后导出为textlog.sql文件</li>
+<li><p>首先找到mysqlbinlog目录，默认是在/var/lib/mysql下的，可用ll查找binlog文件的创建日期来判断使用哪个binlog文件</p>
+</li>
+<li><p>查看binlog文件（binlog文件中有很多二进制数），用–start-date 或者 –start-position指定需要恢复的段，将误操作/误删除的sql语句剔除或者导出后手工剔除，然后导出为textlog.sql文件</p>
+</li>
 <li><p>导入恢复表</p>
 <pre><code>mysql -uroot -p &lt; textlog.sql
 </code></pre></li>
@@ -120,7 +122,8 @@
 <li><p>恢复</p>
 <pre><code>mysqldump -uroot -p Test_DB &lt; /data/mysqlbackup/Test_DB_bk.sql    //将Test_DB_bk.sql备份文件导入Test_DB
 </code></pre></li>
-<li>注意：如果真的使用最近的一次备份文件去做的话，一定是在万不得已的情况（比如binlog 被删除，整个硬盘挂掉、、、 想想都可怕。。。）</li>
+<li><p>注意：如果真的使用最近的一次备份文件去做的话，一定是在万不得已的情况（比如binlog 被删除，整个硬盘挂掉、、、 想想都可怕。。。）</p>
+</li>
 </ul>
 
       
