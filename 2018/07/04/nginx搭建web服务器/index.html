@@ -4,20 +4,19 @@
 <head>
   <meta charset="utf-8">
   
-  <title>hexo+github搭建自己的博客 | dmonster&#39;s blog</title>
+  <title>nginx搭建web服务器 | dmonster&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="注册github- 创建一个项目，如xxx.github.io 本地配置- 安装git和Node - 在本地创建一个文件夹，如blog - 右击blog文件夹点击git bash - 执行命令 npm install -g hexo 安装hexo - 执行命令 hexo init 初始化hexo hexo常用命令- hexo n &amp;quot;new bolg&amp;quot; == hexo new &amp;">
-<meta name="keywords" content="小玩意">
+  <meta name="description" content="建站安装环境 openssl nginx gcc  搭建yum然后就ok了，需要说的是yum安装的nginx默认主目录是 /usr/share/nginx，然后配置文件在 /etc/nginx/nginx.conf 配置vi /etc/nginx/nginx.conf location配置不知道是我的原因还是我主机的原因，我的配置文件以开始就没有server{}参数，google了一下有人说本来就">
 <meta property="og:type" content="article">
-<meta property="og:title" content="hexo+github搭建自己的博客">
-<meta property="og:url" content="http://dmonster.top/2017/04/13/hexo+github创建自己的博客/index.html">
+<meta property="og:title" content="nginx搭建web服务器">
+<meta property="og:url" content="http://dmonster.top/2018/07/04/nginx搭建web服务器/index.html">
 <meta property="og:site_name" content="dmonster&#39;s blog">
-<meta property="og:description" content="注册github- 创建一个项目，如xxx.github.io 本地配置- 安装git和Node - 在本地创建一个文件夹，如blog - 右击blog文件夹点击git bash - 执行命令 npm install -g hexo 安装hexo - 执行命令 hexo init 初始化hexo hexo常用命令- hexo n &amp;quot;new bolg&amp;quot; == hexo new &amp;">
+<meta property="og:description" content="建站安装环境 openssl nginx gcc  搭建yum然后就ok了，需要说的是yum安装的nginx默认主目录是 /usr/share/nginx，然后配置文件在 /etc/nginx/nginx.conf 配置vi /etc/nginx/nginx.conf location配置不知道是我的原因还是我主机的原因，我的配置文件以开始就没有server{}参数，google了一下有人说本来就">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-06-26T13:09:32.175Z">
+<meta property="og:updated_time" content="2018-07-04T03:40:36.630Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="hexo+github搭建自己的博客">
-<meta name="twitter:description" content="注册github- 创建一个项目，如xxx.github.io 本地配置- 安装git和Node - 在本地创建一个文件夹，如blog - 右击blog文件夹点击git bash - 执行命令 npm install -g hexo 安装hexo - 执行命令 hexo init 初始化hexo hexo常用命令- hexo n &amp;quot;new bolg&amp;quot; == hexo new &amp;">
+<meta name="twitter:title" content="nginx搭建web服务器">
+<meta name="twitter:description" content="建站安装环境 openssl nginx gcc  搭建yum然后就ok了，需要说的是yum安装的nginx默认主目录是 /usr/share/nginx，然后配置文件在 /etc/nginx/nginx.conf 配置vi /etc/nginx/nginx.conf location配置不知道是我的原因还是我主机的原因，我的配置文件以开始就没有server{}参数，google了一下有人说本来就">
   
     <link rel="alternative" href="/atom.xml" title="dmonster&#39;s blog" type="application/atom+xml">
   
@@ -75,14 +74,14 @@
   </div>
 </header>
     <div class="outer">
-      <section id="main"><article id="post-hexo+github创建自己的博客" class="article article-type-post" itemscope itemprop="blogPost">
+      <section id="main"><article id="post-nginx搭建web服务器" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/04/13/hexo+github创建自己的博客/" class="article-date">
-  <time datetime="2017-04-13T07:15:45.000Z" itemprop="datePublished">2017-04-13</time>
+    <a href="/2018/07/04/nginx搭建web服务器/" class="article-date">
+  <time datetime="2018-07-04T02:40:21.000Z" itemprop="datePublished">2018-07-04</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/blog/">blog</a>
+    <a class="article-category-link" href="/categories/nginx/">nginx</a>
   </div>
 
   </div>
@@ -93,7 +92,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      hexo+github搭建自己的博客
+      nginx搭建web服务器
     </h1>
   
 
@@ -105,110 +104,174 @@
       
         <div id="toc" class="toc-article">
           <strong class="toc-title">文章目录</strong>
-          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#注册github"><span class="toc-number">1.</span> <span class="toc-text">注册github</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#本地配置"><span class="toc-number">2.</span> <span class="toc-text">本地配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo常用命令"><span class="toc-number">2.1.</span> <span class="toc-text">hexo常用命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#本地目录下-config-yml配置"><span class="toc-number">2.2.</span> <span class="toc-text">本地目录下_config.yml配置</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#markdown编辑器语法"><span class="toc-number">3.</span> <span class="toc-text">markdown编辑器语法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#主题及优化"><span class="toc-number">4.</span> <span class="toc-text">主题及优化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#添加文章目录"><span class="toc-number">4.1.</span> <span class="toc-text">添加文章目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#微博秀"><span class="toc-number">4.2.</span> <span class="toc-text">微博秀</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#遇到的问题"><span class="toc-number">5.</span> <span class="toc-text">遇到的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo-d-g部署不上"><span class="toc-number">5.1.</span> <span class="toc-text">hexo d -g部署不上</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#css部署不上"><span class="toc-number">5.2.</span> <span class="toc-text">css部署不上</span></a></li></ol></li></ol>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#建站"><span class="toc-number">1.</span> <span class="toc-text">建站</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装环境"><span class="toc-number">1.1.</span> <span class="toc-text">安装环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#搭建"><span class="toc-number">1.2.</span> <span class="toc-text">搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置"><span class="toc-number">1.3.</span> <span class="toc-text">配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#location配置"><span class="toc-number">1.4.</span> <span class="toc-text">location配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#http配置"><span class="toc-number">1.4.1.</span> <span class="toc-text">http配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#https配置"><span class="toc-number">1.4.2.</span> <span class="toc-text">https配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#location详解"><span class="toc-number">1.4.3.</span> <span class="toc-text">location详解</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#错误排查"><span class="toc-number">2.</span> <span class="toc-text">错误排查</span></a></li></ol>
         </div>
       
-        <h1 id="注册github"><a href="#注册github" class="headerlink" title="注册github"></a>注册github</h1><pre><code>- 创建一个项目，如xxx.github.io
-</code></pre><h1 id="本地配置"><a href="#本地配置" class="headerlink" title="本地配置"></a>本地配置</h1><pre><code>- 安装git和Node
-- 在本地创建一个文件夹，如blog
-- 右击blog文件夹点击git bash
-- 执行命令 npm install -g hexo 安装hexo
-- 执行命令 hexo init 初始化hexo
-</code></pre><h2 id="hexo常用命令"><a href="#hexo常用命令" class="headerlink" title="hexo常用命令"></a>hexo常用命令</h2><pre><code>- hexo n &quot;new bolg&quot; == hexo new &quot;new blog&quot; 新建文章
-- hexo p == hexo publish
-- hexo g == hexo generate  生成
-- hexo s == hexo server  启动服务预览
-    打开localhost:4000开启本地预览
-- hexo d == hexo deploy  部署
-- hexo clean  清除缓存
-</code></pre><h2 id="本地目录下-config-yml配置"><a href="#本地目录下-config-yml配置" class="headerlink" title="本地目录下_config.yml配置"></a>本地目录下_config.yml配置</h2><pre><code>- language: zh-CN
-- url: 自己申请的域名
-- repo： https://github.com/xxx/xxx.github.io.git
-- branch: master
-</code></pre><h1 id="markdown编辑器语法"><a href="#markdown编辑器语法" class="headerlink" title="markdown编辑器语法"></a>markdown编辑器语法</h1><p><a href="http://www.kancloud.cn/wizardforcel/markdown-simple-world/97375/" title="markdown 基本语法" target="_blank" rel="noopener">参考</a></p>
-<h1 id="主题及优化"><a href="#主题及优化" class="headerlink" title="主题及优化"></a>主题及优化</h1><h2 id="添加文章目录"><a href="#添加文章目录" class="headerlink" title="添加文章目录"></a>添加文章目录</h2><pre><code>1. 先找到themes/landscape/layout/_partial/article.ejs文件中的&lt;%- post.content %&gt;，在这一行下加入如下代码
+        <h1 id="建站"><a href="#建站" class="headerlink" title="建站"></a>建站</h1><h2 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h2><ol>
+<li>openssl</li>
+<li>nginx</li>
+<li>gcc</li>
+</ol>
+<h2 id="搭建"><a href="#搭建" class="headerlink" title="搭建"></a>搭建</h2><p>yum然后就ok了，需要说的是yum安装的nginx默认主目录是 /usr/share/nginx，然后配置文件在 /etc/nginx/nginx.conf</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>vi /etc/nginx/nginx.conf</p>
+<h2 id="location配置"><a href="#location配置" class="headerlink" title="location配置"></a>location配置</h2><p>不知道是我的原因还是我主机的原因，我的配置文件以开始就没有server{}参数，google了一下有人说本来就是这样，但是网上的教程都说以开始就有。。。</p>
+<h3 id="http配置"><a href="#http配置" class="headerlink" title="http配置"></a>http配置</h3><pre><code># For more information on configuration, see:
+#   * Official English Documentation: http://nginx.org/en/docs/
+#   * Official Russian Documentation: http://nginx.org/ru/docs/
 
-    &lt;!-- Table of Contents --&gt;
-     &lt;% if (!index &amp;&amp; post.toc){ %&gt;
-         &lt;div id=&quot;toc&quot; class=&quot;toc-article&quot;&gt;
-           &lt;strong class=&quot;toc-title&quot;&gt;文章目录&lt;/strong&gt;
-            &lt;%- toc(post.content) %&gt;
-          &lt;/div&gt;
-     &lt;% } %&gt;    
+#运行用户
+user nginx;
 
-2. 找到themes/landscape/source/css/_partial/article.styl文件，在其最后添加如下代码
+#启动进程,通常设置成和cpu的数量相等
+worker_processes auto;
 
-    .toc-article
-      background #eee
-      border 1px solid #bbb
-      border-radius 10px
-      margin 1.5em 0 0.3em 1.5em
-      padding 1.2em 1em 0 1em
-      max-width 28%
-    .toc-title
-      font-size 120%
-    #toc
-      line-height 1em
-      font-size 0.9em
-      float right
-      .toc
-     padding 0
-     margin 1em
-     line-height 1.8em
-     li
-       list-style-type none
-      .toc-child 
-     margin-left 1em
+#全局错误日志及PID文件
+error_log /var/log/nginx/error.log;
 
-3. 使用:在每篇文章开头添加 toc: true
-</code></pre><h2 id="微博秀"><a href="#微博秀" class="headerlink" title="微博秀"></a>微博秀</h2><p>进入<a href="http//http://open.weibo.com/">微博开放平台</a>找到微博秀，设置好后将复制代码,进入/blog/themes/layout/_weight文件夹，新建weibo.ejs文件，模仿其他文件编写weibo.ejs</p>
-<pre><code>&lt;% if (true){ %&gt; 
-&lt;div class=&quot;widget-wrap&quot;&gt; 
-    &lt;h3 class=&quot;widget-title&quot;&gt;Weibo show&lt;/h3&gt; 
-    &lt;div class=&quot;widget-weibo&quot;&gt; 
-        复制代码
-    &lt;/div&gt; 
-&lt;/div&gt; 
-&lt;% } %&gt;
-</code></pre><p>编辑themes/landscape/source/css/_partial/sidebar.styl文件，将其中的.weight复制前半部分，新建一个.weibo-weigth添加到文件最后<br>    .widget-weibo<br>          color: color-sidebar-text<br>          text-shadow: 0 1px #fff<br>          background: color-widget-background<br>          box-shadow: 0 -1px 4px color-widget-border inset<br>          border: 1px solid color-widget-border<br>          border-radius: 3px</p>
-<h1 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h1><h2 id="hexo-d-g部署不上"><a href="#hexo-d-g部署不上" class="headerlink" title="hexo d -g部署不上"></a>hexo d -g部署不上</h2><pre><code>- 登陆自己的github查看更新时间是否符合
-- 查看blog目录下的_config.yml配置文件deploy分支，确认是否是github上所使用的分支
-- 
-</code></pre><h2 id="css部署不上"><a href="#css部署不上" class="headerlink" title="css部署不上"></a>css部署不上</h2><pre><code>-删除css中的注释试试
-</code></pre>
+pid /var/run/nginx.pid;
+
+# Load dynamic modules. See /usr/share/nginx/README.dynamic.
+include /usr/share/nginx/modules/*.conf;
+
+#工作模式及连接数上限
+events {
+#单个后台worker process进程的最大并发链接数   
+worker_connections  1024;
+}
+
+http {
+#设定日志格式
+log_format  main  &apos;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &apos;
+                  &apos;$status $body_bytes_sent &quot;$http_referer&quot; &apos;
+                  &apos;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&apos;;
+
+access_log  /var/log/nginx/access.log  main;
+
+#sendfile 指令指定 nginx 是否调用 sendfile 函数（zero copy 方式）来输出文件，对于普通应用，必须设为 on,如果用来进行下载等应用磁盘IO重负载应用，可设置为 off，以平衡磁盘与网络I/O处理速度，降低系统的uptime.
+sendfile            on;
+tcp_nopush          on;
+tcp_nodelay         on;
+#连接超时时间
+keepalive_timeout   65;
+types_hash_max_size 2048;
+
+#设定mime类型,类型由mime.type文件定义
+include             /etc/nginx/mime.types;
+default_type        application/octet-stream;
+
+#设定虚拟主机配置
+server {
+    #监听端口，http默认为80
+    listen 80;
+    #即访问方式，可填域名/ip/localhost等
+    server_name www.abc.com;
+    #是否开启ssl
+    ssl off;
+    #定义服务器默认网站根目录位置
+    root html;
+    #定义索引文件
+    index index.html index.htm;
+    #默认请求
+    location / {
+        root /etc/nginx/html/;
+    }
+}
+# Load modular configuration files from the /etc/nginx/conf.d directory.
+# See http://nginx.org/en/docs/ngx_core_module.html#include
+# for more information.
+include /etc/nginx/conf.d/*.conf;
+}
+</code></pre><h3 id="https配置"><a href="#https配置" class="headerlink" title="https配置"></a>https配置</h3><p>其他一样，server{}部分：</p>
+<pre><code>server {
+    #https侦听端口默认为443
+    listen 443;
+    server_name localhost;
+    #打开ssl
+    ssl on;
+    root html;
+    index index.html index.htm;
+
+    #这两个为从域名申请的证书，放在etc/nginx下
+    ssl_certificate   cert/1531309350240.pem;
+    ssl_certificate_key  cert/1531309350240.key;
+
+    ssl_session_timeout 5m;
+    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_prefer_server_ciphers on;
+    location / {
+        root html;
+        index index.html index.htm;
+    }
+}
+</code></pre><h3 id="location详解"><a href="#location详解" class="headerlink" title="location详解"></a>location详解</h3><ul>
+<li><p>匹配规则</p>
+<ul>
+<li>/        ：全匹配</li>
+<li>~     ：波浪线表示执行一个正则匹配，区分大小写</li>
+<li>~*    :表示执行一个正则匹配，不区分大小写</li>
+<li>^~    :^~表示普通字符匹配，如果该选项匹配，只匹配该选项，不匹配别的选项，一般用来匹配目录</li>
+<li>=     :进行普通字符精确匹配</li>
+<li>@     :”@” 定义一个命名的 location，使用在内部定向时，例如：error_page, try_files</li>
+</ul>
+</li>
+<li><p>参数</p>
+<ul>
+<li>index ：定义索引页</li>
+<li><p>root ：指定虚拟根目录</p>
+<p>  配置段：http、server、location、if</p>
+<pre><code>#在地址栏输入xxx.com/hello.html时，服务器到/var/html目录下找hello.html文件
+location / {
+    root /var/html/；
+}
+
+#在地址栏输入xxx.com/html/hello.html时，服务器到/var/html目录下找hello.html文件
+location /html/ {
+    root /var/；
+}
+</code></pre></li>
+<li><p>alias ：定义一个目录别名</p>
+<p>  配置段：location</p>
+<pre><code>#在地址栏输入xxx.com/var/hello.html时，服务器到/var目录下找hello.html文件
+location /html/ {
+    alias /var/；
+}
+</code></pre><p>  注意这里不会再/html/下找文件，因为alias会把location后的目录丢掉，alias值定义一个目录的别名</p>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="错误排查"><a href="#错误排查" class="headerlink" title="错误排查"></a>错误排查</h1><ul>
+<li>找不到目录<ol>
+<li>首先检查配置文件中的root，location确定配置目录无误</li>
+<li>找到需要访问的文件，确认文件名和后缀无误</li>
+<li>查看配置文件中server_name参数，如果实在地址栏中访问ip或域名，则把localhost改成相应的ip或域名</li>
+</ol>
+</li>
+</ul>
+
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/04/13/hexo+github创建自己的博客/" data-id="cjj6krpg2000pu8ugseophz16" class="article-share-link" data-share="baidu" data-title="hexo+github搭建自己的博客">分享到</a>
+        <a data-url="http://dmonster.top/2018/07/04/nginx搭建web服务器/" data-id="cjj6krpgc000xu8ugqie9fk8y" class="article-share-link" data-share="baidu" data-title="nginx搭建web服务器">分享到</a>
       
 
       
-        <a href="http://dmonster.top/2017/04/13/hexo+github创建自己的博客/#ds-thread" class="article-comment-link">评论</a>
+        <a href="http://dmonster.top/2018/07/04/nginx搭建web服务器/#ds-thread" class="article-comment-link">评论</a>
       
 
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/小玩意/">小玩意</a></li></ul>
-
     </footer>
   </div>
   
     
 <nav id="article-nav">
   
-    <a href="/2017/04/19/正则表达式/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">
-        
-          正则表达式
-        
-      </div>
-    </a>
   
-  
-    <a href="/2017/04/06/网络渗透与深度防御笔记/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2018/07/03/mysql主从复制及读写分离/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">网络渗透与深度防御笔记</div>
+      <div class="article-nav-title">mysql主从复制及读写分离</div>
     </a>
   
 </nav>
@@ -218,7 +281,7 @@
 
 
   <section id="comments">
-    <div id="ds-thread" class="ds-thread" data-thread-key="2017/04/13/hexo+github创建自己的博客/" data-title="hexo+github搭建自己的博客" data-url="http://dmonster.top/2017/04/13/hexo+github创建自己的博客/"></div>
+    <div id="ds-thread" class="ds-thread" data-thread-key="2018/07/04/nginx搭建web服务器/" data-title="nginx搭建web服务器" data-url="http://dmonster.top/2018/07/04/nginx搭建web服务器/"></div>
   </section>
 </section>
       

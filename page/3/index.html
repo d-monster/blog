@@ -75,6 +75,555 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-BeautifulSoup库" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/23/BeautifulSoup库/" class="article-date">
+  <time datetime="2017-04-23T02:33:44.000Z" itemprop="datePublished">2017-04-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python3/">python3</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/23/BeautifulSoup库/">BeautifulSoup库</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <!-- Table of Contents -->
+      
+        <p>若有如下html：</p>
+<pre><code>html = &quot;&quot;&quot;
+&lt;html&gt;&lt;head&gt;&lt;title&gt;The Dormouse&apos;s story&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;p class=&quot;title&quot; name=&quot;dromouse&quot;&gt;&lt;b&gt;The Dormouse&apos;s story&lt;/b&gt;&lt;/p&gt;
+&lt;p class=&quot;story&quot;&gt;Once upon a time there were three little sisters; and their names were
+&lt;a href=&quot;http://example.com/elsie&quot; class=&quot;sister&quot; id=&quot;link1&quot;&gt;&lt;!-- Elsie --&gt;&lt;/a&gt;,
+&lt;a href=&quot;http://example.com/lacie&quot; class=&quot;sister&quot; id=&quot;link2&quot;&gt;Lacie&lt;/a&gt; and
+&lt;a href=&quot;http://example.com/tillie&quot; class=&quot;sister&quot; id=&quot;link3&quot;&gt;Tillie&lt;/a&gt;;
+and they lived at the bottom of a well.&lt;/p&gt;
+&lt;p class=&quot;story&quot;&gt;...&lt;/p&gt;
+&quot;&quot;&quot;
+</code></pre><h1 id="四大对象种类"><a href="#四大对象种类" class="headerlink" title="四大对象种类"></a>四大对象种类</h1><p>Beautiful Soup将复杂HTML文档转换成一个复杂的树形结构,每个节点都是Python对象,所有对象可以归纳为4种</p>
+<pre><code>soup = BeautifulSoup(open(&apos;index.html&apos;))
+print soup.prettify() //格式化输出
+</code></pre><h2 id="Tag"><a href="#Tag" class="headerlink" title="Tag"></a>Tag</h2><p>注释为输出结果</p>
+<ul>
+<li><p>.descendants<br>descendants 属性可以对所有tag的子孙节点进行递归循环</p>
+<pre><code>for child in soup.descendants:
+    print child
+//返回所有子孙节点
+</code></pre></li>
+<li><p>.content</p>
+<pre><code>print soup.head.content
+[&lt;title&gt;The Dormouse&apos;s story&lt;/title&gt;]
+</code></pre><p>  返回的是一个list，用列表索引来获取它的摸一个元素：</p>
+<pre><code>&gt;&gt;&gt;print soup.head.contents[0]
+&lt;title&gt;The Dormouse&apos;s story&lt;/title&gt;
+</code></pre></li>
+<li><p>.children</p>
+<pre><code>print soup.body.children
+&lt;listiterator object at 0x7f71457f5710&gt;
+</code></pre><p>  返回的是一个list生成器对象，循环遍历：</p>
+<pre><code>&gt;&gt;&gt;print soup.body.children:
+    print child
+
+&lt;p class=&quot;title&quot; name=&quot;dromouse&quot;&gt;&lt;b&gt;The Dormouse&apos;s story&lt;/b&gt;&lt;/p&gt;
+
+&lt;p class=&quot;story&quot;&gt;Once upon a time there were three little sisters; and their names were
+&lt;a class=&quot;sister&quot; href=&quot;http://example.com/elsie&quot; id=&quot;link1&quot;&gt;&lt;!-- Elsie --&gt;&lt;/a&gt;,
+&lt;a class=&quot;sister&quot; href=&quot;http://example.com/lacie&quot; id=&quot;link2&quot;&gt;Lacie&lt;/a&gt; and
+&lt;a class=&quot;sister&quot; href=&quot;http://example.com/tillie&quot; id=&quot;link3&quot;&gt;Tillie&lt;/a&gt;;
+and they lived at the bottom of a well.&lt;/p&gt;
+
+&lt;p class=&quot;story&quot;&gt;...&lt;/p&gt;
+</code></pre></li>
+<li><p>.patents</p>
+<pre><code>content = soup.head.title.string
+for parent in  content.parents:
+    print parent.name
+
+title
+head
+html
+[document]
+</code></pre></li>
+<li><p>.next_sibling<br>  后一个兄弟节点</p>
+</li>
+<li><p>.previous_sibling</p>
+<p>  前一个兄弟节点</p>
+</li>
+<li><p>print soup.title</p>
+<pre><code>&lt;title&gt;The Dormouse&apos;s story&lt;/title&gt;
+</code></pre></li>
+<li><p>print soup.head</p>
+<pre><code>&lt;head&gt;&lt;title&gt;The Dormouse&apos;s story&lt;/title&gt;&lt;/head&gt;
+</code></pre></li>
+<li><p>print soup.a</p>
+<pre><code>&lt;a class=&quot;sister&quot; href=&quot;http://example.com/elsie&quot; id=&quot;link1&quot;&gt;&lt;!-- Elsie --&gt;&lt;/a&gt;
+</code></pre></li>
+<li><p>print soup.p</p>
+<pre><code>&lt;p class=&quot;title&quot; name=&quot;dromouse&quot;&gt;&lt;b&gt;The Dormouse&apos;s story&lt;/b&gt;&lt;/p&gt;
+</code></pre><ul>
+<li><p>print soup.p.attrs    // 得到字典</p>
+<pre><code>{&apos;class&apos;: [&apos;title&apos;], &apos;name&apos;: &apos;dromouse&apos;}
+</code></pre></li>
+<li><p>print soup.p[‘class’] 或 print soup.p.get(‘class’)</p>
+<pre><code>[&apos;title&apos;]
+</code></pre><h2 id="NavigableString"><a href="#NavigableString" class="headerlink" title="NavigableString"></a>NavigableString</h2></li>
+</ul>
+</li>
+<li><p>.string</p>
+<pre><code>print soup.p.string   // 得到内容但只有第一条
+The Dormouse&apos;s story
+</code></pre></li>
+<li><p>.strings</p>
+<pre><code>&gt;&gt;&gt;for string in soup.strings:
+       print(repr(string))
+
+u&quot;The Dormouse&apos;s story&quot;
+u&apos;\n\n&apos;
+u&quot;The Dormouse&apos;s story&quot;
+u&apos;\n\n&apos;
+u&apos;Once upon a time there were three little sisters; and their names were\n&apos;
+u&apos;Elsie&apos;
+....
+</code></pre></li>
+<li><p>.stripped_strings</p>
+<pre><code>&gt;&gt;&gt;for string in soup.stripped_strings:
+        print(repr(string))
+
+// 作用和 .strings一样但是不输出空白行和空格
+</code></pre><p>BeautifulSoup 对象表示的是一个文档的全部内容.大部分时候,可以把它当作 Tag 对象，是一个特殊的 Tag，我们可以分别获取它的类型，名称，以及属性来感受一下</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>print type(soup.name)<br>   <type 'unicode'=""><br>print soup.name<br>   [document]<br>print soup.attrs<br>   {} 空字典</type></p>
+</blockquote>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+<h2 id="Comment"><a href="#Comment" class="headerlink" title="Comment"></a>Comment</h2><p>Comment 对象是一个特殊类型的 NavigableString 对象，其实输出的内容仍然不包括注释符号，但是如果不好好处理它，可能会对我们的文本处理造成意想不到的麻烦。</p>
+<h1 id="搜索文档树"><a href="#搜索文档树" class="headerlink" title="搜索文档树"></a>搜索文档树</h1><ul>
+<li><p>find_all( name , attrs , recursive , text , keyword )</p>
+<p>  find_all() 方法搜索当前tag的所有tag子节点,并判断是否符合过滤器的条件</p>
+<ul>
+<li><p>name参数</p>
+<p>  name 参数可以查找所有名字为 name 的tag,字符串对象会被自动忽略掉</p>
+<ol>
+<li><p>字符串</p>
+<pre><code>&gt;&gt;&gt;soup.find_all(&apos;b&apos;)
+ [&lt;b&gt;The Dormouse&apos;s story&lt;/b&gt;]
+</code></pre></li>
+<li><p>正则表达式</p>
+<pre><code>for tag in soup.find_all(re.compile(&quot;^b&quot;)):
+    print(tag.name)
+
+body
+b
+</code></pre></li>
+<li><p>传列表</p>
+<p> 返回列表</p>
+</li>
+<li><p>传True</p>
+<p> True 可以匹配任何值,查找到所有的tag</p>
+</li>
+<li><p>传方法</p>
+<p> 如果没有合适过滤器,那么还可以定义一个方法,方法只接受一个元素参数 ,如果这个方法返回 True 表示当前元素匹配并且被找到,如果不是则反回 False</p>
+</li>
+</ol>
+</li>
+<li><p>keyword参数</p>
+<pre><code>&gt;&gt;&gt;soup.find_all(id=&apos;link2&apos;)
+ [&lt;a class=&quot;sister&quot; href=&quot;http://example.com/lacie&quot; id=&quot;link2&quot;&gt;Lacie&lt;/a&gt;]
+</code></pre><p>  在这里我们想用 class 过滤，不过 class 是 python 的关键词，这怎么办？加个下划线就可以</p>
+<pre><code>&gt;&gt;&gt;soup.find_all(&quot;a&quot;, class_=&quot;sister&quot;)
+ [&lt;a class=&quot;sister&quot; href=&quot;http://example.com/elsie&quot; id=&quot;link1&quot;&gt;Elsie&lt;/a&gt;,
+ &lt;a class=&quot;sister&quot; href=&quot;http://example.com/lacie&quot; id=&quot;link2&quot;&gt;Lacie&lt;/a&gt;,
+ &lt;a class=&quot;sister&quot; href=&quot;http://example.com/tillie&quot; id=&quot;link3&quot;&gt;Tillie&lt;/a&gt;]
+</code></pre></li>
+<li><p>text参数</p>
+<p>  通过 text 参数可以搜搜文档中的字符串内容.与 name 参数的可选值一样, text 参数接受 字符串 , 正则表达式 , 列表, True</p>
+<pre><code>&gt;&gt;&gt;soup.find_all(text=&quot;Elsie&quot;)
+ [u&apos;Elsie&apos;]
+</code></pre></li>
+<li><p>limit参数</p>
+<p>  find_all() 方法返回全部的搜索结构,如果文档树很大那么搜索会很慢.如果我们不需要全部结果,可以使用 limit 参数限制返回结果的数量.效果与SQL中的limit关键字类似,当搜索到的结果数量达到 limit 的限制时,就停止搜索返回结果.</p>
+<pre><code>&gt;&gt;&gt;soup.find_all(&quot;a&quot;, limit=2)
+[&lt;a class=&quot;sister&quot; href=&quot;http://example.com/elsie&quot; id=&quot;link1&quot;&gt;Elsie&lt;/a&gt;,
+&lt;a class=&quot;sister&quot; href=&quot;http://example.com/lacie&quot; id=&quot;link2&quot;&gt;Lacie&lt;/a&gt;]
+</code></pre></li>
+<li><p>recursive参数</p>
+<p>  调用tag的 find_all() 方法时,Beautiful Soup会检索当前tag的所有子孙节点,如果只想搜索tag的直接子节点,可以使用参数 recursive=False .</p>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="css选择器"><a href="#css选择器" class="headerlink" title="css选择器"></a>css选择器</h1><p>我们在写 CSS 时，标签名不加任何修饰，类名前加点，id名前加 #，在这里我们也可以利用类似的方法来筛选元素，用到的方法是 soup.select()，返回类型是 list</p>
+<ul>
+<li><p>通过标签名查找</p>
+<pre><code>print soup.select(&apos;title&apos;)
+print soup.select(&apos;a&apos;)
+</code></pre></li>
+<li><p>通过类名查找</p>
+<pre><code>print soup.select(&apos;.sister&apos;)
+print soup.select(&apos;#link1&apos;)
+</code></pre></li>
+<li><p>组合查找</p>
+<pre><code>print soup.select(&apos;p #link1&apos;)
+</code></pre></li>
+<li><p>直接子标签查找</p>
+<pre><code>print soup.select(&apos;head &gt; title&apos;)
+</code></pre></li>
+<li><p>属性查找</p>
+<p>  查找时还可以加入属性元素，属性需要用中括号括起来，注意属性和标签属于同一节点，所以中间不能加空格，否则会无法匹配到。</p>
+<pre><code>print soup.select(&apos;a[href=&quot;http://example.com/elsie&quot;]&apos;)
+print soup.select(&apos;a[class=&quot;sister&quot;]&apos;)
+</code></pre></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://dmonster.top/2017/04/23/BeautifulSoup库/" data-id="cjj6krpdw0001u8ugxh6kzdl4" class="article-share-link" data-share="baidu" data-title="BeautifulSoup库">分享到</a>
+      
+
+      
+        <a href="http://dmonster.top/2017/04/23/BeautifulSoup库/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-python学习笔记" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/19/python学习笔记/" class="article-date">
+  <time datetime="2017-04-19T15:23:51.000Z" itemprop="datePublished">2017-04-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python3/">python3</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/19/python学习笔记/">pyhon学习笔记</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <!-- Table of Contents -->
+      
+        <h1 id="元组"><a href="#元组" class="headerlink" title="元组"></a>元组</h1><p>元组是不可变序列。</p>
+<ul>
+<li>空元组：() </li>
+<li>一个值的元组： 1, 或(1,)  //其中逗号不可省略</li>
+<li><p>多个值的元组： 1, 2, 3 或 (1, 2, 3) </p>
+<pre><code>2*(2+3) 输出10 //没有逗号，普通的值计算
+2*(2+3,) 输出(5, 5) //有逗号，表示是一个元组，相乘后得到一个新的元组，有两个值
+</code></pre></li>
+<li>创建一个新元组： X = 1,2,3</li>
+<li>访问元祖元素： X[1] //输出2</li>
+<li><p>tuple函数：<br>  将序列转换为元组：</p>
+<pre><code>tuple([1, 2, 3])  输出(1,2,3)            //列表
+tuple(&apos;abc&apos;)      输出(&apos;a&apos;,&apos;b&apos;,&apos;c&apos;)     //字符串
+tuple((1,2,3))      输出(1,2,3)         //元组
+</code></pre></li>
+</ul>
+<h1 id="字典"><a href="#字典" class="headerlink" title="字典"></a>字典</h1><p>键/值对之间用冒号隔开，项之间用逗号隔开，整个字典用大括号括起来。</p>
+<pre><code>phonebook = {&apos;宁波&apos;:&apos;0574&apos;,&apos;台州&apos;:&apos;0576&apos;,&apos;杭州&apos;:&apos;0571&apos;}
+phonebook[&apos;宁波&apos;]     //输出:&apos;0574&apos;
+</code></pre><ul>
+<li><p>dict()函数</p>
+<p>  可以使用该函数通过其他映射或（键，值）对序列建立字典</p>
+<pre><code>items=[(&apos;name&apos;,&apos;Alice&apos;),(&apos;age&apos;,28)]
+d=dict(items)
+print d  //输出字典：{&apos;age&apos;: 28, &apos;name&apos;: &apos;Alice&apos;} 
+</code></pre><p>  或者用关键字参数形式</p>
+<pre><code>d=dict(name=&apos;Alice&apos;,age=28)
+print d  //输出字典：{&apos;age&apos;: 28, &apos;name&apos;: &apos;Alice&apos;}
+</code></pre></li>
+<li>字典的基本操作与元组类似，但是字典是无序的且值可变<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1></li>
+</ul>
+<h2 id="匿名函数：Lambda"><a href="#匿名函数：Lambda" class="headerlink" title="匿名函数：Lambda"></a>匿名函数：Lambda</h2><ul>
+<li><p>匿名函数：</p>
+<p>  lambda函数是一种快速定义单行的最小函数，是从lisp借用来的，可以在任何需要函数的地方</p>
+</li>
+<li><p>使用lambda的好处：</p>
+<ol>
+<li>使用python写一些执行脚本时，使用lambda可以省去定义函数的过程，让代码更加精简</li>
+<li>对于一些抽象的，不会别的地方再复用的函数，有时候给函数起名字也很难，但是使用lambda不需要考虑命名问题</li>
+<li>使用lambda在某些时候让代码更容易理解</li>
+</ol>
+</li>
+<li><p>lambda基础：</p>
+<ul>
+<li>lambda语句中，冒号前是参数，可以有多个，用逗号隔开，冒号右边的返回值。</li>
+<li><p>lambda语句构建的其实是一个函数对象：</p>
+<pre><code>g = lambda x ： x**2
+print g
+</code></pre></li>
+<li><p>执行匿名函数lambda：reduce(lambda x,y : x*y , range(1,6)) 求6的阶乘</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="循环结构"><a href="#循环结构" class="headerlink" title="循环结构"></a>循环结构</h2><ul>
+<li><p>for 循环</p>
+<pre><code>for x in 序列
+    执行代码
+</code></pre></li>
+<li><p>range()函数</p>
+<pre><code>range(初始值，终止值，进步值) //指定终止值不包括在内
+</code></pre><h2 id="分支结构"><a href="#分支结构" class="headerlink" title="分支结构"></a>分支结构</h2></li>
+</ul>
+<p>python中没有switch语句，通过字典合资点的get（）函数实现分支结构</p>
+<p>例：</p>
+<pre><code>from __future__ import division
+    //可解决以上问题
+
+def jia(x,y):
+return x+y
+
+def jian(x,y):
+return x-y
+
+def cheng(x,y):
+return x*y
+
+def chu(x,y):
+return x/y
+
+def operator(x,o,y):
+if o==&quot;+&quot;:
+jia(x,y)
+elif o == &quot;-&quot;:
+jian(x,y)
+elif o == &quot;*&quot;:
+cheng(x,y)
+elif o == &quot;/&quot;:
+chu(x,y)
+else:
+pass
+
+operator(2,&apos;+&apos;,4)
+</code></pre><p>如果是除法，先判断加减乘，效率低下，如果输入错误，会做四次无用的判断</p>
+<p>switch直接判断条件，如果满足，直接执行</p>
+<pre><code>operator = {&quot;+&quot;:jia, &quot;-&quot;:jian,&quot;*&quot;:cheng, &quot;/&quot;:chu}
+print operator{&quot;+&quot;} // 对应jia的函数对象
+
+等同于 print jia
+</code></pre><p>所以</p>
+<pre><code>print operator{&quot;+&quot;} (2,3)
+
+等同于 print jia (2,3)
+</code></pre><p>省去判断，如果没有对应的key则报错</p>
+<p>所以用get方法，没有对应的key也不会报错</p>
+<pre><code>print operator.get(&quot;%&quot;)(3,2) //不会报错
+
+def f(x,o,y):
+print operator.get(o)(x,y)
+
+调用
+f(3,&quot;+&quot;,2) //输出5 无需判断即可完成
+
+operator.get(o)(x,y,*args,**kwargs)
+</code></pre><p>参数更灵活</p>
+<p>if能完成的一般都可以用字典实现.</p>
+<ul>
+<li><p>用字典+函数 实现switch： {1：case1,2:case2}.get()</p>
+<pre><code>x=1
+y=2
+operator=&quot;/&quot;
+result = {&quot;+&quot;:x+y, &quot;-&quot;:x-y, &quot;*&quot;:x*y, &quot;/&quot;x/y}
+print result.get(operator)
+//实现函数相同的功能
+</code></pre></li>
+</ul>
+<h2 id="内置函数"><a href="#内置函数" class="headerlink" title="内置函数"></a>内置函数</h2><ul>
+<li>max(l) //返回最大值 l为列表</li>
+<li>min(l) //返回最小值</li>
+<li>len(l) //l 的长度，l 为序列</li>
+<li>divmod(5,2) // 5/2 返回元组(2,1) 商为2 余数为1</li>
+<li>cmp(x，y) //比较两个对象x和y!如果x &lt; y ,返回负数；x == y, 返回0；x &gt; y,返回正数。</li>
+<li>help(pow) //查找该函数用处</li>
+<li>pow(2,3) //返回2^3 = 8</li>
+<li>round(10) //10.0</li>
+<li>callable(f) //测试某个函数可否被调用,如果f没被定义，则不可调用</li>
+<li>isinstance(obj, class_or_tuple) //判断对象的类型！</li>
+<li>range() //创造range()对象用于迭代！</li>
+<li>type(object) //查看对象类型！</li>
+<li>int（）,long(),float(),complex(),list(),tuple(),hex() //转化函数</li>
+<li>chr(n) //当传入序号n时，返回n所代表的ASCII码字符的字符串</li>
+<li><p>ord(c) //返回单字符字符串的int值（ASCII码值）！</p>
+</li>
+<li><p>string函数：只用于字符串的操作</p>
+<pre><code>str.capitalize() //首字母大写
+
+s = &apos;hello world&apos;
+capitalize(s) //错误
+s.capitalize() //正确，返回Hello world
+</code></pre><p>  capitalize是class中的一个方法，s是string class的一个对象</p>
+</li>
+<li><p>str.replace() //替换</p>
+<pre><code>s.replace(&quot;hello&quot;,&quot;good&quot;) //返回good world
+</code></pre><p>  s 的值不变，返回值改变</p>
+<pre><code>ss = &quot;123123123&quot;
+ss.replace(&apos;1&apos;,&apos;x&apos;) //&apos;x23x23x23
+ss.replace(&apos;1&apos;,&apos;x&apos;,1/2/3)&apos; //1/2/3表示替换的次数，从前往后
+</code></pre></li>
+<li><p>str.split() //用于切割</p>
+<pre><code>ip = &quot;192.168.1.123&quot;
+ip.split(&apos;.&apos;) //返回列表[192&apos;,&apos;168&apos;. ..]
+ip.spliy(&apos;.&apos;,count)//count表示切割的次数，从前往后
+</code></pre></li>
+<li><p>import string //引入string模块</p>
+<pre><code>string.replace(s,hello&apos;,&apos;good&apos;) // &apos;good world&apos;
+两种方式
+</code></pre></li>
+</ul>
+<h2 id="序列处理函数"><a href="#序列处理函数" class="headerlink" title="序列处理函数"></a>序列处理函数</h2><ul>
+<li><p>len</p>
+<pre><code>len(123) //出错 对象只能是序列
+len() max() min()
+</code></pre></li>
+<li><p>filter():</p>
+<pre><code>def f(x):
+if x &gt; 5:
+return True
+
+f(10) //True
+l = range(10)
+fileter(f, l) //f 函数作用于 l 返回True时会吧结果保留下来 [6,7,8,9]
+</code></pre></li>
+<li><p>zip()</p>
+<pre><code>z = zip([&apos;a&apos;,&apos;b&apos;,&apos;c&apos;],[&apos;x&apos;,&apos;y&apos;,&apos;z&apos;])
+&gt;&gt;&gt;next(z)
+(&apos;a&apos;,&apos;x&apos;)
+&gt;&gt;&gt;next(z)
+(&apos;b&apos;,&apos;y&apos;)
+</code></pre></li>
+<li><p>map()</p>
+<pre><code>map(None,name,age,tel,test) 
+//map遍历事如果某个列表元素不够，用None代替，None可以用函数代替
+</code></pre></li>
+</ul>
+<h2 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h2><p>模块是python组织代码的基本方式，即.py文件</p>
+<ul>
+<li><p>使用方法：</p>
+<ul>
+<li>导入模块名即文件名： import xxx</li>
+<li><p>引用： xxx.方法</p>
+</li>
+<li><p>A调用B(B中含执行函数，不希望),在B中写：</p>
+<pre><code>if __name__ = &quot;__main__ &quot; 
+operator(2,&apos;*&apos;,3)
+//如果__name__ = __main__则调用执行函数
+//（直接调用 __name__ = __main__，间接调用 __name__ = xxx）
+</code></pre></li>
+<li><p>导入先后顺序：先在当前目录中找</p>
+</li>
+</ul>
+</li>
+<li><p>包</p>
+<p>  python模块可按目录组织为包</p>
+<ul>
+<li>当前目录创建 __init__.py文件，上级目录即可成为一个包</li>
+<li>使用时需从上级目录逐级访问</li>
+</ul>
+</li>
+</ul>
+<h1 id="文件"><a href="#文件" class="headerlink" title="文件"></a>文件</h1><p>对象方法</p>
+<ul>
+<li><p>打开</p>
+<pre><code>f = open(&apos;文件目录&apos;)
+</code></pre></li>
+<li><p>关闭： </p>
+<pre><code>f = close()
+</code></pre></li>
+<li><p>读取： </p>
+<pre><code>f = read()
+</code></pre><ul>
+<li>f.readline() //每次读取一行，没有数据则返回空字符串</li>
+<li>f.readlines() //把每个数据作为列表中的一个数据，返回列表</li>
+<li>f.next() //和readline()迭代一样，但是结束时会停止</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>写入</p>
+<pre><code>f = open(&apos;文件目录&apos;,&apos;r+&apos;)
+f.write(&apos;写入的内容&apos;)
+</code></pre><ul>
+<li>f.writelines(列表) //写入多行数据</li>
+<li>f.flush() //断点续传，提交<br>（注意文件中指针的位置）</li>
+<li>a：在文件末尾写入</li>
+<li>a+： 在文件末尾读写</li>
+<li>r： 只读</li>
+<li>r+：读写</li>
+<li>w：重新写入</li>
+<li>w+：重新读写</li>
+</ul>
+</li>
+<li><p>f.seek(偏移量,选项) </p>
+<ul>
+<li>选项 = 0，文件指针指向从文件头部到‘偏移量字’节处</li>
+<li>选项 = 1，文件指针指向从文件的当前位置向后移动‘偏移量’字节</li>
+<li>选项 = 2，文件指针指向从文件的尾部向前移动‘偏移量’字节处</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://dmonster.top/2017/04/19/python学习笔记/" data-id="cjj6krphz0023u8ugv8ih8ekq" class="article-share-link" data-share="baidu" data-title="pyhon学习笔记">分享到</a>
+      
+
+      
+        <a href="http://dmonster.top/2017/04/19/python学习笔记/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-python爬虫入门实验" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/04/19/python爬虫入门实验/" class="article-date">
@@ -129,7 +678,7 @@ print getImg(html)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/04/19/python爬虫入门实验/" data-id="cjj5d71hr002fa8ughpxeiec3" class="article-share-link" data-share="baidu" data-title="python爬虫入门实验">分享到</a>
+        <a data-url="http://dmonster.top/2017/04/19/python爬虫入门实验/" data-id="cjj6krphx0022u8ug3qr5wyu4" class="article-share-link" data-share="baidu" data-title="python爬虫入门实验">分享到</a>
       
 
       
@@ -322,7 +871,7 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/04/19/正则表达式/" data-id="cjj5d71gy001va8ugesgi2xrm" class="article-share-link" data-share="baidu" data-title="正则表达式">分享到</a>
+        <a data-url="http://dmonster.top/2017/04/19/正则表达式/" data-id="cjj6krpia002bu8uga67038gv" class="article-share-link" data-share="baidu" data-title="正则表达式">分享到</a>
       
 
       
@@ -439,7 +988,7 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/04/13/hexo+github创建自己的博客/" data-id="cjj5d71fd000sa8ug09nh4rn2" class="article-share-link" data-share="baidu" data-title="hexo+github搭建自己的博客">分享到</a>
+        <a data-url="http://dmonster.top/2017/04/13/hexo+github创建自己的博客/" data-id="cjj6krpg2000pu8ugseophz16" class="article-share-link" data-share="baidu" data-title="hexo+github搭建自己的博客">分享到</a>
       
 
       
@@ -747,7 +1296,7 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/04/06/网络渗透与深度防御笔记/" data-id="cjj5d71h60021a8ugmpqsd8jz" class="article-share-link" data-share="baidu" data-title="网络渗透与深度防御笔记">分享到</a>
+        <a data-url="http://dmonster.top/2017/04/06/网络渗透与深度防御笔记/" data-id="cjj6krpih002hu8uge23ia7ot" class="article-share-link" data-share="baidu" data-title="网络渗透与深度防御笔记">分享到</a>
       
 
       
@@ -777,7 +1326,7 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/安全/">安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">10</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nginx/">nginx</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/安全/">安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">10</span></li></ul>
     </div>
   </div>
 
@@ -786,7 +1335,7 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCIE/">CCIE</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/">CCNA</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/">CCNP</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/小玩意/">小玩意</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/笔记/">笔记</a><span class="tag-list-count">14</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCIE/">CCIE</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/">CCNA</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/">CCNP</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/小玩意/">小玩意</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/笔记/">笔记</a><span class="tag-list-count">15</span></li></ul>
     </div>
   </div>
 
@@ -795,7 +1344,7 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -807,6 +1356,14 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
       <ul>
         
           <li>
+            <a href="/2018/07/04/nginx搭建web服务器/">nginx搭建web服务器</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/03/mysql主从复制及读写分离/">mysql主从复制及读写分离</a>
+          </li>
+        
+          <li>
             <a href="/2018/07/03/mysql误删恢复（更新）/">mysql误删恢复（更新）</a>
           </li>
         
@@ -816,14 +1373,6 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
         
           <li>
             <a href="/2018/06/28/mysql-prox搭建以及遇到的问题/">mysql-prox搭建以及遇到的问题</a>
-          </li>
-        
-          <li>
-            <a href="/2018/06/26/centos上搭建shadowsocks的两种方法/">centos上搭建shadowsocks的两种方法</a>
-          </li>
-        
-          <li>
-            <a href="/2018/06/26/CDN内容分发网络/">CDN内容分发网络</a>
           </li>
         
       </ul>
