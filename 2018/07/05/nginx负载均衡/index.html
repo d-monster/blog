@@ -4,19 +4,19 @@
 <head>
   <meta charset="utf-8">
   
-  <title>pycharm professional安装遇到的小麻烦 | dmonster&#39;s blog</title>
+  <title>nginx负载均衡 | dmonster&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="今天装pycharm的时候发现社区版的有些功能缺失，比如创建django文件，社区版的就没有这个功能，于是就想换成专业版，结果以为很麻瓜的注册码出了问题问题  在C:\Windows\System32\drivers\etc下有个host文件，打开。  在host文件的最底行输入0.0.0.0 account.jetbrains.com    据说是能屏蔽掉pycharm对激活码的验证，我反正是偷">
+  <meta name="description" content="nginx配置不再多说 反向代理直接贴配置： server {     listen 80;     server_name a.a.a.a;    //当前vhost地址     ssl off;     root html;     index index.html index.htm;     location /proxy/ {         proxy_pass http://x.x.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="pycharm professional安装遇到的小麻烦">
-<meta property="og:url" content="http://dmonster.top/2018/03/18/pycharm-professional安装遇到的小麻烦/index.html">
+<meta property="og:title" content="nginx负载均衡">
+<meta property="og:url" content="http://dmonster.top/2018/07/05/nginx负载均衡/index.html">
 <meta property="og:site_name" content="dmonster&#39;s blog">
-<meta property="og:description" content="今天装pycharm的时候发现社区版的有些功能缺失，比如创建django文件，社区版的就没有这个功能，于是就想换成专业版，结果以为很麻瓜的注册码出了问题问题  在C:\Windows\System32\drivers\etc下有个host文件，打开。  在host文件的最底行输入0.0.0.0 account.jetbrains.com    据说是能屏蔽掉pycharm对激活码的验证，我反正是偷">
+<meta property="og:description" content="nginx配置不再多说 反向代理直接贴配置： server {     listen 80;     server_name a.a.a.a;    //当前vhost地址     ssl off;     root html;     index index.html index.htm;     location /proxy/ {         proxy_pass http://x.x.">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-06-26T09:39:10.526Z">
+<meta property="og:updated_time" content="2018-07-05T09:29:22.070Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="pycharm professional安装遇到的小麻烦">
-<meta name="twitter:description" content="今天装pycharm的时候发现社区版的有些功能缺失，比如创建django文件，社区版的就没有这个功能，于是就想换成专业版，结果以为很麻瓜的注册码出了问题问题  在C:\Windows\System32\drivers\etc下有个host文件，打开。  在host文件的最底行输入0.0.0.0 account.jetbrains.com    据说是能屏蔽掉pycharm对激活码的验证，我反正是偷">
+<meta name="twitter:title" content="nginx负载均衡">
+<meta name="twitter:description" content="nginx配置不再多说 反向代理直接贴配置： server {     listen 80;     server_name a.a.a.a;    //当前vhost地址     ssl off;     root html;     index index.html index.htm;     location /proxy/ {         proxy_pass http://x.x.">
   
     <link rel="alternative" href="/atom.xml" title="dmonster&#39;s blog" type="application/atom+xml">
   
@@ -74,14 +74,14 @@
   </div>
 </header>
     <div class="outer">
-      <section id="main"><article id="post-pycharm-professional安装遇到的小麻烦" class="article article-type-post" itemscope itemprop="blogPost">
+      <section id="main"><article id="post-nginx负载均衡" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/03/18/pycharm-professional安装遇到的小麻烦/" class="article-date">
-  <time datetime="2018-03-18T05:31:47.000Z" itemprop="datePublished">2018-03-18</time>
+    <a href="/2018/07/05/nginx负载均衡/" class="article-date">
+  <time datetime="2018-07-05T08:02:10.000Z" itemprop="datePublished">2018-07-05</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/python3/">python3</a>
+    <a class="article-category-link" href="/categories/nginx/">nginx</a>
   </div>
 
   </div>
@@ -92,7 +92,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      pycharm professional安装遇到的小麻烦
+      nginx负载均衡
     </h1>
   
 
@@ -102,26 +102,55 @@
       
       <!-- Table of Contents -->
       
-        <p>今天装pycharm的时候发现社区版的有些功能缺失，比如创建django文件，社区版的就没有这个功能，于是就想换成专业版，结果以为很麻瓜的注册码出了问题问题</p>
-<ol>
-<li><p>在C:\Windows\System32\drivers\etc下有个host文件，打开。</p>
+        <div id="toc" class="toc-article">
+          <strong class="toc-title">文章目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#反向代理"><span class="toc-number">1.</span> <span class="toc-text">反向代理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#负载均衡"><span class="toc-number">2.</span> <span class="toc-text">负载均衡</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#获取客户端真实ip"><span class="toc-number">3.</span> <span class="toc-text">获取客户端真实ip</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#X-Forwarded-For"><span class="toc-number">3.1.</span> <span class="toc-text">X-Forwarded-For</span></a></li></ol></li></ol>
+        </div>
+      
+        <p>nginx配置不再多说</p>
+<h1 id="反向代理"><a href="#反向代理" class="headerlink" title="反向代理"></a>反向代理</h1><p>直接贴配置：</p>
+<pre><code>server {
+    listen 80;
+    server_name a.a.a.a;    //当前vhost地址
+    ssl off;
+    root html;
+    index index.html index.htm;
+    location /proxy/ {
+        proxy_pass http://x.x.x.x:port/;        //server地址,注意最后加上端口和“/”
+    }
+}
+</code></pre><p>如访问a.a.a.a/proxy/index.html，实际上访问的是x.x.x.x/index.html</p>
+<h1 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h1><p>即在http{}加入：</p>
+<pre><code>upstream name {
+    server x.x.x.x:port weight=1;
+    server x.x.x.x:port weight=1;
+    。。。
+}
+</code></pre><p>weight为权重值，越大所有到的负载越高</p>
+<p>然后将location{}中的的proxy_pass改成</p>
+<pre><code>proxy_pass http://name/;
+</code></pre><h1 id="获取客户端真实ip"><a href="#获取客户端真实ip" class="headerlink" title="获取客户端真实ip"></a>获取客户端真实ip</h1><h2 id="X-Forwarded-For"><a href="#X-Forwarded-For" class="headerlink" title="X-Forwarded-For"></a>X-Forwarded-For</h2><p>我的理解： X-Forwarded-For为请求header中需要手动添加的东西，它会按顺序记录所有配置并经过的ip</p>
+<ul>
+<li><p>参数设置</p>
+<pre><code>proxy_set_header X-Forwarded-For *；
+</code></pre><p>  其中</p>
+<ul>
+<li>*为 $remote_addr ：获取并添加最近的ip，</li>
+<li>*为 $proxy_add_x_forwarded_for ：添加获得的请求头中所有的ip</li>
+</ul>
 </li>
-<li><p>在host文件的最底行输入0.0.0.0 account.jetbrains.com  </p>
-<p> 据说是能屏蔽掉pycharm对激活码的验证，我反正是偷来的，并不清楚。</p>
-</li>
-<li><p>在安装pycharm的时候输入激活码就好啦。</p>
-</li>
-</ol>
+</ul>
+<p>我的理解是，如果客户端出口配置了代理（包括nginx，cdn等），并且没有设置X-Forwarded-For，那么之后的header中就不会写入客户端的地址，server就无法获取到真实地址了。</p>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/03/18/pycharm-professional安装遇到的小麻烦/" data-id="cjjicwa1u001ocsugmrpi3jjs" class="article-share-link" data-share="baidu" data-title="pycharm professional安装遇到的小麻烦">分享到</a>
+        <a data-url="http://dmonster.top/2018/07/05/nginx负载均衡/" data-id="cjjicwa1k001ecsugbdigjfsg" class="article-share-link" data-share="baidu" data-title="nginx负载均衡">分享到</a>
       
 
       
-        <a href="http://dmonster.top/2018/03/18/pycharm-professional安装遇到的小麻烦/#ds-thread" class="article-comment-link">评论</a>
+        <a href="http://dmonster.top/2018/07/05/nginx负载均衡/#ds-thread" class="article-comment-link">评论</a>
       
 
       
@@ -131,19 +160,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2018/03/19/django强行入门——链接mysql数据库/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/07/12/ping-traceroute-mtr/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
       <div class="article-nav-title">
         
-          django强行入门——链接mysql数据库
+          ping,traceroute,mtr
         
       </div>
     </a>
   
   
-    <a href="/2017/12/02/网络安全/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2018/07/04/nginx搭建web服务器/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">网络安全</div>
+      <div class="article-nav-title">nginx搭建web服务器</div>
     </a>
   
 </nav>
@@ -153,7 +182,7 @@
 
 
   <section id="comments">
-    <div id="ds-thread" class="ds-thread" data-thread-key="2018/03/18/pycharm-professional安装遇到的小麻烦/" data-title="pycharm professional安装遇到的小麻烦" data-url="http://dmonster.top/2018/03/18/pycharm-professional安装遇到的小麻烦/"></div>
+    <div id="ds-thread" class="ds-thread" data-thread-key="2018/07/05/nginx负载均衡/" data-title="nginx负载均衡" data-url="http://dmonster.top/2018/07/05/nginx负载均衡/"></div>
   </section>
 </section>
       

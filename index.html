@@ -75,6 +75,213 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-ping-traceroute-mtr" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/12/ping-traceroute-mtr/" class="article-date">
+  <time datetime="2018-07-12T08:59:03.000Z" itemprop="datePublished">2018-07-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/网络/">网络</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/12/ping-traceroute-mtr/">ping,traceroute,mtr</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <!-- Table of Contents -->
+      
+        <p>这是在实习中遇到的一个小问题，说实话，还是能学到很多东西的</p>
+<p>背景是这样的：一个客户反应他们的主机网络有问题，丢包，然后，我先往主机上ping，通的，想看一下路由哪丢包，于是就mtr，结果发现最后一跳不可达，于是traceroute试一下，也不可达。</p>
+<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><h2 id="ping"><a href="#ping" class="headerlink" title="ping"></a>ping</h2><p>贴：当发送一个ECHO_REQUEST时，将发送时间记录在报文里，并复制到远端主机相应的ECHO_REPLY报文中。当接收到ECHO_REPLY时，通过比较当前时间与报文时间计算出耗费时间。如果没有收到符合icmp_seq的报文，则认为该报文丢失</p>
+<p>ps：好吧，我也弄不懂这是啥玩意，总之就是发送一个icmp包，通过返回信息看他是通还是不通</p>
+<h2 id="traceroute"><a href="#traceroute" class="headerlink" title="traceroute"></a>traceroute</h2><p>再贴：traceroute会在IP头里设置TTL，先发1，然后第一跳路由器收到后TTL-1，变0，路由器判断丢弃反馈一个ICMP time exceeded<br>traceroute收到后，知道这个路径后继续发一个TTL为2的，然后就会发现第二个路由器，<br>最终达到目的IP的路由后会选择送到一个udp高端口（30000以上，即没有这种端口号，真变态）,获取一个ICMP port unreachable的消息，来验证确认可达</p>
+<p>traceroute有一个固定的时间等待响应(ICMP TTL到期消息)。如果这个时间过了，它将打印出一系列的*号表明：在这个路径上，这个设备不能在给定的时间内发出ICMP TTL到期消息的响应。然后，Traceroute给TTL记数器加1，继续进行。</p>
+<h2 id="mtr"><a href="#mtr" class="headerlink" title="mtr"></a>mtr</h2><p>跟traceroute类似，只是是用icmp协议</p>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>比如一个IP117.50.43.183，我ping，他是通的，</p>
+<p>然后traceroute：</p>
+<pre><code>traceroute to 117.50.43.183 (117.50.43.183), 30 hops max, 60 byte packets
+1 10.11.200.45 (10.11.200.45) 0.448 ms 0.406 ms 0.439 ms
+2 107.150.96.1 (107.150.96.1) 14.262 ms 17.157 ms 17.143 ms
+3 172.25.17.1 (172.25.17.1) 7.117 ms 7.419 ms 7.509 ms
+4 128.14.158.37 (128.14.158.37) 7.630 ms 128.14.158.33 (128.14.158.33) 6.825 ms 6.944 ms
+5 192.254.84.16 (192.254.84.16) 1.035 ms 2.046 ms 2.074 ms
+6 218.30.48.241 (218.30.48.241) 1.401 ms 192.254.81.48 (192.254.81.48) 1.404 ms 0.848 ms
+7 218.30.48.241 (218.30.48.241) 1.004 ms 59.43.186.217 (59.43.186.217) 8.917 ms 218.30.48.241 (218.30.48.241) 0.981 ms
+8 59.43.186.213 (59.43.186.213) 8.953 ms 59.43.248.130 (59.43.248.130) 9.278 ms 59.43.248.106 (59.43.248.106) 8.482 ms
+9 59.43.182.142 (59.43.182.142) 129.264 ms 128.608 ms 59.43.182.138 (59.43.182.138) 137.349 ms
+10 59.43.182.138 (59.43.182.138) 137.380 ms 59.43.247.101 (59.43.247.101) 190.740 ms 59.43.246.162 (59.43.246.162) 154.466 ms
+11 59.43.247.101 (59.43.247.101) 190.368 ms 59.43.246.162 (59.43.246.162) 154.076 ms 153.944 ms
+12 202.97.14.213 (202.97.14.213) 189.197 ms 59.43.246.162 (59.43.246.162) 161.843 ms 153.470 ms
+13 202.97.34.77 (202.97.34.77) 182.545 ms 202.97.34.73 (202.97.34.73) 163.622 ms *
+14 220.181.0.30 (220.181.0.30) 160.095 ms 220.181.177.222 (220.181.177.222) 194.610 ms *
+15 220.181.177.222 (220.181.177.222) 189.952 ms 220.181.0.30 (220.181.0.30) 171.656 ms 171.188 ms
+16 36.110.169.194 (36.110.169.194) 165.222 ms 218.30.28.14 (218.30.28.14) 166.458 ms 36.110.169.194 (36.110.169.194) 165.041 ms
+17 36.110.169.194 (36.110.169.194) 160.074 ms * 164.930 ms
+18 * * *
+19 * * *
+20 * * *
+21 * * *
+22 * * *
+23 * * *
+24 * * *
+25 * * *
+26 * * *
+27 * * *
+28 * * *
+29 * * *
+30 * * *
+</code></pre><p>可以看到30跳之后就不通了，抓包可知traceroute默认是使用udp协议，而默写骨干路由节点/防火墙对一些udp包的访控限制或者过滤，然后换成icmp模式(或者用tcp模式 -T)：</p>
+<pre><code>traceroute -I 117.50.43.183
+traceroute to 117.50.43.183 (117.50.43.183), 30 hops max, 60 byte packets
+1 10.11.200.45 (10.11.200.45) 0.673 ms 0.657 ms 0.654 ms
+2 107.150.96.1 (107.150.96.1) 17.214 ms 17.306 ms 17.459 ms
+3 172.25.17.1 (172.25.17.1) 921.836 ms 926.200 ms 926.464 ms
+4 128.14.158.37 (128.14.158.37) 10.069 ms 10.083 ms 10.083 ms
+5 192.254.81.58 (192.254.81.58) 1.506 ms 1.655 ms 1.792 ms
+6 192.254.81.48 (192.254.81.48) 1.292 ms 0.905 ms 1.097 ms
+7 218.30.48.241 (218.30.48.241) 1.134 ms 1.296 ms 1.293 ms
+8 59.43.248.130 (59.43.248.130) 9.160 ms 9.173 ms 8.984 ms
+9 59.43.189.17 (59.43.189.17) 8.747 ms 8.735 ms 8.656 ms
+10 59.43.182.142 (59.43.182.142) 129.364 ms 129.340 ms 129.329 ms
+11 59.43.247.101 (59.43.247.101) 179.181 ms 179.138 ms 179.172 ms
+12 59.43.246.158 (59.43.246.158) 181.041 ms 181.076 ms 181.067 ms
+13 * * *
+14 202.97.34.73 (202.97.34.73) 154.926 ms 155.297 ms 155.444 ms
+15 * * *
+16 220.181.0.30 (220.181.0.30) 161.878 ms 162.084 ms 179.252 ms
+17 36.110.169.194 (36.110.169.194) 165.605 ms 157.566 ms 157.244 ms
+18 * * *
+19 * * *
+20 * * *
+21 * * *
+22 * * *
+23 * * *
+24 * * *
+25 * * *
+26 * * *
+27 117.50.43.183 (117.50.43.183) 156.832 ms 156.803 ms 156.823 ms
+28 117.50.43.183 (117.50.43.183) 158.333 ms * *
+29 117.50.43.183 (117.50.43.183) 164.555 ms * *
+30 117.50.43.183 (117.50.43.183) 156.988 ms 157.116 ms 157.118 ms
+</code></pre><p>可以看到虽然中间大量不可达，但是通过抓包得知，他的ttl还是再不断增加，所以最后还是可以通的</p>
+<p>mtr<br><img src="https://i.imgur.com/B1KYpyp.png" alt=""></p>
+<p>可见最后一跳迷失了，为什么呢？继续抓包，发现ttl从17跳以后就重置变回1了，所以其实mtr也是可以在不可达的情况下增加ttl但是一般只能增加5，而这个案例之间跨的运营商服务器就非常多，最终导致看起来不可达</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>最后真相大白，真的要感谢我同事大佬，太流弊了，还有就是一定要花时间研究一下抓包技术了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://dmonster.top/2018/07/12/ping-traceroute-mtr/" data-id="cjjicwa1h001ccsug13j8pmmi" class="article-share-link" data-share="baidu" data-title="ping,traceroute,mtr">分享到</a>
+      
+
+      
+        <a href="http://dmonster.top/2018/07/12/ping-traceroute-mtr/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-nginx负载均衡" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/05/nginx负载均衡/" class="article-date">
+  <time datetime="2018-07-05T08:02:10.000Z" itemprop="datePublished">2018-07-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/nginx/">nginx</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/05/nginx负载均衡/">nginx负载均衡</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <!-- Table of Contents -->
+      
+        <p>nginx配置不再多说</p>
+<h1 id="反向代理"><a href="#反向代理" class="headerlink" title="反向代理"></a>反向代理</h1><p>直接贴配置：</p>
+<pre><code>server {
+    listen 80;
+    server_name a.a.a.a;    //当前vhost地址
+    ssl off;
+    root html;
+    index index.html index.htm;
+    location /proxy/ {
+        proxy_pass http://x.x.x.x:port/;        //server地址,注意最后加上端口和“/”
+    }
+}
+</code></pre><p>如访问a.a.a.a/proxy/index.html，实际上访问的是x.x.x.x/index.html</p>
+<h1 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h1><p>即在http{}加入：</p>
+<pre><code>upstream name {
+    server x.x.x.x:port weight=1;
+    server x.x.x.x:port weight=1;
+    。。。
+}
+</code></pre><p>weight为权重值，越大所有到的负载越高</p>
+<p>然后将location{}中的的proxy_pass改成</p>
+<pre><code>proxy_pass http://name/;
+</code></pre><h1 id="获取客户端真实ip"><a href="#获取客户端真实ip" class="headerlink" title="获取客户端真实ip"></a>获取客户端真实ip</h1><h2 id="X-Forwarded-For"><a href="#X-Forwarded-For" class="headerlink" title="X-Forwarded-For"></a>X-Forwarded-For</h2><p>我的理解： X-Forwarded-For为请求header中需要手动添加的东西，它会按顺序记录所有配置并经过的ip</p>
+<ul>
+<li><p>参数设置</p>
+<pre><code>proxy_set_header X-Forwarded-For *；
+</code></pre><p>  其中</p>
+<ul>
+<li>*为 $remote_addr ：获取并添加最近的ip，</li>
+<li>*为 $proxy_add_x_forwarded_for ：添加获得的请求头中所有的ip</li>
+</ul>
+</li>
+</ul>
+<p>我的理解是，如果客户端出口配置了代理（包括nginx，cdn等），并且没有设置X-Forwarded-For，那么之后的header中就不会写入客户端的地址，server就无法获取到真实地址了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://dmonster.top/2018/07/05/nginx负载均衡/" data-id="cjjicwa1k001ecsugbdigjfsg" class="article-share-link" data-share="baidu" data-title="nginx负载均衡">分享到</a>
+      
+
+      
+        <a href="http://dmonster.top/2018/07/05/nginx负载均衡/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-nginx搭建web服务器" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/07/04/nginx搭建web服务器/" class="article-date">
@@ -110,7 +317,7 @@
 </ol>
 <h2 id="搭建"><a href="#搭建" class="headerlink" title="搭建"></a>搭建</h2><p>yum然后就ok了，需要说的是yum安装的nginx默认主目录是 /usr/share/nginx，然后配置文件在 /etc/nginx/nginx.conf</p>
 <h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>vi /etc/nginx/nginx.conf</p>
-<h2 id="location配置"><a href="#location配置" class="headerlink" title="location配置"></a>location配置</h2><p>不知道是我的原因还是我主机的原因，我的配置文件以开始就没有server{}参数，google了一下有人说本来就是这样，但是网上的教程都说以开始就有。。。</p>
+<h2 id="server配置"><a href="#server配置" class="headerlink" title="server配置"></a>server配置</h2><p>不知道是我的原因还是我主机的原因，我的配置文件以开始就没有server{}参数，google了一下有人说本来就是这样，但是网上的教程都说以开始就有。。。</p>
 <h3 id="http配置"><a href="#http配置" class="headerlink" title="http配置"></a>http配置</h3><pre><code># For more information on configuration, see:
 #   * Official English Documentation: http://nginx.org/en/docs/
 #   * Official Russian Documentation: http://nginx.org/ru/docs/
@@ -250,7 +457,7 @@ location /html/ {
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/07/04/nginx搭建web服务器/" data-id="cjj6krpgc000xu8ugqie9fk8y" class="article-share-link" data-share="baidu" data-title="nginx搭建web服务器">分享到</a>
+        <a data-url="http://dmonster.top/2018/07/04/nginx搭建web服务器/" data-id="cjjicwa1q001kcsugejku1vdg" class="article-share-link" data-share="baidu" data-title="nginx搭建web服务器">分享到</a>
       
 
       
@@ -372,7 +579,7 @@ binlog-do-db = db_name    //只同步哪些库，其他不同步
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/07/03/mysql主从复制及读写分离/" data-id="cjj6krpg7000tu8ugttim48ry" class="article-share-link" data-share="baidu" data-title="mysql主从复制及读写分离">分享到</a>
+        <a data-url="http://dmonster.top/2018/07/03/mysql主从复制及读写分离/" data-id="cjjicwa1e0018csugyeomg2ol" class="article-share-link" data-share="baidu" data-title="mysql主从复制及读写分离">分享到</a>
       
 
       
@@ -445,7 +652,7 @@ binlog-do-db = db_name    //只同步哪些库，其他不同步
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/07/03/mysql误删恢复（更新）/" data-id="cjj6krpgf0011u8ugiqzbccwc" class="article-share-link" data-share="baidu" data-title="mysql误删恢复（更新）">分享到</a>
+        <a data-url="http://dmonster.top/2018/07/03/mysql误删恢复（更新）/" data-id="cjjicwa21001vcsugahvt3vq7" class="article-share-link" data-share="baidu" data-title="mysql误删恢复（更新）">分享到</a>
       
 
       
@@ -523,7 +730,7 @@ select * from user
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/07/03/mysql登陆问题/" data-id="cjj6krpil002ku8ugdi4oqur9" class="article-share-link" data-share="baidu" data-title="mysql登陆问题">分享到</a>
+        <a data-url="http://dmonster.top/2018/07/03/mysql登陆问题/" data-id="cjjicwa160012csugdgjtn52f" class="article-share-link" data-share="baidu" data-title="mysql登陆问题">分享到</a>
       
 
       
@@ -629,7 +836,7 @@ chmod 0660 /etc/mysql-proxy.cnf   //更改权限
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/06/28/mysql-prox搭建以及遇到的问题/" data-id="cjj6krpgm0019u8uggeali89h" class="article-share-link" data-share="baidu" data-title="mysql-prox搭建以及遇到的问题">分享到</a>
+        <a data-url="http://dmonster.top/2018/06/28/mysql-prox搭建以及遇到的问题/" data-id="cjjicwa1b0016csugrhs6u892" class="article-share-link" data-share="baidu" data-title="mysql-prox搭建以及遇到的问题">分享到</a>
       
 
       
@@ -750,7 +957,7 @@ service shadowsocks restart # 重启
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/06/26/centos上搭建shadowsocks的两种方法/" data-id="cjj6krpfy000mu8ugp2pt3avg" class="article-share-link" data-share="baidu" data-title="centos上搭建shadowsocks的两种方法">分享到</a>
+        <a data-url="http://dmonster.top/2018/06/26/centos上搭建shadowsocks的两种方法/" data-id="cjjicwa2e0028csug5okhtoo4" class="article-share-link" data-share="baidu" data-title="centos上搭建shadowsocks的两种方法">分享到</a>
       
 
       
@@ -844,7 +1051,7 @@ service shadowsocks restart # 重启
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/06/26/CDN内容分发网络/" data-id="cjj6krpfb0009u8uglbrtbjlm" class="article-share-link" data-share="baidu" data-title="CDN内容分发网络">分享到</a>
+        <a data-url="http://dmonster.top/2018/06/26/CDN内容分发网络/" data-id="cjjicwa0e000icsugu2nfserw" class="article-share-link" data-share="baidu" data-title="CDN内容分发网络">分享到</a>
       
 
       
@@ -895,7 +1102,7 @@ service shadowsocks restart # 重启
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/03/26/python爬虫之验证码识别/" data-id="cjj6krphq001zu8ugjlwjiwm6" class="article-share-link" data-share="baidu" data-title="python爬虫之验证码识别">分享到</a>
+        <a data-url="http://dmonster.top/2018/03/26/python爬虫之验证码识别/" data-id="cjjicwa1o001icsugnsjcnu1g" class="article-share-link" data-share="baidu" data-title="python爬虫之验证码识别">分享到</a>
       
 
       
@@ -904,171 +1111,6 @@ service shadowsocks restart # 重启
 
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/小玩意/">小玩意</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-windows下安装redis" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/03/25/windows下安装redis/" class="article-date">
-  <time datetime="2018-03-25T11:35:57.000Z" itemprop="datePublished">2018-03-25</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/python3/">python3</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/25/windows下安装redis/">windows下安装redis</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      <!-- Table of Contents -->
-      
-        <p>今天作死要用windows装redis，真的恶心到我了。其实主要是环境都在windows上，懒得搞，要是有条件的话真心推荐大家用linux环境</p>
-<ol>
-<li><p>下载redis</p>
-<p> 这一步很好做,点击<a href="https://github.com/MSOpenTech/redis/releases" target="_blank" rel="noopener">redis下载</a>就ok了</p>
-</li>
-<li><p>安装redis</p>
-<p> 痛苦的来了，首先最好用管理员权限打开cmd，输入</p>
-<pre><code>redis-server.exe redis.windows.conf
-</code></pre><p> 如果是这样的：</p>
-<p> <img src="https://i.imgur.com/ZAskIE0.png" alt=""></p>
-<p> 那就ojbk了，如果不是，报unkown error错误，或者找不到文件的错误，首先先cd到redis安装目录下，再试一次，如果还是不行，依次输入：</p>
-<pre><code>redis-cli.exe
-shutdown
-exit
-redis-server.exe redis.windows.conf
-</code></pre><p> 即把redis客户端关掉。</p>
-</li>
-<li><p>配置redis到服务</p>
-<p>  redis-server –service-install redis.windows.conf</p>
-<p> 如果报错：1073</p>
-<pre><code>[12116] 10 Dec 10:39:16.588 # HandleServiceCommands: system error caught. error code=1073, message = CreateService failed: unknown error
-</code></pre><p> 即已有此服务，依次输入：</p>
-<pre><code>redis-server --service-uninstall
-redis-server --service-install redis.windows.conf
-</code></pre><p> 卸载重装。</p>
-</li>
-</ol>
-<p>其余的问题也遇到过但是不记得了，太多了，以后再装时补充。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://dmonster.top/2018/03/25/windows下安装redis/" data-id="cjj6krpi30026u8ugrosq4u1k" class="article-share-link" data-share="baidu" data-title="windows下安装redis">分享到</a>
-      
-
-      
-        <a href="http://dmonster.top/2018/03/25/windows下安装redis/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-django强行入门——链接mysql数据库" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/03/19/django强行入门——链接mysql数据库/" class="article-date">
-  <time datetime="2018-03-19T08:17:29.000Z" itemprop="datePublished">2018-03-19</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/python3/">python3</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/19/django强行入门——链接mysql数据库/">django强行入门——链接mysql数据库</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      <!-- Table of Contents -->
-      
-        <p>最近纵向搭个网站，于是找了django框架来学习，然而python已经忘得差不多了，之前又花了好几天把python复习了一下，写了几个爬虫练练手，今天终于可以开始操作了。</p>
-<h2 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h2><p>比如创建一个叫做mysite的数据库</p>
-<h2 id="更改配置"><a href="#更改配置" class="headerlink" title="更改配置"></a>更改配置</h2><ul>
-<li><p>首先需要更改settings.py</p>
-<p>  找到DATABASES，改成</p>
-<pre><code>DATABASES = {
-&apos;default&apos;: {
-&apos;ENGINE&apos;: &apos;django.db.backends.mysql&apos;,
-&apos;NAME&apos;: &apos;db_name&apos;,        //数据库的名字
-&apos;HOST&apos;: &apos;&apos;,              //主机名，自己学习用一般是localhost
-&apos;PORT&apos;: &apos;3306&apos;,             //端口，数据库服务的端口，mysql默认是3306
-&apos;USER&apos;: &apos;root&apos;,             //数据库的用户名，一般是要root用户，权限才够
-&apos;PASSWORD&apos;: &apos;41223&apos;,      //root对应的密码
-    }
-}
-</code></pre></li>
-</ul>
-<ul>
-<li><p>更改models.py</p>
-<p>  创建表对应的类，例如：</p>
-<pre><code>class Publisher(models.Model):        //出版商类，对应mysite数据库中的一个表
-    pub_name = models.CharField(max_length=200)
-    city = models.CharField(max_length=200)
-
-class Book(models.Model):            //书类
-    book_name = models.CharField(max_length=200)
-    author = models.CharField(max_length=200)
-    pub_date = models.DateTimeField(&apos;date published&apos;)
-    publish = models.ForeignKey(Publisher, on_delete=models.CASCADE)
-</code></pre><p>  其中各个变量类型对应的方法为：</p>
-<p>  <img src="https://i.imgur.com/fCOTKJd.png" alt=""></p>
-</li>
-</ul>
-<h2 id="同步数据库"><a href="#同步数据库" class="headerlink" title="同步数据库"></a>同步数据库</h2><pre><code>命令行cd到工程下
-
-    python manage.py makemigrations
-    python manage.py migrate
-
-PS：这一步如果报错的话可百度，有很多解决方法。
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://dmonster.top/2018/03/19/django强行入门——链接mysql数据库/" data-id="cjj6krpgi0014u8ugqvxtnofx" class="article-share-link" data-share="baidu" data-title="django强行入门——链接mysql数据库">分享到</a>
-      
-
-      
-        <a href="http://dmonster.top/2018/03/19/django强行入门——链接mysql数据库/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
 
     </footer>
   </div>
@@ -1090,7 +1132,7 @@ PS：这一步如果报错的话可百度，有很多解决方法。
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nginx/">nginx</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/安全/">安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">10</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nginx/">nginx</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/安全/">安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">11</span></li></ul>
     </div>
   </div>
 
@@ -1108,7 +1150,7 @@ PS：这一步如果报错的话可百度，有很多解决方法。
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -1120,6 +1162,14 @@ PS：这一步如果报错的话可百度，有很多解决方法。
       <ul>
         
           <li>
+            <a href="/2018/07/12/ping-traceroute-mtr/">ping,traceroute,mtr</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/05/nginx负载均衡/">nginx负载均衡</a>
+          </li>
+        
+          <li>
             <a href="/2018/07/04/nginx搭建web服务器/">nginx搭建web服务器</a>
           </li>
         
@@ -1129,14 +1179,6 @@ PS：这一步如果报错的话可百度，有很多解决方法。
         
           <li>
             <a href="/2018/07/03/mysql误删恢复（更新）/">mysql误删恢复（更新）</a>
-          </li>
-        
-          <li>
-            <a href="/2018/07/03/mysql登陆问题/">mysql登陆问题</a>
-          </li>
-        
-          <li>
-            <a href="/2018/06/28/mysql-prox搭建以及遇到的问题/">mysql-prox搭建以及遇到的问题</a>
           </li>
         
       </ul>
