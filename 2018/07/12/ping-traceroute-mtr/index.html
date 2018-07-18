@@ -14,7 +14,8 @@
 <meta property="og:description" content="这是在实习中遇到的一个小问题，说实话，还是能学到很多东西的 背景是这样的：一个客户反应他们的主机网络有问题，丢包，然后，我先往主机上ping，通的，想看一下路由哪丢包，于是就mtr，结果发现最后一跳不可达，于是traceroute试一下，也不可达。 原理ping贴：当发送一个ECHO_REQUEST时，将发送时间记录在报文里，并复制到远端主机相应的ECHO_REPLY报文中。当接收到ECHO_RE">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://i.imgur.com/B1KYpyp.png">
-<meta property="og:updated_time" content="2018-07-12T09:31:31.088Z">
+<meta property="og:image" content="https://i.imgur.com/LvcZz3p.png">
+<meta property="og:updated_time" content="2018-07-18T06:05:59.103Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ping,traceroute,mtr">
 <meta name="twitter:description" content="这是在实习中遇到的一个小问题，说实话，还是能学到很多东西的 背景是这样的：一个客户反应他们的主机网络有问题，丢包，然后，我先往主机上ping，通的，想看一下路由哪丢包，于是就mtr，结果发现最后一跳不可达，于是traceroute试一下，也不可达。 原理ping贴：当发送一个ECHO_REQUEST时，将发送时间记录在报文里，并复制到远端主机相应的ECHO_REPLY报文中。当接收到ECHO_RE">
@@ -104,6 +105,11 @@
       
       <!-- Table of Contents -->
       
+        <div id="toc" class="toc-article">
+          <strong class="toc-title">文章目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#原理"><span class="toc-number">1.</span> <span class="toc-text">原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ping"><span class="toc-number">1.1.</span> <span class="toc-text">ping</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#traceroute"><span class="toc-number">1.2.</span> <span class="toc-text">traceroute</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mtr"><span class="toc-number">1.3.</span> <span class="toc-text">mtr</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#分析"><span class="toc-number">2.</span> <span class="toc-text">分析</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#还要说两句"><span class="toc-number">3.1.</span> <span class="toc-text">还要说两句</span></a></li></ol></li></ol>
+        </div>
+      
         <p>这是在实习中遇到的一个小问题，说实话，还是能学到很多东西的</p>
 <p>背景是这样的：一个客户反应他们的主机网络有问题，丢包，然后，我先往主机上ping，通的，想看一下路由哪丢包，于是就mtr，结果发现最后一跳不可达，于是traceroute试一下，也不可达。</p>
 <h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><h2 id="ping"><a href="#ping" class="headerlink" title="ping"></a>ping</h2><p>贴：当发送一个ECHO_REQUEST时，将发送时间记录在报文里，并复制到远端主机相应的ECHO_REPLY报文中。当接收到ECHO_REPLY时，通过比较当前时间与报文时间计算出耗费时间。如果没有收到符合icmp_seq的报文，则认为该报文丢失</p>
@@ -181,12 +187,18 @@ traceroute to 117.50.43.183 (117.50.43.183), 30 hops max, 60 byte packets
 <p>mtr<br><img src="https://i.imgur.com/B1KYpyp.png" alt=""></p>
 <p>可见最后一跳迷失了，为什么呢？继续抓包，发现ttl从17跳以后就重置变回1了，所以其实mtr也是可以在不可达的情况下增加ttl但是一般只能增加5，而这个案例之间跨的运营商服务器就非常多，最终导致看起来不可达</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>最后真相大白，真的要感谢我同事大佬，太流弊了，还有就是一定要花时间研究一下抓包技术了。</p>
+<h2 id="还要说两句"><a href="#还要说两句" class="headerlink" title="还要说两句"></a>还要说两句</h2><p>有traceroute udp模式不可达引发的思考：</p>
+<p>首先，我们来了解一下对于节点来说一个udp包过来会发生什么情况：</p>
+<p>当一个端口&gt;32768(理论来说tcp和udp都允许0-65535的端口，但是事实上没有主机会接受这么高的端口)的udp包到达服务器时，服务器会查看监听信息，发现并没有监听这个udp端口，于是返回两个icmp包，即 ICMP TTL-expired (type 11)（这个是利用ttl的性质返回的，所有类型的traceroute都会返回这个包）和ICMP port unreachable (type 3， code 3) 其中的type，code就是icmp包的类型</p>
+<p><img src="https://i.imgur.com/LvcZz3p.png" alt=""></p>
+<p>可以看到(type 3， code 3)就是返回一个端口不可达的icmp包了，但是如果把这个类型的包在防火墙上禁掉了呢，对，没错，然后看起来目的就不可达了</p>
+<p>同样的道理，中间的router也可能配置了这样的防火墙规则，另外需要知道的是，由于回送TTL-expired的信息需要CPU生成一个packet，必须打断 CPU，为保证其它工作的正常进行，cisco router每隔一秒才处理traceroute，所以可能在这些cpu根本就不允许回icmp包，或者因为cpu太忙，导致超时。</p>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/07/12/ping-traceroute-mtr/" data-id="cjjicwa1h001ccsug13j8pmmi" class="article-share-link" data-share="baidu" data-title="ping,traceroute,mtr">分享到</a>
+        <a data-url="http://dmonster.top/2018/07/12/ping-traceroute-mtr/" data-id="cjjqr1py40010t8ugn9iykp3r" class="article-share-link" data-share="baidu" data-title="ping,traceroute,mtr">分享到</a>
       
 
       
@@ -199,6 +211,15 @@ traceroute to 117.50.43.183 (117.50.43.183), 30 hops max, 60 byte packets
   
     
 <nav id="article-nav">
+  
+    <a href="/2018/07/16/crontab-ssh-rsync/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          crontab+ssh+rsync
+        
+      </div>
+    </a>
   
   
     <a href="/2018/07/05/nginx负载均衡/" id="article-nav-older" class="article-nav-link-wrap">
@@ -241,7 +262,7 @@ traceroute to 117.50.43.183 (117.50.43.183), 30 hops max, 60 byte packets
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -251,6 +272,10 @@ traceroute to 117.50.43.183 (117.50.43.183), 30 hops max, 60 byte packets
     <h3 class="widget-title">近期文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/07/16/crontab-ssh-rsync/">crontab+ssh+rsync</a>
+          </li>
         
           <li>
             <a href="/2018/07/12/ping-traceroute-mtr/">ping,traceroute,mtr</a>
@@ -266,10 +291,6 @@ traceroute to 117.50.43.183 (117.50.43.183), 30 hops max, 60 byte packets
         
           <li>
             <a href="/2018/07/03/mysql主从复制及读写分离/">mysql主从复制及读写分离</a>
-          </li>
-        
-          <li>
-            <a href="/2018/07/03/mysql误删恢复（更新）/">mysql误删恢复（更新）</a>
           </li>
         
       </ul>

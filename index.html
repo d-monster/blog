@@ -75,6 +75,82 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-crontab-ssh-rsync" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/16/crontab-ssh-rsync/" class="article-date">
+  <time datetime="2018-07-16T06:29:28.000Z" itemprop="datePublished">2018-07-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/16/crontab-ssh-rsync/">crontab+ssh+rsync</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <!-- Table of Contents -->
+      
+        <p>其实这就是一个备份的设置，用crontab添加定时任务，定时执行rsync执行同步任务，进阶的话，用ssh公私钥设施ssh免密连接</p>
+<h1 id="crontab"><a href="#crontab" class="headerlink" title="crontab"></a>crontab</h1><ul>
+<li>-e：编辑该用户的计时器设置；</li>
+<li>-l：列出该用户的计时器设置；</li>
+<li>-r：删除该用户的计时器设置；</li>
+<li>-u&lt;用户名称&gt;：指定要设定计时器的用户名称。</li>
+</ul>
+<p>没什么好说的，就是添加定时任务，添加完了要重启，-e开启的是vim</p>
+<h1 id="rsync"><a href="#rsync" class="headerlink" title="rsync"></a>rsync</h1><p>这个想想比较多，选几个常用的记一下</p>
+<ul>
+<li>-v, –verbose 详细模式输出。</li>
+<li>-r, –recursive 对子目录以递归模式处理。</li>
+<li>-p, –perms 保持文件权限。</li>
+<li>-o, –owner 保持文件属主信息。</li>
+<li>-g, –group 保持文件属组信息。</li>
+<li>-z, –compress 对备份的文件在传输时进行压缩处理。</li>
+<li>-t, –times 保持文件时间信息。</li>
+<li>–delete 删除那些DST中SRC没有的文件。</li>
+<li>–delete-excluded 同样删除接收端那些被该选项指定排除的文件。</li>
+<li>–delete-after 传输结束以后再删除。</li>
+<li>-e 连接方式</li>
+</ul>
+<p>然后一般做备份的话这样写就行了</p>
+<pre><code>rsync -vzrtopg -e ssh 源目录 备份目录
+</code></pre><p>源或者是备份是远程主机的话，root@ip:目录（只适用于ssh的连接）</p>
+<p>把这句命令行写进crontab -e里， -l就能看到了，重启contabd服务发现没用，因为需要ssh密码认证。</p>
+<h2 id="ssh免密连接"><a href="#ssh免密连接" class="headerlink" title="ssh免密连接"></a>ssh免密连接</h2><p>在源主机上</p>
+<pre><code>ssh-keygen -t rsa
+</code></pre><p>一阵回车后，会生成id_rsa  id_rsa.pub两个文件，id_rsa为私钥，id_rsa.pub为公钥</p>
+<p>用find命令找到备份主机的.ssh文件，把公钥复制到.ssh目录下，cd到这个目录下</p>
+<pre><code>cat id_dsa.pub &gt; authorized_keys
+</code></pre><p>完成</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://dmonster.top/2018/07/16/crontab-ssh-rsync/" data-id="cjjqr1pwq0009t8ug39i4mnps" class="article-share-link" data-share="baidu" data-title="crontab+ssh+rsync">分享到</a>
+      
+
+      
+        <a href="http://dmonster.top/2018/07/16/crontab-ssh-rsync/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-ping-traceroute-mtr" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/07/12/ping-traceroute-mtr/" class="article-date">
@@ -180,12 +256,18 @@ traceroute to 117.50.43.183 (117.50.43.183), 30 hops max, 60 byte packets
 <p>mtr<br><img src="https://i.imgur.com/B1KYpyp.png" alt=""></p>
 <p>可见最后一跳迷失了，为什么呢？继续抓包，发现ttl从17跳以后就重置变回1了，所以其实mtr也是可以在不可达的情况下增加ttl但是一般只能增加5，而这个案例之间跨的运营商服务器就非常多，最终导致看起来不可达</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>最后真相大白，真的要感谢我同事大佬，太流弊了，还有就是一定要花时间研究一下抓包技术了。</p>
+<h2 id="还要说两句"><a href="#还要说两句" class="headerlink" title="还要说两句"></a>还要说两句</h2><p>有traceroute udp模式不可达引发的思考：</p>
+<p>首先，我们来了解一下对于节点来说一个udp包过来会发生什么情况：</p>
+<p>当一个端口&gt;32768(理论来说tcp和udp都允许0-65535的端口，但是事实上没有主机会接受这么高的端口)的udp包到达服务器时，服务器会查看监听信息，发现并没有监听这个udp端口，于是返回两个icmp包，即 ICMP TTL-expired (type 11)（这个是利用ttl的性质返回的，所有类型的traceroute都会返回这个包）和ICMP port unreachable (type 3， code 3) 其中的type，code就是icmp包的类型</p>
+<p><img src="https://i.imgur.com/LvcZz3p.png" alt=""></p>
+<p>可以看到(type 3， code 3)就是返回一个端口不可达的icmp包了，但是如果把这个类型的包在防火墙上禁掉了呢，对，没错，然后看起来目的就不可达了</p>
+<p>同样的道理，中间的router也可能配置了这样的防火墙规则，另外需要知道的是，由于回送TTL-expired的信息需要CPU生成一个packet，必须打断 CPU，为保证其它工作的正常进行，cisco router每隔一秒才处理traceroute，所以可能在这些cpu根本就不允许回icmp包，或者因为cpu太忙，导致超时。</p>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/07/12/ping-traceroute-mtr/" data-id="cjjicwa1h001ccsug13j8pmmi" class="article-share-link" data-share="baidu" data-title="ping,traceroute,mtr">分享到</a>
+        <a data-url="http://dmonster.top/2018/07/12/ping-traceroute-mtr/" data-id="cjjqr1py40010t8ugn9iykp3r" class="article-share-link" data-share="baidu" data-title="ping,traceroute,mtr">分享到</a>
       
 
       
@@ -267,7 +349,7 @@ traceroute to 117.50.43.183 (117.50.43.183), 30 hops max, 60 byte packets
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/07/05/nginx负载均衡/" data-id="cjjicwa1k001ecsugbdigjfsg" class="article-share-link" data-share="baidu" data-title="nginx负载均衡">分享到</a>
+        <a data-url="http://dmonster.top/2018/07/05/nginx负载均衡/" data-id="cjjqr1pye0018t8ug71xr9i5h" class="article-share-link" data-share="baidu" data-title="nginx负载均衡">分享到</a>
       
 
       
@@ -457,7 +539,7 @@ location /html/ {
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/07/04/nginx搭建web服务器/" data-id="cjjicwa1q001kcsugejku1vdg" class="article-share-link" data-share="baidu" data-title="nginx搭建web服务器">分享到</a>
+        <a data-url="http://dmonster.top/2018/07/04/nginx搭建web服务器/" data-id="cjjqr1pyr001gt8ugtzaa174y" class="article-share-link" data-share="baidu" data-title="nginx搭建web服务器">分享到</a>
       
 
       
@@ -579,7 +661,7 @@ binlog-do-db = db_name    //只同步哪些库，其他不同步
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/07/03/mysql主从复制及读写分离/" data-id="cjjicwa1e0018csugyeomg2ol" class="article-share-link" data-share="baidu" data-title="mysql主从复制及读写分离">分享到</a>
+        <a data-url="http://dmonster.top/2018/07/03/mysql主从复制及读写分离/" data-id="cjjqr1pyj001bt8ugv5pn0dga" class="article-share-link" data-share="baidu" data-title="mysql主从复制及读写分离">分享到</a>
       
 
       
@@ -652,7 +734,7 @@ binlog-do-db = db_name    //只同步哪些库，其他不同步
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/07/03/mysql误删恢复（更新）/" data-id="cjjicwa21001vcsugahvt3vq7" class="article-share-link" data-share="baidu" data-title="mysql误删恢复（更新）">分享到</a>
+        <a data-url="http://dmonster.top/2018/07/03/mysql误删恢复（更新）/" data-id="cjjqr1py90014t8ugrvbcul50" class="article-share-link" data-share="baidu" data-title="mysql误删恢复（更新）">分享到</a>
       
 
       
@@ -730,7 +812,7 @@ select * from user
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/07/03/mysql登陆问题/" data-id="cjjicwa160012csugdgjtn52f" class="article-share-link" data-share="baidu" data-title="mysql登陆问题">分享到</a>
+        <a data-url="http://dmonster.top/2018/07/03/mysql登陆问题/" data-id="cjjqr1pxz000wt8ugkbmnq6w1" class="article-share-link" data-share="baidu" data-title="mysql登陆问题">分享到</a>
       
 
       
@@ -836,7 +918,7 @@ chmod 0660 /etc/mysql-proxy.cnf   //更改权限
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/06/28/mysql-prox搭建以及遇到的问题/" data-id="cjjicwa1b0016csugrhs6u892" class="article-share-link" data-share="baidu" data-title="mysql-prox搭建以及遇到的问题">分享到</a>
+        <a data-url="http://dmonster.top/2018/06/28/mysql-prox搭建以及遇到的问题/" data-id="cjjqr1q1v002vt8ug43hhh2c4" class="article-share-link" data-share="baidu" data-title="mysql-prox搭建以及遇到的问题">分享到</a>
       
 
       
@@ -957,7 +1039,7 @@ service shadowsocks restart # 重启
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/06/26/centos上搭建shadowsocks的两种方法/" data-id="cjjicwa2e0028csug5okhtoo4" class="article-share-link" data-share="baidu" data-title="centos上搭建shadowsocks的两种方法">分享到</a>
+        <a data-url="http://dmonster.top/2018/06/26/centos上搭建shadowsocks的两种方法/" data-id="cjjqr1pyw001jt8ug9rn6a63t" class="article-share-link" data-share="baidu" data-title="centos上搭建shadowsocks的两种方法">分享到</a>
       
 
       
@@ -1051,7 +1133,7 @@ service shadowsocks restart # 重启
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/06/26/CDN内容分发网络/" data-id="cjjicwa0e000icsugu2nfserw" class="article-share-link" data-share="baidu" data-title="CDN内容分发网络">分享到</a>
+        <a data-url="http://dmonster.top/2018/06/26/CDN内容分发网络/" data-id="cjjqr1pwg0006t8ugnd7i8oaa" class="article-share-link" data-share="baidu" data-title="CDN内容分发网络">分享到</a>
       
 
       
@@ -1060,57 +1142,6 @@ service shadowsocks restart # 重启
 
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-python爬虫之验证码识别" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/03/26/python爬虫之验证码识别/" class="article-date">
-  <time datetime="2018-03-26T09:07:44.000Z" itemprop="datePublished">2018-03-26</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/python3/">python3</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/26/python爬虫之验证码识别/">python爬虫之验证码识别</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      <!-- Table of Contents -->
-      
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近在做django的小项目，在提交表单登陆的问题上由于有验证码这个东西，产生了一个逻辑问题，就是怎么先获取验证码，返回到页面给用户，再提交，以开始是想用celery，但是好像不怎么好用celery本来是做异步提高效率的，于是索性直接在post请求的同时识别出验证码。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://dmonster.top/2018/03/26/python爬虫之验证码识别/" data-id="cjjicwa1o001icsugnsjcnu1g" class="article-share-link" data-share="baidu" data-title="python爬虫之验证码识别">分享到</a>
-      
-
-      
-        <a href="http://dmonster.top/2018/03/26/python爬虫之验证码识别/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/小玩意/">小玩意</a></li></ul>
 
     </footer>
   </div>
@@ -1150,7 +1181,7 @@ service shadowsocks restart # 重启
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -1160,6 +1191,10 @@ service shadowsocks restart # 重启
     <h3 class="widget-title">近期文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/07/16/crontab-ssh-rsync/">crontab+ssh+rsync</a>
+          </li>
         
           <li>
             <a href="/2018/07/12/ping-traceroute-mtr/">ping,traceroute,mtr</a>
@@ -1175,10 +1210,6 @@ service shadowsocks restart # 重启
         
           <li>
             <a href="/2018/07/03/mysql主从复制及读写分离/">mysql主从复制及读写分离</a>
-          </li>
-        
-          <li>
-            <a href="/2018/07/03/mysql误删恢复（更新）/">mysql误删恢复（更新）</a>
           </li>
         
       </ul>
