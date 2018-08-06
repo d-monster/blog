@@ -75,6 +75,67 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-nginx搭建简易的文件服务器" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/08/06/nginx搭建简易的文件服务器/" class="article-date">
+  <time datetime="2018-08-06T09:05:26.000Z" itemprop="datePublished">2018-08-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/nginx/">nginx</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/08/06/nginx搭建简易的文件服务器/">nginx搭建简易的文件服务器</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <!-- Table of Contents -->
+      
+        <p>最简单的server这样写就行了</p>
+<pre><code>server {
+listen 80;
+server_name _;
+charset utf-8;
+location / {
+    root /tmp/share;
+    autoindex on; #自动索引目录
+    autoindex_exact_size on; #显示文件大小
+    autoindex_localtime on; #显示时间
+    }
+}
+</code></pre><p>这个玩意搭起来很简单，可以当作ftp用，还蛮方便的。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://dmonster.top/2018/08/06/nginx搭建简易的文件服务器/" data-id="cjki2idck001h80ugxi98jou8" class="article-share-link" data-share="baidu" data-title="nginx搭建简易的文件服务器">分享到</a>
+      
+
+      
+        <a href="http://dmonster.top/2018/08/06/nginx搭建简易的文件服务器/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-crontab-ssh-rsync" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/07/16/crontab-ssh-rsync/" class="article-date">
@@ -136,7 +197,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/07/16/crontab-ssh-rsync/" data-id="cjjqr1pwq0009t8ug39i4mnps" class="article-share-link" data-share="baidu" data-title="crontab+ssh+rsync">分享到</a>
+        <a data-url="http://dmonster.top/2018/07/16/crontab-ssh-rsync/" data-id="cjki2idca001880ug4xmegttf" class="article-share-link" data-share="baidu" data-title="crontab+ssh+rsync">分享到</a>
       
 
       
@@ -267,7 +328,7 @@ traceroute to 117.50.43.183 (117.50.43.183), 30 hops max, 60 byte packets
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/07/12/ping-traceroute-mtr/" data-id="cjjqr1py40010t8ugn9iykp3r" class="article-share-link" data-share="baidu" data-title="ping,traceroute,mtr">分享到</a>
+        <a data-url="http://dmonster.top/2018/07/12/ping-traceroute-mtr/" data-id="cjki2idcr001o80ugpn298dhj" class="article-share-link" data-share="baidu" data-title="ping,traceroute,mtr">分享到</a>
       
 
       
@@ -349,7 +410,7 @@ traceroute to 117.50.43.183 (117.50.43.183), 30 hops max, 60 byte packets
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/07/05/nginx负载均衡/" data-id="cjjqr1pye0018t8ug71xr9i5h" class="article-share-link" data-share="baidu" data-title="nginx负载均衡">分享到</a>
+        <a data-url="http://dmonster.top/2018/07/05/nginx负载均衡/" data-id="cjki2idd4001y80ugg6jezs1f" class="article-share-link" data-share="baidu" data-title="nginx负载均衡">分享到</a>
       
 
       
@@ -527,10 +588,13 @@ location /html/ {
 </li>
 </ul>
 <h1 id="错误排查"><a href="#错误排查" class="headerlink" title="错误排查"></a>错误排查</h1><ul>
-<li>找不到目录<ol>
+<li><p>找不到目录（403）</p>
+<p>  这种错误类型一般都是根目录找不到</p>
+<ol>
 <li>首先检查配置文件中的root，location确定配置目录无误</li>
 <li>找到需要访问的文件，确认文件名和后缀无误</li>
 <li>查看配置文件中server_name参数，如果实在地址栏中访问ip或域名，则把localhost改成相应的ip或域名</li>
+<li>当根目录设置成/root时，只有root用户可以找到，但是配置文件第一行默认是写user nginx 所以，需要把它改成user root </li>
 </ol>
 </li>
 </ul>
@@ -539,7 +603,7 @@ location /html/ {
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/07/04/nginx搭建web服务器/" data-id="cjjqr1pyr001gt8ugtzaa174y" class="article-share-link" data-share="baidu" data-title="nginx搭建web服务器">分享到</a>
+        <a data-url="http://dmonster.top/2018/07/04/nginx搭建web服务器/" data-id="cjki2idfi002x80ugtkf9bs3o" class="article-share-link" data-share="baidu" data-title="nginx搭建web服务器">分享到</a>
       
 
       
@@ -661,7 +725,7 @@ binlog-do-db = db_name    //只同步哪些库，其他不同步
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/07/03/mysql主从复制及读写分离/" data-id="cjjqr1pyj001bt8ugv5pn0dga" class="article-share-link" data-share="baidu" data-title="mysql主从复制及读写分离">分享到</a>
+        <a data-url="http://dmonster.top/2018/07/03/mysql主从复制及读写分离/" data-id="cjki2idch001f80ug76pfzfw3" class="article-share-link" data-share="baidu" data-title="mysql主从复制及读写分离">分享到</a>
       
 
       
@@ -734,7 +798,7 @@ binlog-do-db = db_name    //只同步哪些库，其他不同步
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/07/03/mysql误删恢复（更新）/" data-id="cjjqr1py90014t8ugrvbcul50" class="article-share-link" data-share="baidu" data-title="mysql误删恢复（更新）">分享到</a>
+        <a data-url="http://dmonster.top/2018/07/03/mysql误删恢复（更新）/" data-id="cjki2idcv001r80ugkwrbrkq6" class="article-share-link" data-share="baidu" data-title="mysql误删恢复（更新）">分享到</a>
       
 
       
@@ -812,7 +876,7 @@ select * from user
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/07/03/mysql登陆问题/" data-id="cjjqr1pxz000wt8ugkbmnq6w1" class="article-share-link" data-share="baidu" data-title="mysql登陆问题">分享到</a>
+        <a data-url="http://dmonster.top/2018/07/03/mysql登陆问题/" data-id="cjki2idco001l80ugqna6qpag" class="article-share-link" data-share="baidu" data-title="mysql登陆问题">分享到</a>
       
 
       
@@ -918,7 +982,7 @@ chmod 0660 /etc/mysql-proxy.cnf   //更改权限
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/06/28/mysql-prox搭建以及遇到的问题/" data-id="cjjqr1q1v002vt8ug43hhh2c4" class="article-share-link" data-share="baidu" data-title="mysql-prox搭建以及遇到的问题">分享到</a>
+        <a data-url="http://dmonster.top/2018/06/28/mysql-prox搭建以及遇到的问题/" data-id="cjki2iddi002980ugj036nv68" class="article-share-link" data-share="baidu" data-title="mysql-prox搭建以及遇到的问题">分享到</a>
       
 
       
@@ -1039,7 +1103,7 @@ service shadowsocks restart # 重启
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/06/26/centos上搭建shadowsocks的两种方法/" data-id="cjjqr1pyw001jt8ug9rn6a63t" class="article-share-link" data-share="baidu" data-title="centos上搭建shadowsocks的两种方法">分享到</a>
+        <a data-url="http://dmonster.top/2018/06/26/centos上搭建shadowsocks的两种方法/" data-id="cjki2idc1001180ugvhjdipg5" class="article-share-link" data-share="baidu" data-title="centos上搭建shadowsocks的两种方法">分享到</a>
       
 
       
@@ -1048,100 +1112,6 @@ service shadowsocks restart # 重启
 
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/小玩意/">小玩意</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-CDN内容分发网络" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/06/26/CDN内容分发网络/" class="article-date">
-  <time datetime="2018-06-26T07:49:39.000Z" itemprop="datePublished">2018-06-26</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/网络/">网络</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/06/26/CDN内容分发网络/">CDN内容分发网络</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      <!-- Table of Contents -->
-      
-        <h1 id="CDN架构"><a href="#CDN架构" class="headerlink" title="CDN架构"></a>CDN架构</h1><p>最简单的CDN网络只需一台负责全局负载均衡的DNS和中心节点，边缘节点各节点一台Cache，即可运行。DNS支持根据用户源IP地址解析不同的IP，实现就近访问。为了保证高可用性等，CDN网管中心需要监控各节点的流量、健康状况等。一个节点的单台Cache承载数量不够时，才需要多台Cache，多台Cache同时工作时，才需要负载均衡器，使Cache群协同工作。</p>
-<h1 id="中心节点"><a href="#中心节点" class="headerlink" title="中心节点"></a>中心节点</h1><p>中心节点包括CDN网管中心和全局负载均衡DNS重定向解析系统，负责整个CDN网络的分发及管理。</p>
-<h2 id="CDN网管中心"><a href="#CDN网管中心" class="headerlink" title="CDN网管中心"></a>CDN网管中心</h2><p>CDN网管中心是整个CDN能够正常运转的基础保证，它不仅能对整个CDN网络中的各个子系统和设备进行实时监控，对各种故障产生相应的告警，还可以实时监测到系统中总的流量和各节点的流量，并保存在系统数据库中，使网管人员能够方便地进行进一步分析。一套完善的网管系统，允许用户按需对系统配置进行修改。</p>
-<h2 id="全局负载均衡DNS"><a href="#全局负载均衡DNS" class="headerlink" title="全局负载均衡DNS"></a>全局负载均衡DNS</h2><p>全局负载均衡DNS通过一组预先定义好的策略，将当时最接近用户的Cache节点地址提供给用户，使用户能够得到快速的服务。同时，它还与分布在各地的所有CDN节点保持持续通信，搜集各节点的通信状态，确保不会将用户的请求分发到不可用、或不健康的Cache节点上。</p>
-<h1 id="边缘节点"><a href="#边缘节点" class="headerlink" title="边缘节点"></a>边缘节点</h1><p>CDN边缘节点主要指异地分发节点，由负载均衡设备、高速缓存服务器两部分组成。</p>
-<h2 id="负载均衡设备"><a href="#负载均衡设备" class="headerlink" title="负载均衡设备"></a>负载均衡设备</h2><p>负载均衡设备负责每个节点中各个Cache的负载均衡，保证节点的工作效率；同时还负责收集节点与周围环境的信息，保持与全局负载均衡DNS的通信，实现整个系统的负载均衡。</p>
-<p>##高速缓存服务器<br>高速缓存服务器（Cache）负责存储客户网站的大量信息，就像一个靠近用户的网站服务器一样响应本地用户的访问请求。通过全局负载均衡DNS的控制，用户的请求被透明地指向离他最近的节点，节点中Cache服务器就像网站的原始服务器一样，响应终端用户的请求。因其距离用户更近，故其响应时间才更快。</p>
-<h1 id="CDN四大关键技术"><a href="#CDN四大关键技术" class="headerlink" title="CDN四大关键技术"></a>CDN四大关键技术</h1><h2 id="内容路由技术"><a href="#内容路由技术" class="headerlink" title="内容路由技术"></a>内容路由技术</h2><p>CDN负载均衡系统实现CDN的内容路由功能。它的作用是将用户的请求导向整个CDN网络中的最佳节点。最佳节点的选定可以根据多种策略，例如距离最近、节点负载最轻等。负载均衡系统是整个CDN的核心。</p>
-<ul>
-<li><p>通常负载均衡可以分为两个层次:全局负载均衡(GSLB)和本地负载均衡(SLB)。</p>
-<ul>
-<li><p>全局负载均衡(GSLB)主要的目的是在整个网络范围内将用户的请求定向到最近的节点(或者区域)。</p>
-<p>  对于全局负载均衡而言，为了执行就近性判断，通常可以采用两种方式，一种是静态的配置，例如根据静态的IP地址配置表进行IP地址到CDN节点的映射。另一种方式是动态的检测，例如实时地让CDN节点探测到目标IP的距离(可以采用RRT，Hops作为度量单位)，然后比较探测结果进行负载均衡。当然，静态和动态的方式也可以综合起来使用。</p>
-</li>
-<li><p>本地负载均衡一般局限于一定的区域范围内，其目标是在特定的区域范围内寻找一台最适合的节点提供服务，因此，CDN节点的健康性、负载情况、支持的媒体格式等运行状态是本地负载均衡进行决策的主要依据。</p>
-<p>  对于本地负载均衡而言，为了执行有效的决策，需要实时地获取Cache设备的运行状态。获取的方法一般有两种，一种是主动探测，一种是协议交互。主动探测针对SLB设备和Cache设备没有协议交互接口的情况，通过ping等命令主动发起探测，根据返回结果分析状态。另一种是协议交互，即SLB和Cache根据事先定义好的协议实时交换运行状态信息，以便进行负载均衡。比较而言，协议交互比探测方式要准确可靠，但是目前尚没有标准的协议，各厂家的实现一般仅是私有协议，互通比较困难。</p>
-</li>
-</ul>
-</li>
-<li>负载均衡可以通过多种方法实现，主要的方法包括DNS、应用层重定向、传输层重定向等等。</li>
-</ul>
-<h2 id="内容分发技术"><a href="#内容分发技术" class="headerlink" title="内容分发技术"></a>内容分发技术</h2><p>内容分发包含从源到CDN边缘的Cache的过程。从实现上看，有两种主流的内容分发技术:PUSH和PULL.</p>
-<ul>
-<li><p>push是一种主动分发技术</p>
-<p>  通常，push有内容管理系统发起，将内容从内容源芬达到边缘cache节点。分发协议可采用http/ftp等</p>
-</li>
-<li><p>pull是一种被动分发技术</p>
-<p>  PULL分发通常由用户请求驱动。当用户请求的内容在本地的边缘Cache上不存在(未命中)时，Cache启动PULL方法从内容源或者其他CDN节点实时获取内容。</p>
-</li>
-</ul>
-<h2 id="内容存储技术"><a href="#内容存储技术" class="headerlink" title="内容存储技术"></a>内容存储技术</h2><p>对于CDN系统而言，需要考虑两个方面的内容存储问题。一个是内容源的存储，一个是内容在Cache节点中的存储</p>
-<ul>
-<li>对于内容源的存储，由于内容的规模比较大(通常可以达到几个甚至几十个TB)，而且内容的吞吐量较大，因此，通常采用海量存储架构。如NAS和SON.</li>
-<li>对于在Cache节点中的存储，是Cache设计的一个关键问题。需要考虑的因素包括功能和性能两个方面:在功能上包括对各种内容格式的支持、对部分缓存的支持，在性能上包括支持的容量、多文件吞吐率、可靠性、稳定性。</li>
-</ul>
-<h2 id="内容管理技术"><a href="#内容管理技术" class="headerlink" title="内容管理技术"></a>内容管理技术</h2><ul>
-<li><p>本地内容索引。 本地内容管理首先依赖于对本地内容的了解。包括每个Cache设备上内容的名称、URL、更新时间、内容信息等。本地内容索引是实现基于内容感知的调度的关键。</p>
-</li>
-<li><p>本地内容拷贝。通常，为了提高存储效率，同一个内容在一个CDN节点中仅存储一份，即仅存储在某个特定的Cache上。但是一旦对该内容的访问超过该Cache的服务提供能力，就需要在本地(而不是通过PUSL的方式)实现内容的分发。这样可以大大提高效率。</p>
-</li>
-<li><p>本地内容访问状态信息收集。搜集各个Cache设备上各个内容访问的统计信息，Cache设备的可用服务提供能力及内容变化的情况。</p>
-</li>
-</ul>
-<p>可以看出，通过本地内容管理，可以将内容的管理从原来的Cache设备一级，提高到CDN节点一级，从而大大增加了CDN的可扩展性和综合能力。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://dmonster.top/2018/06/26/CDN内容分发网络/" data-id="cjjqr1pwg0006t8ugnd7i8oaa" class="article-share-link" data-share="baidu" data-title="CDN内容分发网络">分享到</a>
-      
-
-      
-        <a href="http://dmonster.top/2018/06/26/CDN内容分发网络/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
 
     </footer>
   </div>
@@ -1163,7 +1133,7 @@ service shadowsocks restart # 重启
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nginx/">nginx</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/安全/">安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">11</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nginx/">nginx</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/安全/">安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">11</span></li></ul>
     </div>
   </div>
 
@@ -1181,7 +1151,7 @@ service shadowsocks restart # 重启
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -1191,6 +1161,10 @@ service shadowsocks restart # 重启
     <h3 class="widget-title">近期文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/08/06/nginx搭建简易的文件服务器/">nginx搭建简易的文件服务器</a>
+          </li>
         
           <li>
             <a href="/2018/07/16/crontab-ssh-rsync/">crontab+ssh+rsync</a>
@@ -1206,10 +1180,6 @@ service shadowsocks restart # 重启
         
           <li>
             <a href="/2018/07/04/nginx搭建web服务器/">nginx搭建web服务器</a>
-          </li>
-        
-          <li>
-            <a href="/2018/07/03/mysql主从复制及读写分离/">mysql主从复制及读写分离</a>
           </li>
         
       </ul>

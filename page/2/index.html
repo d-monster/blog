@@ -75,6 +75,100 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-CDN内容分发网络" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/26/CDN内容分发网络/" class="article-date">
+  <time datetime="2018-06-26T07:49:39.000Z" itemprop="datePublished">2018-06-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/网络/">网络</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/26/CDN内容分发网络/">CDN内容分发网络</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <!-- Table of Contents -->
+      
+        <h1 id="CDN架构"><a href="#CDN架构" class="headerlink" title="CDN架构"></a>CDN架构</h1><p>最简单的CDN网络只需一台负责全局负载均衡的DNS和中心节点，边缘节点各节点一台Cache，即可运行。DNS支持根据用户源IP地址解析不同的IP，实现就近访问。为了保证高可用性等，CDN网管中心需要监控各节点的流量、健康状况等。一个节点的单台Cache承载数量不够时，才需要多台Cache，多台Cache同时工作时，才需要负载均衡器，使Cache群协同工作。</p>
+<h1 id="中心节点"><a href="#中心节点" class="headerlink" title="中心节点"></a>中心节点</h1><p>中心节点包括CDN网管中心和全局负载均衡DNS重定向解析系统，负责整个CDN网络的分发及管理。</p>
+<h2 id="CDN网管中心"><a href="#CDN网管中心" class="headerlink" title="CDN网管中心"></a>CDN网管中心</h2><p>CDN网管中心是整个CDN能够正常运转的基础保证，它不仅能对整个CDN网络中的各个子系统和设备进行实时监控，对各种故障产生相应的告警，还可以实时监测到系统中总的流量和各节点的流量，并保存在系统数据库中，使网管人员能够方便地进行进一步分析。一套完善的网管系统，允许用户按需对系统配置进行修改。</p>
+<h2 id="全局负载均衡DNS"><a href="#全局负载均衡DNS" class="headerlink" title="全局负载均衡DNS"></a>全局负载均衡DNS</h2><p>全局负载均衡DNS通过一组预先定义好的策略，将当时最接近用户的Cache节点地址提供给用户，使用户能够得到快速的服务。同时，它还与分布在各地的所有CDN节点保持持续通信，搜集各节点的通信状态，确保不会将用户的请求分发到不可用、或不健康的Cache节点上。</p>
+<h1 id="边缘节点"><a href="#边缘节点" class="headerlink" title="边缘节点"></a>边缘节点</h1><p>CDN边缘节点主要指异地分发节点，由负载均衡设备、高速缓存服务器两部分组成。</p>
+<h2 id="负载均衡设备"><a href="#负载均衡设备" class="headerlink" title="负载均衡设备"></a>负载均衡设备</h2><p>负载均衡设备负责每个节点中各个Cache的负载均衡，保证节点的工作效率；同时还负责收集节点与周围环境的信息，保持与全局负载均衡DNS的通信，实现整个系统的负载均衡。</p>
+<p>##高速缓存服务器<br>高速缓存服务器（Cache）负责存储客户网站的大量信息，就像一个靠近用户的网站服务器一样响应本地用户的访问请求。通过全局负载均衡DNS的控制，用户的请求被透明地指向离他最近的节点，节点中Cache服务器就像网站的原始服务器一样，响应终端用户的请求。因其距离用户更近，故其响应时间才更快。</p>
+<h1 id="CDN四大关键技术"><a href="#CDN四大关键技术" class="headerlink" title="CDN四大关键技术"></a>CDN四大关键技术</h1><h2 id="内容路由技术"><a href="#内容路由技术" class="headerlink" title="内容路由技术"></a>内容路由技术</h2><p>CDN负载均衡系统实现CDN的内容路由功能。它的作用是将用户的请求导向整个CDN网络中的最佳节点。最佳节点的选定可以根据多种策略，例如距离最近、节点负载最轻等。负载均衡系统是整个CDN的核心。</p>
+<ul>
+<li><p>通常负载均衡可以分为两个层次:全局负载均衡(GSLB)和本地负载均衡(SLB)。</p>
+<ul>
+<li><p>全局负载均衡(GSLB)主要的目的是在整个网络范围内将用户的请求定向到最近的节点(或者区域)。</p>
+<p>  对于全局负载均衡而言，为了执行就近性判断，通常可以采用两种方式，一种是静态的配置，例如根据静态的IP地址配置表进行IP地址到CDN节点的映射。另一种方式是动态的检测，例如实时地让CDN节点探测到目标IP的距离(可以采用RRT，Hops作为度量单位)，然后比较探测结果进行负载均衡。当然，静态和动态的方式也可以综合起来使用。</p>
+</li>
+<li><p>本地负载均衡一般局限于一定的区域范围内，其目标是在特定的区域范围内寻找一台最适合的节点提供服务，因此，CDN节点的健康性、负载情况、支持的媒体格式等运行状态是本地负载均衡进行决策的主要依据。</p>
+<p>  对于本地负载均衡而言，为了执行有效的决策，需要实时地获取Cache设备的运行状态。获取的方法一般有两种，一种是主动探测，一种是协议交互。主动探测针对SLB设备和Cache设备没有协议交互接口的情况，通过ping等命令主动发起探测，根据返回结果分析状态。另一种是协议交互，即SLB和Cache根据事先定义好的协议实时交换运行状态信息，以便进行负载均衡。比较而言，协议交互比探测方式要准确可靠，但是目前尚没有标准的协议，各厂家的实现一般仅是私有协议，互通比较困难。</p>
+</li>
+</ul>
+</li>
+<li>负载均衡可以通过多种方法实现，主要的方法包括DNS、应用层重定向、传输层重定向等等。</li>
+</ul>
+<h2 id="内容分发技术"><a href="#内容分发技术" class="headerlink" title="内容分发技术"></a>内容分发技术</h2><p>内容分发包含从源到CDN边缘的Cache的过程。从实现上看，有两种主流的内容分发技术:PUSH和PULL.</p>
+<ul>
+<li><p>push是一种主动分发技术</p>
+<p>  通常，push有内容管理系统发起，将内容从内容源芬达到边缘cache节点。分发协议可采用http/ftp等</p>
+</li>
+<li><p>pull是一种被动分发技术</p>
+<p>  PULL分发通常由用户请求驱动。当用户请求的内容在本地的边缘Cache上不存在(未命中)时，Cache启动PULL方法从内容源或者其他CDN节点实时获取内容。</p>
+</li>
+</ul>
+<h2 id="内容存储技术"><a href="#内容存储技术" class="headerlink" title="内容存储技术"></a>内容存储技术</h2><p>对于CDN系统而言，需要考虑两个方面的内容存储问题。一个是内容源的存储，一个是内容在Cache节点中的存储</p>
+<ul>
+<li>对于内容源的存储，由于内容的规模比较大(通常可以达到几个甚至几十个TB)，而且内容的吞吐量较大，因此，通常采用海量存储架构。如NAS和SON.</li>
+<li>对于在Cache节点中的存储，是Cache设计的一个关键问题。需要考虑的因素包括功能和性能两个方面:在功能上包括对各种内容格式的支持、对部分缓存的支持，在性能上包括支持的容量、多文件吞吐率、可靠性、稳定性。</li>
+</ul>
+<h2 id="内容管理技术"><a href="#内容管理技术" class="headerlink" title="内容管理技术"></a>内容管理技术</h2><ul>
+<li><p>本地内容索引。 本地内容管理首先依赖于对本地内容的了解。包括每个Cache设备上内容的名称、URL、更新时间、内容信息等。本地内容索引是实现基于内容感知的调度的关键。</p>
+</li>
+<li><p>本地内容拷贝。通常，为了提高存储效率，同一个内容在一个CDN节点中仅存储一份，即仅存储在某个特定的Cache上。但是一旦对该内容的访问超过该Cache的服务提供能力，就需要在本地(而不是通过PUSL的方式)实现内容的分发。这样可以大大提高效率。</p>
+</li>
+<li><p>本地内容访问状态信息收集。搜集各个Cache设备上各个内容访问的统计信息，Cache设备的可用服务提供能力及内容变化的情况。</p>
+</li>
+</ul>
+<p>可以看出，通过本地内容管理，可以将内容的管理从原来的Cache设备一级，提高到CDN节点一级，从而大大增加了CDN的可扩展性和综合能力。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://dmonster.top/2018/06/26/CDN内容分发网络/" data-id="cjki2idae000680ugqtqg4pvm" class="article-share-link" data-share="baidu" data-title="CDN内容分发网络">分享到</a>
+      
+
+      
+        <a href="http://dmonster.top/2018/06/26/CDN内容分发网络/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-python爬虫之验证码识别" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/03/26/python爬虫之验证码识别/" class="article-date">
@@ -109,7 +203,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/03/26/python爬虫之验证码识别/" data-id="cjjqr1pz7001rt8ugq16ggs6j" class="article-share-link" data-share="baidu" data-title="python爬虫之验证码识别">分享到</a>
+        <a data-url="http://dmonster.top/2018/03/26/python爬虫之验证码识别/" data-id="cjki2idd0001v80ugtvbs3b5r" class="article-share-link" data-share="baidu" data-title="python爬虫之验证码识别">分享到</a>
       
 
       
@@ -187,7 +281,7 @@ redis-server --service-install redis.windows.conf
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/03/25/windows下安装redis/" data-id="cjjqr1pz3001ot8ug6a6w6vyd" class="article-share-link" data-share="baidu" data-title="windows下安装redis">分享到</a>
+        <a data-url="http://dmonster.top/2018/03/25/windows下安装redis/" data-id="cjki2iddw002m80ugm0jn5bc5" class="article-share-link" data-share="baidu" data-title="windows下安装redis">分享到</a>
       
 
       
@@ -274,7 +368,7 @@ PS：这一步如果报错的话可百度，有很多解决方法。
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/03/19/django强行入门——链接mysql数据库/" data-id="cjjqr1pxm000pt8ug0gbqhpn3" class="article-share-link" data-share="baidu" data-title="django强行入门——链接mysql数据库">分享到</a>
+        <a data-url="http://dmonster.top/2018/03/19/django强行入门——链接mysql数据库/" data-id="cjki2idbu000z80uggi9cie2b" class="article-share-link" data-share="baidu" data-title="django强行入门——链接mysql数据库">分享到</a>
       
 
       
@@ -334,7 +428,7 @@ PS：这一步如果报错的话可百度，有很多解决方法。
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/03/18/pycharm-professional安装遇到的小麻烦/" data-id="cjjqr1pze001vt8ugfxugx312" class="article-share-link" data-share="baidu" data-title="pycharm professional安装遇到的小麻烦">分享到</a>
+        <a data-url="http://dmonster.top/2018/03/18/pycharm-professional安装遇到的小麻烦/" data-id="cjki2idcx001u80ugkvnzxii0" class="article-share-link" data-share="baidu" data-title="pycharm professional安装遇到的小麻烦">分享到</a>
       
 
       
@@ -548,7 +642,7 @@ show access-list  //查看acl有没有被击中
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/12/02/网络安全/" data-id="cjjqr1q05002ct8ugvnour5q5" class="article-share-link" data-share="baidu" data-title="网络安全">分享到</a>
+        <a data-url="http://dmonster.top/2017/12/02/网络安全/" data-id="cjki2idds002i80ugxtz51yx0" class="article-share-link" data-share="baidu" data-title="网络安全">分享到</a>
       
 
       
@@ -761,7 +855,7 @@ net ...........(此条命令可被复敲，不会覆盖)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/11/25/ISIS/" data-id="cjjqr1pxu000tt8ug04wu5bxc" class="article-share-link" data-share="baidu" data-title="ISIS">分享到</a>
+        <a data-url="http://dmonster.top/2017/11/25/ISIS/" data-id="cjki2idbq000w80ug5pprf0se" class="article-share-link" data-share="baidu" data-title="ISIS">分享到</a>
       
 
       
@@ -1165,7 +1259,7 @@ tcp/ip 卷2
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/11/25/多播/" data-id="cjjqr1pzi001xt8ug9hl9xk8y" class="article-share-link" data-share="baidu" data-title="多播">分享到</a>
+        <a data-url="http://dmonster.top/2017/11/25/多播/" data-id="cjki2idde002680uglmix7avz" class="article-share-link" data-share="baidu" data-title="多播">分享到</a>
       
 
       
@@ -1814,7 +1908,7 @@ ASBR间启用MP-BGP PEER 关系（利用直连网络建立的BGP PEER 关系）
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/11/24/MPLS/" data-id="cjjqr1pxg000lt8ugihxme182" class="article-share-link" data-share="baidu" data-title="MPLS">分享到</a>
+        <a data-url="http://dmonster.top/2017/11/24/MPLS/" data-id="cjki2idbo000u80ugh1bsz34w" class="article-share-link" data-share="baidu" data-title="MPLS">分享到</a>
       
 
       
@@ -2152,7 +2246,7 @@ sta X tr 接口号 X（处罚值，当接口断开后从优先级上剪掉处罚
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/09/23/CCNA/" data-id="cjjqr1pvl0001t8ugdb4b6v5e" class="article-share-link" data-share="baidu" data-title="CCNA">分享到</a>
+        <a data-url="http://dmonster.top/2017/09/23/CCNA/" data-id="cjki2id9i000080ug12xj1ejp" class="article-share-link" data-share="baidu" data-title="CCNA">分享到</a>
       
 
       
@@ -2161,172 +2255,6 @@ sta X tr 接口号 X（处罚值，当接口断开后从优先级上剪掉处罚
 
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CCNA/">CCNA</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-NA测试题小综合" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/09/10/NA测试题小综合/" class="article-date">
-  <time datetime="2017-09-10T03:12:59.000Z" itemprop="datePublished">2017-09-10</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/网络/">网络</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/10/NA测试题小综合/">NA测试题小综合</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      <!-- Table of Contents -->
-      
-        <p><img src="https://i.imgur.com/GgESZvp.png" alt=""></p>
-<h1 id="要求"><a href="#要求" class="headerlink" title="要求"></a>要求</h1><ol>
-<li>.路由器R1是企业边界路由器，企业内部不运行任何的路由选择协议。 </li>
-<li><p>公司内部有4台交换机，分别连接了公司的三个部门，分别是A部门B部门和C部门<br>，还有一个单独的公司网络管理者(vlan40)，要求部门与部门之间相互的独立，并且需要保持<br>，公司内部交换机设备配置的一致性。 </p>
-<pre><code>A部门   192.168.1.0/24
-B部门   192.168.2.0/24
-C部门   192.168.3.0/24
-网络管理者  192.168.10.0/24
-</code></pre></li>
-<li>公司内部所有的设备的远程管理都只能允许管理者一台PC访问。</li>
-<li>路由器R1从ISP获得到一个公网IP地址，被分配在R1的串行接口上，公司</li>
-<li>内部所有用户需要访问互联网的服务器(NAT) </li>
-<li>A,B,C三个部门主机地址需要由R1动态分配</li>
-<li>运营商内部是可以相互使用PING命令来测试网络连接性的，但是对于公司内部网络是不允许有任何的Ping数据包出现在公网之上的，但是不能影响到用户的正常数据。 </li>
-<li>网络中有两台HTTP服务器，所有用户都可以访问HTTP服务器，但是C部门的用户不能访问HTTP2服务器  </li>
-</ol>
-<h1 id="配置过程"><a href="#配置过程" class="headerlink" title="配置过程"></a>配置过程</h1><ol>
-<li><p>配置交换机的vl和trunk</p>
-<p> 以sw1为例</p>
-<pre><code>vtp do ccie
-vtp mo se
-vl 10
-vl 20
-vl 30
-
-int ran f0/3,f0/4,f0/5
-sw mo tr  //因为pt为思科模拟器所以不许选择trunk协议,trunk协议只需设置一边的接口即可
-</code></pre><p> 以sw2为例划分vl</p>
-<pre><code>int f0/1
-sw acc vl 10
-int f0/2
-sw acc cl 20
-</code></pre></li>
-</ol>
-<ol>
-<li><p>配置dhcp协议</p>
-<p> 在sw1上配置单臂路由</p>
-<pre><code>int f0/24
-sw mo tr
-</code></pre><p> 在r1上划分子接口</p>
-<pre><code>int f0/0.1
-en dot1q 10
-ip add 192.168.1.1 255.255.255.0
-
-int f0/0.2
-en dot1q 20
-ip add 192.168.2.1 255.255.255.0
-
-int f0/0.2
-en dot1q 30
-ip add 192.168.3.1 255.255.255.0
-</code></pre><p> 在r1上配置dhcp协议</p>
-<pre><code>ip dhcp pool v1
-network 192.168.1.0 255.255.255.0
-default-router 192.168.1.1  
-
-ip dhcp pool v2
-network 192.168.2.0 255.255.255.0
-default-router 192.168.2.1
-
-ip dhcp pool v3
-network 192.168.3.0 255.255.255.0
-default-roter 192.168.3.1
-</code></pre></li>
-<li><p>ospf配置</p>
-<p> 在r1上配置ip并设置缺省路由</p>
-<pre><code>ip route 0.0.0.0 0.0.0.0 se0/0/0
-</code></pre><p> 配置ospf，以isp1为例</p>
-<pre><code>int f0/0
-ip add 202.195.12.1 255.255.255.252
-ip os 1 a 0
-
-int f0/1
-ip add 202.195.12.2 255.255.255.252
-ip os 1 a 0
-</code></pre></li>
-<li><p>http服务器配置</p>
-<p> 配置http服务器ip，以ISP4的f0/1端口作为默认网关。<br> sw5上不做任何配置</p>
-</li>
-<li><p>访问控制链表配置</p>
-<p> nat地址转换，将私网地址转换成公网地址</p>
-<pre><code>acc 1 per 192.168.1.0 0.0.0.255
-acc 1 per 192.168.1.0 0.0.0.255
-acc 1 per 192.168.1.0 0.0.0.255
-ip nat inside source list 1 int s0/0/0 overload
-</code></pre><p> R1上s0/0/0端口</p>
-<pre><code>acc 100 deny icmp any any echo
-acc 100 per ip any any
-
-int s0/0/0
-ip acc 100 out
-</code></pre><p> R1上的f0/0.3端口</p>
-<pre><code>acc 101 deny tcp any host 202.195.40.2 eq www
-acc 101 per ip any any
-
-int f0/0.3
-ip acc 101 in
-</code></pre></li>
-</ol>
-<ol>
-<li><p>vlan40 管理者</p>
-<p> 管理者pc上配置地址为192.168.10.1 , 以SW1为例，在SW1上将f0/1配置</p>
-<pre><code>int vl40
-ip add 192.168.10.2 255.255.255.0
-
-int f0/1
-sw acc vl 40
-no sh
-
-测试SW1和管理者pc能ping通
-
-enable password ccie //配置SW1交换机密码（也可以为密文）
-line vty 0 4
-passwoed 123  //配置管理者pc的telnet登录密码
-</code></pre></li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://dmonster.top/2017/09/10/NA测试题小综合/" data-id="cjjqr1pwv000at8ugq9nwuuk3" class="article-share-link" data-share="baidu" data-title="NA测试题小综合">分享到</a>
-      
-
-      
-        <a href="http://dmonster.top/2017/09/10/NA测试题小综合/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CCNA/">CCNA</a></li></ul>
 
     </footer>
   </div>
@@ -2348,7 +2276,7 @@ passwoed 123  //配置管理者pc的telnet登录密码
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nginx/">nginx</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/安全/">安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">11</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nginx/">nginx</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/安全/">安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">11</span></li></ul>
     </div>
   </div>
 
@@ -2366,7 +2294,7 @@ passwoed 123  //配置管理者pc的telnet登录密码
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -2376,6 +2304,10 @@ passwoed 123  //配置管理者pc的telnet登录密码
     <h3 class="widget-title">近期文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/08/06/nginx搭建简易的文件服务器/">nginx搭建简易的文件服务器</a>
+          </li>
         
           <li>
             <a href="/2018/07/16/crontab-ssh-rsync/">crontab+ssh+rsync</a>
@@ -2391,10 +2323,6 @@ passwoed 123  //配置管理者pc的telnet登录密码
         
           <li>
             <a href="/2018/07/04/nginx搭建web服务器/">nginx搭建web服务器</a>
-          </li>
-        
-          <li>
-            <a href="/2018/07/03/mysql主从复制及读写分离/">mysql主从复制及读写分离</a>
           </li>
         
       </ul>

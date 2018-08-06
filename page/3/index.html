@@ -75,6 +75,172 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-NA测试题小综合" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/09/10/NA测试题小综合/" class="article-date">
+  <time datetime="2017-09-10T03:12:59.000Z" itemprop="datePublished">2017-09-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/网络/">网络</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/10/NA测试题小综合/">NA测试题小综合</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <!-- Table of Contents -->
+      
+        <p><img src="https://i.imgur.com/GgESZvp.png" alt=""></p>
+<h1 id="要求"><a href="#要求" class="headerlink" title="要求"></a>要求</h1><ol>
+<li>.路由器R1是企业边界路由器，企业内部不运行任何的路由选择协议。 </li>
+<li><p>公司内部有4台交换机，分别连接了公司的三个部门，分别是A部门B部门和C部门<br>，还有一个单独的公司网络管理者(vlan40)，要求部门与部门之间相互的独立，并且需要保持<br>，公司内部交换机设备配置的一致性。 </p>
+<pre><code>A部门   192.168.1.0/24
+B部门   192.168.2.0/24
+C部门   192.168.3.0/24
+网络管理者  192.168.10.0/24
+</code></pre></li>
+<li>公司内部所有的设备的远程管理都只能允许管理者一台PC访问。</li>
+<li>路由器R1从ISP获得到一个公网IP地址，被分配在R1的串行接口上，公司</li>
+<li>内部所有用户需要访问互联网的服务器(NAT) </li>
+<li>A,B,C三个部门主机地址需要由R1动态分配</li>
+<li>运营商内部是可以相互使用PING命令来测试网络连接性的，但是对于公司内部网络是不允许有任何的Ping数据包出现在公网之上的，但是不能影响到用户的正常数据。 </li>
+<li>网络中有两台HTTP服务器，所有用户都可以访问HTTP服务器，但是C部门的用户不能访问HTTP2服务器  </li>
+</ol>
+<h1 id="配置过程"><a href="#配置过程" class="headerlink" title="配置过程"></a>配置过程</h1><ol>
+<li><p>配置交换机的vl和trunk</p>
+<p> 以sw1为例</p>
+<pre><code>vtp do ccie
+vtp mo se
+vl 10
+vl 20
+vl 30
+
+int ran f0/3,f0/4,f0/5
+sw mo tr  //因为pt为思科模拟器所以不许选择trunk协议,trunk协议只需设置一边的接口即可
+</code></pre><p> 以sw2为例划分vl</p>
+<pre><code>int f0/1
+sw acc vl 10
+int f0/2
+sw acc cl 20
+</code></pre></li>
+</ol>
+<ol>
+<li><p>配置dhcp协议</p>
+<p> 在sw1上配置单臂路由</p>
+<pre><code>int f0/24
+sw mo tr
+</code></pre><p> 在r1上划分子接口</p>
+<pre><code>int f0/0.1
+en dot1q 10
+ip add 192.168.1.1 255.255.255.0
+
+int f0/0.2
+en dot1q 20
+ip add 192.168.2.1 255.255.255.0
+
+int f0/0.2
+en dot1q 30
+ip add 192.168.3.1 255.255.255.0
+</code></pre><p> 在r1上配置dhcp协议</p>
+<pre><code>ip dhcp pool v1
+network 192.168.1.0 255.255.255.0
+default-router 192.168.1.1  
+
+ip dhcp pool v2
+network 192.168.2.0 255.255.255.0
+default-router 192.168.2.1
+
+ip dhcp pool v3
+network 192.168.3.0 255.255.255.0
+default-roter 192.168.3.1
+</code></pre></li>
+<li><p>ospf配置</p>
+<p> 在r1上配置ip并设置缺省路由</p>
+<pre><code>ip route 0.0.0.0 0.0.0.0 se0/0/0
+</code></pre><p> 配置ospf，以isp1为例</p>
+<pre><code>int f0/0
+ip add 202.195.12.1 255.255.255.252
+ip os 1 a 0
+
+int f0/1
+ip add 202.195.12.2 255.255.255.252
+ip os 1 a 0
+</code></pre></li>
+<li><p>http服务器配置</p>
+<p> 配置http服务器ip，以ISP4的f0/1端口作为默认网关。<br> sw5上不做任何配置</p>
+</li>
+<li><p>访问控制链表配置</p>
+<p> nat地址转换，将私网地址转换成公网地址</p>
+<pre><code>acc 1 per 192.168.1.0 0.0.0.255
+acc 1 per 192.168.1.0 0.0.0.255
+acc 1 per 192.168.1.0 0.0.0.255
+ip nat inside source list 1 int s0/0/0 overload
+</code></pre><p> R1上s0/0/0端口</p>
+<pre><code>acc 100 deny icmp any any echo
+acc 100 per ip any any
+
+int s0/0/0
+ip acc 100 out
+</code></pre><p> R1上的f0/0.3端口</p>
+<pre><code>acc 101 deny tcp any host 202.195.40.2 eq www
+acc 101 per ip any any
+
+int f0/0.3
+ip acc 101 in
+</code></pre></li>
+</ol>
+<ol>
+<li><p>vlan40 管理者</p>
+<p> 管理者pc上配置地址为192.168.10.1 , 以SW1为例，在SW1上将f0/1配置</p>
+<pre><code>int vl40
+ip add 192.168.10.2 255.255.255.0
+
+int f0/1
+sw acc vl 40
+no sh
+
+测试SW1和管理者pc能ping通
+
+enable password ccie //配置SW1交换机密码（也可以为密文）
+line vty 0 4
+passwoed 123  //配置管理者pc的telnet登录密码
+</code></pre></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://dmonster.top/2017/09/10/NA测试题小综合/" data-id="cjki2idce001c80ugql064t8d" class="article-share-link" data-share="baidu" data-title="NA测试题小综合">分享到</a>
+      
+
+      
+        <a href="http://dmonster.top/2017/09/10/NA测试题小综合/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CCNA/">CCNA</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-CCNP--交换" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/08/14/CCNP--交换/" class="article-date">
@@ -253,7 +419,7 @@ por-chan load-bal ?   //物理接口中如何进行流量分配
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/08/14/CCNP--交换/" data-id="cjjqr1pwa0005t8ug3ytb5mxc" class="article-share-link" data-share="baidu" data-title="CCNP--交换">分享到</a>
+        <a data-url="http://dmonster.top/2017/08/14/CCNP--交换/" data-id="cjki2ida0000480ugldj8ilwc" class="article-share-link" data-share="baidu" data-title="CCNP--交换">分享到</a>
       
 
       
@@ -513,7 +679,7 @@ set metric 100
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/08/14/CCNP--路由EGP/" data-id="cjjqr1puk0000t8ug9dkhcg9k" class="article-share-link" data-share="baidu" data-title="CCNP--路由EGP">分享到</a>
+        <a data-url="http://dmonster.top/2017/08/14/CCNP--路由EGP/" data-id="cjki2ida3000580ugaprhkq0d" class="article-share-link" data-share="baidu" data-title="CCNP--路由EGP">分享到</a>
       
 
       
@@ -837,7 +1003,7 @@ red 协议 sub （metric-type X）（metric ？）
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/07/16/CCNP--路由IGP/" data-id="cjjqr1px3000et8ugm44l4rc5" class="article-share-link" data-share="baidu" data-title="CCNP路由IGP">分享到</a>
+        <a data-url="http://dmonster.top/2017/07/16/CCNP--路由IGP/" data-id="cjki2idbm000t80uglu5mft4y" class="article-share-link" data-share="baidu" data-title="CCNP路由IGP">分享到</a>
       
 
       
@@ -1077,7 +1243,7 @@ print soup.select(&apos;a[class=&quot;sister&quot;]&apos;)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/04/23/BeautifulSoup库/" data-id="cjjqr1pw30004t8ugmiqcajpv" class="article-share-link" data-share="baidu" data-title="BeautifulSoup库">分享到</a>
+        <a data-url="http://dmonster.top/2017/04/23/BeautifulSoup库/" data-id="cjki2id9r000180ugnxqb5bhc" class="article-share-link" data-share="baidu" data-title="BeautifulSoup库">分享到</a>
       
 
       
@@ -1386,7 +1552,7 @@ f.write(&apos;写入的内容&apos;)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/04/19/python学习笔记/" data-id="cjjqr1q09002ft8ug3eyg4x1i" class="article-share-link" data-share="baidu" data-title="pyhon学习笔记">分享到</a>
+        <a data-url="http://dmonster.top/2017/04/19/python学习笔记/" data-id="cjki2idda002380ugmmam5p4x" class="article-share-link" data-share="baidu" data-title="pyhon学习笔记">分享到</a>
       
 
       
@@ -1457,7 +1623,7 @@ print getImg(html)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/04/19/python爬虫入门实验/" data-id="cjjqr1pzy0027t8ug9vhglef0" class="article-share-link" data-share="baidu" data-title="python爬虫入门实验">分享到</a>
+        <a data-url="http://dmonster.top/2017/04/19/python爬虫入门实验/" data-id="cjki2idd7002180ugo1hesytx" class="article-share-link" data-share="baidu" data-title="python爬虫入门实验">分享到</a>
       
 
       
@@ -1650,7 +1816,7 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/04/19/正则表达式/" data-id="cjjqr1pzo0020t8ugv3ruqc6k" class="article-share-link" data-share="baidu" data-title="正则表达式">分享到</a>
+        <a data-url="http://dmonster.top/2017/04/19/正则表达式/" data-id="cjki2iddl002c80ugr28jmoaf" class="article-share-link" data-share="baidu" data-title="正则表达式">分享到</a>
       
 
       
@@ -1767,7 +1933,7 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/04/13/hexo+github创建自己的博客/" data-id="cjjqr1px9000ht8ugvwbajfj0" class="article-share-link" data-share="baidu" data-title="hexo+github搭建自己的博客">分享到</a>
+        <a data-url="http://dmonster.top/2017/04/13/hexo+github创建自己的博客/" data-id="cjki2idc5001480ug1dfmmk6p" class="article-share-link" data-share="baidu" data-title="hexo+github搭建自己的博客">分享到</a>
       
 
       
@@ -2075,7 +2241,7 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/04/06/网络渗透与深度防御笔记/" data-id="cjjqr1pzv0024t8ug410dn3jm" class="article-share-link" data-share="baidu" data-title="网络渗透与深度防御笔记">分享到</a>
+        <a data-url="http://dmonster.top/2017/04/06/网络渗透与深度防御笔记/" data-id="cjki2iddp002f80uglxadzvb3" class="article-share-link" data-share="baidu" data-title="网络渗透与深度防御笔记">分享到</a>
       
 
       
@@ -2105,7 +2271,7 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nginx/">nginx</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/安全/">安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">11</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nginx/">nginx</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/安全/">安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">11</span></li></ul>
     </div>
   </div>
 
@@ -2123,7 +2289,7 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -2133,6 +2299,10 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
     <h3 class="widget-title">近期文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/08/06/nginx搭建简易的文件服务器/">nginx搭建简易的文件服务器</a>
+          </li>
         
           <li>
             <a href="/2018/07/16/crontab-ssh-rsync/">crontab+ssh+rsync</a>
@@ -2148,10 +2318,6 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
         
           <li>
             <a href="/2018/07/04/nginx搭建web服务器/">nginx搭建web服务器</a>
-          </li>
-        
-          <li>
-            <a href="/2018/07/03/mysql主从复制及读写分离/">mysql主从复制及读写分离</a>
           </li>
         
       </ul>

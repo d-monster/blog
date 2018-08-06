@@ -4,22 +4,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>django强行入门——链接mysql数据库 | dmonster&#39;s blog</title>
+  <title>Archives: 2018/8 | dmonster&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="最近纵向搭个网站，于是找了django框架来学习，然而python已经忘得差不多了，之前又花了好几天把python复习了一下，写了几个爬虫练练手，今天终于可以开始操作了。 创建数据库比如创建一个叫做mysite的数据库 更改配置 首先需要更改settings.py   找到DATABASES，改成 DATABASES = { &amp;apos;default&amp;apos;: { &amp;apos;ENGINE&amp;">
-<meta name="keywords" content="笔记">
-<meta property="og:type" content="article">
-<meta property="og:title" content="django强行入门——链接mysql数据库">
-<meta property="og:url" content="http://dmonster.top/2018/03/19/django强行入门——链接mysql数据库/index.html">
+  <meta name="description" content="none">
+<meta property="og:type" content="website">
+<meta property="og:title" content="dmonster&#39;s blog">
+<meta property="og:url" content="http://dmonster.top/archives/2018/08/index.html">
 <meta property="og:site_name" content="dmonster&#39;s blog">
-<meta property="og:description" content="最近纵向搭个网站，于是找了django框架来学习，然而python已经忘得差不多了，之前又花了好几天把python复习了一下，写了几个爬虫练练手，今天终于可以开始操作了。 创建数据库比如创建一个叫做mysite的数据库 更改配置 首先需要更改settings.py   找到DATABASES，改成 DATABASES = { &amp;apos;default&amp;apos;: { &amp;apos;ENGINE&amp;">
+<meta property="og:description" content="none">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://i.imgur.com/fCOTKJd.png">
-<meta property="og:updated_time" content="2018-06-26T09:40:29.346Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="django强行入门——链接mysql数据库">
-<meta name="twitter:description" content="最近纵向搭个网站，于是找了django框架来学习，然而python已经忘得差不多了，之前又花了好几天把python复习了一下，写了几个爬虫练练手，今天终于可以开始操作了。 创建数据库比如创建一个叫做mysite的数据库 更改配置 首先需要更改settings.py   找到DATABASES，改成 DATABASES = { &amp;apos;default&amp;apos;: { &amp;apos;ENGINE&amp;">
-<meta name="twitter:image" content="https://i.imgur.com/fCOTKJd.png">
+<meta name="twitter:title" content="dmonster&#39;s blog">
+<meta name="twitter:description" content="none">
   
     <link rel="alternative" href="/atom.xml" title="dmonster&#39;s blog" type="application/atom+xml">
   
@@ -77,118 +73,40 @@
   </div>
 </header>
     <div class="outer">
-      <section id="main"><article id="post-django强行入门——链接mysql数据库" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/03/19/django强行入门——链接mysql数据库/" class="article-date">
-  <time datetime="2018-03-19T08:17:29.000Z" itemprop="datePublished">2018-03-19</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/python3/">python3</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
+      <section id="main">
   
-    <h1 class="article-title" itemprop="name">
-      django强行入门——链接mysql数据库
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2018" class="archive-year">2018</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2018/08/06/nginx搭建简易的文件服务器/" class="archive-article-date">
+  <time datetime="2018-08-06T09:05:26.000Z" itemprop="datePublished">8月 6</time>
+</a>
+      
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2018/08/06/nginx搭建简易的文件服务器/">nginx搭建简易的文件服务器</a>
     </h1>
   
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      <!-- Table of Contents -->
-      
-        <p>最近纵向搭个网站，于是找了django框架来学习，然而python已经忘得差不多了，之前又花了好几天把python复习了一下，写了几个爬虫练练手，今天终于可以开始操作了。</p>
-<h2 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h2><p>比如创建一个叫做mysite的数据库</p>
-<h2 id="更改配置"><a href="#更改配置" class="headerlink" title="更改配置"></a>更改配置</h2><ul>
-<li><p>首先需要更改settings.py</p>
-<p>  找到DATABASES，改成</p>
-<pre><code>DATABASES = {
-&apos;default&apos;: {
-&apos;ENGINE&apos;: &apos;django.db.backends.mysql&apos;,
-&apos;NAME&apos;: &apos;db_name&apos;,        //数据库的名字
-&apos;HOST&apos;: &apos;&apos;,              //主机名，自己学习用一般是localhost
-&apos;PORT&apos;: &apos;3306&apos;,             //端口，数据库服务的端口，mysql默认是3306
-&apos;USER&apos;: &apos;root&apos;,             //数据库的用户名，一般是要root用户，权限才够
-&apos;PASSWORD&apos;: &apos;41223&apos;,      //root对应的密码
-    }
-}
-</code></pre></li>
-</ul>
-<ul>
-<li><p>更改models.py</p>
-<p>  创建表对应的类，例如：</p>
-<pre><code>class Publisher(models.Model):        //出版商类，对应mysite数据库中的一个表
-    pub_name = models.CharField(max_length=200)
-    city = models.CharField(max_length=200)
-
-class Book(models.Model):            //书类
-    book_name = models.CharField(max_length=200)
-    author = models.CharField(max_length=200)
-    pub_date = models.DateTimeField(&apos;date published&apos;)
-    publish = models.ForeignKey(Publisher, on_delete=models.CASCADE)
-</code></pre><p>  其中各个变量类型对应的方法为：</p>
-<p>  <img src="https://i.imgur.com/fCOTKJd.png" alt=""></p>
-</li>
-</ul>
-<h2 id="同步数据库"><a href="#同步数据库" class="headerlink" title="同步数据库"></a>同步数据库</h2><pre><code>命令行cd到工程下
-
-    python manage.py makemigrations
-    python manage.py migrate
-
-PS：这一步如果报错的话可百度，有很多解决方法。
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://dmonster.top/2018/03/19/django强行入门——链接mysql数据库/" data-id="cjki2idbu000z80uggi9cie2b" class="article-share-link" data-share="baidu" data-title="django强行入门——链接mysql数据库">分享到</a>
-      
-
-      
-        <a href="http://dmonster.top/2018/03/19/django强行入门——链接mysql数据库/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
-
-    </footer>
+    </header>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2018/03/25/windows下安装redis/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">
-        
-          windows下安装redis
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2018/03/18/pycharm-professional安装遇到的小麻烦/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">pycharm professional安装遇到的小麻烦</div>
-    </a>
-  
-</nav>
-
-  
 </article>
+  
+  
+    </div></section>
+  
 
-
-  <section id="comments">
-    <div id="ds-thread" class="ds-thread" data-thread-key="2018/03/19/django强行入门——链接mysql数据库/" data-title="django强行入门——链接mysql数据库" data-url="http://dmonster.top/2018/03/19/django强行入门——链接mysql数据库/"></div>
-  </section>
 </section>
       
       <aside id="sidebar">
