@@ -168,6 +168,95 @@
 
 
   
+    <article id="post-mysql存储引擎" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/08/07/mysql存储引擎/" class="article-date">
+  <time datetime="2018-08-07T06:53:48.000Z" itemprop="datePublished">2018-08-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/mysql/">mysql</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/08/07/mysql存储引擎/">mysql存储引擎</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <!-- Table of Contents -->
+      
+        <p>今天面试给问到了，平时真没怎那么注意，所以赶紧学一波，顺便记下来</p>
+<h1 id="查看mysql存储引擎"><a href="#查看mysql存储引擎" class="headerlink" title="查看mysql存储引擎"></a>查看mysql存储引擎</h1><ol>
+<li><p>查看当前的mysql提供什么存储引擎</p>
+<pre><code>show engines;  
+</code></pre><p>  <img src="https://i.imgur.com/eCczMzO.png" alt=""></p>
+</li>
+<li><p>查看当前的mysql默认的存储引擎</p>
+<pre><code>show variables like &apos;%storage_engine%&apos;;
+</code></pre><p> <img src="https://i.imgur.com/Al78hsz.png" alt=""></p>
+</li>
+<li><p>查看某个表用的是什么引擎</p>
+<pre><code>show create table 表名;
+</code></pre><p> <img src="https://i.imgur.com/MHt2fmk.png" alt=""></p>
+</li>
+<li><p>指定存储引擎创建表</p>
+<pre><code>create table test(
+xxx xxx xxx
+)ENGINE=INNODB  DEFAULT CHARSET=utf8 ;
+</code></pre></li>
+<li><p>修改表的存储引擎</p>
+<pre><code>alter table 表名 engine=innodb;
+</code></pre></li>
+</ol>
+<h1 id="mysql中各种引擎的区别和特点"><a href="#mysql中各种引擎的区别和特点" class="headerlink" title="mysql中各种引擎的区别和特点"></a>mysql中各种引擎的区别和特点</h1><h2 id="MyISAM"><a href="#MyISAM" class="headerlink" title="MyISAM"></a>MyISAM</h2><p>它不支持事务，也不支持外键，尤其是访问速度快，对事务完整性没有要求。以SELECT、INSERT为主的应用基本都可以使用这个引擎来创建表。<br>每个MyISAM在磁盘上存储成3个文件，其中文件名和表名都相同，但是扩展名分别为</p>
+<ul>
+<li>.frm(存储表定义)</li>
+<li>MYD（MYDATA，存储数据）</li>
+<li>MYI（MYINDEX，存储索引）</li>
+</ul>
+<p>数据文件和索引文件可以放置在不同的目录，平均分配IO，获取更快的速度。</p>
+<p>MyISAM通过一个标志来区分这个数据表在上次使用后是不是被正常关闭了，并且每次打开一个MyISAM数据表都会自动检查标志来进行必要的修复处理，即使是这样，MyISAM数据表还是可能会是损坏，所以可以使用CHECK TABLE语句来检查MyISAM表的健康，并用REPAIR TABLE语句修复一个损坏到MyISAM表。</p>
+<p>MyISAM的表还支持3种不同的存储格式：</p>
+<ul>
+<li>静态(固定长度)表，默认的存储格式。静态表中的字段都是非变长字段，这样每个记录都是固定长度的，这种存储方式的优点是存储非常迅速，容易缓存，出现故障容易恢复；缺点是占用的空间通常比动态表多。</li>
+<li>动态表，包含变长字段，记录不是固定长度的，这样存储的优点是占用空间较少，但是频繁到更新删除记录会产生碎片，需要定期执行OPTIMIZE TABLE语句或myisamchk -r命令来改善性能，并且出现故障的时候恢复相对比较困难。</li>
+<li>压缩表，由myisamchk工具创建，占据非常小的空间，因为每条记录都是被单独压缩的，所以只有非常小的访问开支。</li>
+</ul>
+<h2 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h2><p>InnoDB存储引擎提供了具有提交、回滚和崩溃恢复能力的事务安全。并且是mysql中唯一支持外键的存储引擎。但是对比MyISAM的存储引擎，InnoDB写的处理效率差一些并且会占用更多的磁盘空间以保留数据和索引。</p>
+<h1 id="MEMORY"><a href="#MEMORY" class="headerlink" title="MEMORY"></a>MEMORY</h1><p>memory使用存在内存中的内容来创建表。每个MEMORY表实际对应一个磁盘文件，格式是.frm。MEMORY类型的表访问非常快，因为它到数据是放在内存中的，并且默认使用HASH索引，但是一旦服务器关闭，表中的数据就会丢失，但表还会继续存在。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://dmonster.top/2018/08/07/mysql存储引擎/" data-id="cjkjg342c00006ougczq00oph" class="article-share-link" data-share="baidu" data-title="mysql存储引擎">分享到</a>
+      
+
+      
+        <a href="http://dmonster.top/2018/08/07/mysql存储引擎/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-nginx搭建简易的文件服务器" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/08/06/nginx搭建简易的文件服务器/" class="article-date">
@@ -984,114 +1073,6 @@ select * from user
 
 
   
-    <article id="post-mysql-prox搭建以及遇到的问题" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/06/28/mysql-prox搭建以及遇到的问题/" class="article-date">
-  <time datetime="2018-06-28T06:03:19.000Z" itemprop="datePublished">2018-06-28</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/mysql/">mysql</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/06/28/mysql-prox搭建以及遇到的问题/">mysql-prox搭建以及遇到的问题</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      <!-- Table of Contents -->
-      
-        <ul>
-<li>proxy：uhost-ubuntu</li>
-<li>mysql：udb</li>
-</ul>
-<p>描述：因为udb在内网，不能通过外网直接访问，所以需要一个连接eip的uhost来做proxy，且uhost和MySQL须在同一内网中互相能ping通</p>
-<h1 id="搭建过程"><a href="#搭建过程" class="headerlink" title="搭建过程"></a>搭建过程</h1><ul>
-<li><p>下载安装</p>
-<pre><code>apt-get install mysql-proxy
-</code></pre></li>
-<li><p>获取版本信息</p>
-<pre><code>mysql-proxy -V
-</code></pre><p>  <img src="https://i.imgur.com/3vf31oT.png" alt=""><br>  ps：注意.lua文件    </p>
-</li>
-<li><p>配置</p>
-<pre><code>vi /etc/mysql-proxy.cnf
-
-输入：
-    [mysql-proxy]            #标志
-    admin-username=root     #admin用户名
-    admin-password=123fsck    #admin密码
-    admin-lua-script=/usr/lib64/mysql-proxy/lua/admin.lua    #lua位置，参见上面的版本信息
-    daemon=true        # mysql-proxy以守护进程方式运行
-    keepalive=true        #保持连接启动进程会有2个， 一号进程用来监视二号进程
-    proxy-backend-addresses=10.6.X.XX  #目标地址，udb内网地址，默认端口3306
-    log-file=/var/log/mysql-proxy.log
-    log-level=debug
-
-chmod 0660 /etc/mysql-proxy.cnf   //更改权限
-</code></pre></li>
-<li><p>开启服务</p>
-<pre><code>mysql-proxy --defaults-file=/etc/mysql-proxy.cnf
-</code></pre></li>
-</ul>
-<h2 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h2><ol>
-<li><p>uhost的ubuntu的apt源过旧，无法安装mysql-proxy </p>
-<ol>
-<li><p>添加apt-get源： </p>
-<pre><code>vi /etc/apt/sources.list
-</code></pre><p> 源可参考：<a href="https://blog.csdn.net/chentengkui/article/details/72633988" title="国内外apt源" target="_blank" rel="noopener">国内外apt源</a></p>
-</li>
-<li><p>添加完之后: </p>
-<pre><code>apt-get update  //更新软件源
-</code></pre></li>
-</ol>
-</li>
-<li><p>配置完成后依旧无法添加</p>
-<ol>
-<li><p>在控制台登陆mysql，检查用户名，密码是否正确</p>
-</li>
-<li><p>在uhost上远程登陆mysql，检查udb的mysql当前用户是否允许远程登陆</p>
-</li>
-<li><p>检查当前主机网络是否连通uhost   </p>
-</li>
-<li><p>检查uhost外网防火墙是否打开proxy配置的端口</p>
-</li>
-</ol>
-</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://dmonster.top/2018/06/28/mysql-prox搭建以及遇到的问题/" data-id="cjkjfl7jj0015m0ug5xw3bdgf" class="article-share-link" data-share="baidu" data-title="mysql-prox搭建以及遇到的问题">分享到</a>
-      
-
-      
-        <a href="http://dmonster.top/2018/06/28/mysql-prox搭建以及遇到的问题/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/小玩意/">小玩意</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -1105,7 +1086,7 @@ chmod 0660 /etc/mysql-proxy.cnf   //更改权限
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nginx/">nginx</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/安全/">安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">11</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nginx/">nginx</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/安全/">安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">11</span></li></ul>
     </div>
   </div>
 
@@ -1114,7 +1095,7 @@ chmod 0660 /etc/mysql-proxy.cnf   //更改权限
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCIE/">CCIE</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/">CCNA</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/">CCNP</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/小玩意/">小玩意</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/笔记/">笔记</a><span class="tag-list-count">16</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCIE/">CCIE</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/">CCNA</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/">CCNP</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/小玩意/">小玩意</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/笔记/">笔记</a><span class="tag-list-count">17</span></li></ul>
     </div>
   </div>
 
@@ -1123,7 +1104,7 @@ chmod 0660 /etc/mysql-proxy.cnf   //更改权限
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -1139,6 +1120,10 @@ chmod 0660 /etc/mysql-proxy.cnf   //更改权限
           </li>
         
           <li>
+            <a href="/2018/08/07/mysql存储引擎/">mysql存储引擎</a>
+          </li>
+        
+          <li>
             <a href="/2018/08/06/nginx搭建简易的文件服务器/">nginx搭建简易的文件服务器</a>
           </li>
         
@@ -1148,10 +1133,6 @@ chmod 0660 /etc/mysql-proxy.cnf   //更改权限
         
           <li>
             <a href="/2018/07/12/ping-traceroute-mtr/">ping,traceroute,mtr</a>
-          </li>
-        
-          <li>
-            <a href="/2018/07/05/nginx负载均衡/">nginx负载均衡</a>
           </li>
         
       </ul>
