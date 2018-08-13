@@ -4,24 +4,23 @@
 <head>
   <meta charset="utf-8">
   
-  <title>mysql存储引擎 | dmonster&#39;s blog</title>
+  <title>linux内核相关 | dmonster&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="今天面试给问到了，平时真没怎那么注意，所以赶紧学一波，顺便记下来 查看mysql存储引擎 查看当前的mysql提供什么存储引擎 show engines;       查看当前的mysql默认的存储引擎 show variables like &amp;apos;%storage_engine%&amp;apos;;    查看某个表用的是什么引擎 show create table 表名;    指定存储引擎创">
+  <meta name="description" content="今天因为有个工具需3.5以上的内核版本，所以又从大佬那里偷了一手内核升级的方法，这里先写一点，以后慢慢更新，在此感谢大佬，这篇笔记署名–汤佳舜 centosyum工具升级elrepouname- r    #查看内核版本  先到elrepo官网看一手教程  http://elrepo.org/tiki/tiki-index.php  获取公钥 rpm --import https://www.el">
 <meta name="keywords" content="笔记">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mysql存储引擎">
-<meta property="og:url" content="http://dmonster.top/2018/08/07/mysql存储引擎/index.html">
+<meta property="og:title" content="linux内核相关">
+<meta property="og:url" content="http://dmonster.top/2018/08/10/linux内核相关/index.html">
 <meta property="og:site_name" content="dmonster&#39;s blog">
-<meta property="og:description" content="今天面试给问到了，平时真没怎那么注意，所以赶紧学一波，顺便记下来 查看mysql存储引擎 查看当前的mysql提供什么存储引擎 show engines;       查看当前的mysql默认的存储引擎 show variables like &amp;apos;%storage_engine%&amp;apos;;    查看某个表用的是什么引擎 show create table 表名;    指定存储引擎创">
+<meta property="og:description" content="今天因为有个工具需3.5以上的内核版本，所以又从大佬那里偷了一手内核升级的方法，这里先写一点，以后慢慢更新，在此感谢大佬，这篇笔记署名–汤佳舜 centosyum工具升级elrepouname- r    #查看内核版本  先到elrepo官网看一手教程  http://elrepo.org/tiki/tiki-index.php  获取公钥 rpm --import https://www.el">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://i.imgur.com/eCczMzO.png">
-<meta property="og:image" content="https://i.imgur.com/Al78hsz.png">
-<meta property="og:image" content="https://i.imgur.com/MHt2fmk.png">
-<meta property="og:updated_time" content="2018-08-07T08:30:29.196Z">
+<meta property="og:image" content="https://i.imgur.com/GrNkehT.png">
+<meta property="og:image" content="https://i.imgur.com/nbIBzmF.png">
+<meta property="og:updated_time" content="2018-08-10T09:57:21.458Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mysql存储引擎">
-<meta name="twitter:description" content="今天面试给问到了，平时真没怎那么注意，所以赶紧学一波，顺便记下来 查看mysql存储引擎 查看当前的mysql提供什么存储引擎 show engines;       查看当前的mysql默认的存储引擎 show variables like &amp;apos;%storage_engine%&amp;apos;;    查看某个表用的是什么引擎 show create table 表名;    指定存储引擎创">
-<meta name="twitter:image" content="https://i.imgur.com/eCczMzO.png">
+<meta name="twitter:title" content="linux内核相关">
+<meta name="twitter:description" content="今天因为有个工具需3.5以上的内核版本，所以又从大佬那里偷了一手内核升级的方法，这里先写一点，以后慢慢更新，在此感谢大佬，这篇笔记署名–汤佳舜 centosyum工具升级elrepouname- r    #查看内核版本  先到elrepo官网看一手教程  http://elrepo.org/tiki/tiki-index.php  获取公钥 rpm --import https://www.el">
+<meta name="twitter:image" content="https://i.imgur.com/GrNkehT.png">
   
     <link rel="alternative" href="/atom.xml" title="dmonster&#39;s blog" type="application/atom+xml">
   
@@ -79,14 +78,14 @@
   </div>
 </header>
     <div class="outer">
-      <section id="main"><article id="post-mysql存储引擎" class="article article-type-post" itemscope itemprop="blogPost">
+      <section id="main"><article id="post-linux内核相关" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/08/07/mysql存储引擎/" class="article-date">
-  <time datetime="2018-08-07T06:53:48.000Z" itemprop="datePublished">2018-08-07</time>
+    <a href="/2018/08/10/linux内核相关/" class="article-date">
+  <time datetime="2018-08-10T08:20:06.000Z" itemprop="datePublished">2018-08-10</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/mysql/">mysql</a>
+    <a class="article-category-link" href="/categories/linux/">linux</a>
   </div>
 
   </div>
@@ -97,7 +96,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      mysql存储引擎
+      linux内核相关
     </h1>
   
 
@@ -109,58 +108,55 @@
       
         <div id="toc" class="toc-article">
           <strong class="toc-title">文章目录</strong>
-          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#查看mysql存储引擎"><span class="toc-number">1.</span> <span class="toc-text">查看mysql存储引擎</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#mysql中各种引擎的区别和特点"><span class="toc-number">2.</span> <span class="toc-text">mysql中各种引擎的区别和特点</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MyISAM"><span class="toc-number">2.1.</span> <span class="toc-text">MyISAM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#InnoDB"><span class="toc-number">2.2.</span> <span class="toc-text">InnoDB</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MEMORY"><span class="toc-number">3.</span> <span class="toc-text">MEMORY</span></a></li></ol>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#centos"><span class="toc-number">1.</span> <span class="toc-text">centos</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#yum工具升级elrepo"><span class="toc-number">1.1.</span> <span class="toc-text">yum工具升级elrepo</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#F-amp-Q"><span class="toc-number">2.</span> <span class="toc-text">F&amp;Q</span></a></li></ol>
         </div>
       
-        <p>今天面试给问到了，平时真没怎那么注意，所以赶紧学一波，顺便记下来</p>
-<h1 id="查看mysql存储引擎"><a href="#查看mysql存储引擎" class="headerlink" title="查看mysql存储引擎"></a>查看mysql存储引擎</h1><ol>
-<li><p>查看当前的mysql提供什么存储引擎</p>
-<pre><code>show engines;  
-</code></pre><p>  <img src="https://i.imgur.com/eCczMzO.png" alt=""></p>
-</li>
-<li><p>查看当前的mysql默认的存储引擎</p>
-<pre><code>show variables like &apos;%storage_engine%&apos;;
-</code></pre><p> <img src="https://i.imgur.com/Al78hsz.png" alt=""></p>
-</li>
-<li><p>查看某个表用的是什么引擎</p>
-<pre><code>show create table 表名;
-</code></pre><p> <img src="https://i.imgur.com/MHt2fmk.png" alt=""></p>
-</li>
-<li><p>指定存储引擎创建表</p>
-<pre><code>create table test(
-xxx xxx xxx
-)ENGINE=INNODB  DEFAULT CHARSET=utf8 ;
+        <p>今天因为有个工具需3.5以上的内核版本，所以又从大佬那里偷了一手内核升级的方法，这里先写一点，以后慢慢更新，在此感谢大佬，这篇笔记署名–汤佳舜</p>
+<h1 id="centos"><a href="#centos" class="headerlink" title="centos"></a>centos</h1><h2 id="yum工具升级elrepo"><a href="#yum工具升级elrepo" class="headerlink" title="yum工具升级elrepo"></a>yum工具升级elrepo</h2><pre><code>uname- r    #查看内核版本
+</code></pre><ol>
+<li><p>先到elrepo官网看一手教程</p>
+<p> <a href="http://elrepo.org/tiki/tiki-index.php" target="_blank" rel="noopener">http://elrepo.org/tiki/tiki-index.php</a></p>
+<ol>
+<li><p>获取公钥</p>
+<pre><code>rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
 </code></pre></li>
-<li><p>修改表的存储引擎</p>
-<pre><code>alter table 表名 engine=innodb;
+<li><p>获取rpm源</p>
+<pre><code>rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-3.el7.elrepo.noarch.rpm  #centos7
+rpm -Uvh http://www.elrepo.org/elrepo-release-6-8.el6.elrepo.noarch.rpm   #centos6
+</code></pre></li>
+<li><p>安装内核</p>
+<pre><code>yum --enablerepo=elrepo-kernel install kernel-ml
 </code></pre></li>
 </ol>
-<h1 id="mysql中各种引擎的区别和特点"><a href="#mysql中各种引擎的区别和特点" class="headerlink" title="mysql中各种引擎的区别和特点"></a>mysql中各种引擎的区别和特点</h1><h2 id="MyISAM"><a href="#MyISAM" class="headerlink" title="MyISAM"></a>MyISAM</h2><p>它不支持事务，也不支持外键，尤其是访问速度快，对事务完整性没有要求。以SELECT、INSERT为主的应用基本都可以使用这个引擎来创建表。<br>每个MyISAM在磁盘上存储成3个文件，其中文件名和表名都相同，但是扩展名分别为</p>
-<ul>
-<li>.frm(存储表定义)</li>
-<li>MYD（MYDATA，存储数据）</li>
-<li>MYI（MYINDEX，存储索引）</li>
-</ul>
-<p>数据文件和索引文件可以放置在不同的目录，平均分配IO，获取更快的速度。</p>
-<p>MyISAM通过一个标志来区分这个数据表在上次使用后是不是被正常关闭了，并且每次打开一个MyISAM数据表都会自动检查标志来进行必要的修复处理，即使是这样，MyISAM数据表还是可能会是损坏，所以可以使用CHECK TABLE语句来检查MyISAM表的健康，并用REPAIR TABLE语句修复一个损坏到MyISAM表。</p>
-<p>MyISAM的表还支持3种不同的存储格式：</p>
-<ul>
-<li>静态(固定长度)表，默认的存储格式。静态表中的字段都是非变长字段，这样每个记录都是固定长度的，这种存储方式的优点是存储非常迅速，容易缓存，出现故障容易恢复；缺点是占用的空间通常比动态表多。</li>
-<li>动态表，包含变长字段，记录不是固定长度的，这样存储的优点是占用空间较少，但是频繁到更新删除记录会产生碎片，需要定期执行OPTIMIZE TABLE语句或myisamchk -r命令来改善性能，并且出现故障的时候恢复相对比较困难。</li>
-<li>压缩表，由myisamchk工具创建，占据非常小的空间，因为每条记录都是被单独压缩的，所以只有非常小的访问开支。</li>
-</ul>
-<h2 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h2><p>InnoDB存储引擎提供了具有提交、回滚和崩溃恢复能力的事务安全。并且是mysql中唯一支持外键的存储引擎。但是对比MyISAM的存储引擎，InnoDB写的处理效率差一些并且会占用更多的磁盘空间以保留数据和索引。</p>
-<h1 id="MEMORY"><a href="#MEMORY" class="headerlink" title="MEMORY"></a>MEMORY</h1><p>memory使用存在内存中的内容来创建表。每个MEMORY表实际对应一个磁盘文件，格式是.frm。MEMORY类型的表访问非常快，因为它到数据是放在内存中的，并且默认使用HASH索引，但是一旦服务器关闭，表中的数据就会丢失，但表还会继续存在。</p>
+</li>
+<li><p>查看安装内核并设置</p>
+<pre><code>awk -F\&apos; &apos;$1==&quot;menuentry &quot; {print i++ &quot; : &quot; $2}&apos; /etc/grub2.cfg
+</code></pre><p> 输出应该是这样的：<br> <img src="https://i.imgur.com/GrNkehT.png" alt=""><br> 0就是我们刚才装的</p>
+</li>
+<li><p>选择启动加载的内核</p>
+<p> centos7：到/etc/default/grub下改GRUB_DEFAULT参数值为0或者直接</p>
+<pre><code>grub2-set-default 0
+</code></pre><p> centos6：到/etc/grub.conf下改default参数值为0</p>
+</li>
+</ol>
+<h1 id="F-amp-Q"><a href="#F-amp-Q" class="headerlink" title="F&amp;Q"></a>F&amp;Q</h1><ol>
+<li><p>yum安装内核的时候回显找不到package</p>
+<p> 这个一般是yum源的问题，如果是云主机，比如某云就对虚机的yum源做了限制，阻止下载内核相关工具，以保护内核，只要在 /etc/yum.conf中把最后一行的限制注释掉就行了（ps：我连图都是偷来的）<br> <img src="https://i.imgur.com/nbIBzmF.png" alt=""></p>
+</li>
+<li><p>内核版本不是最新，或者获取不到</p>
+<p> 有可能是因为我这篇文章太久了之类的，可以在获取内核版本的rpm源的时候指定源来获取—&gt;<a href="http://elrepo.reloumirrors.net/kernel/el7/x86_64/RPMS/" target="_blank" rel="noopener">http://elrepo.reloumirrors.net/kernel/el7/x86_64/RPMS/</a></p>
+</li>
+</ol>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/08/07/mysql存储引擎/" data-id="cjks1qzez001csougfw8due3i" class="article-share-link" data-share="baidu" data-title="mysql存储引擎">分享到</a>
+        <a data-url="http://dmonster.top/2018/08/10/linux内核相关/" data-id="cjks1qzes0016sougsjj0roxl" class="article-share-link" data-share="baidu" data-title="linux内核相关">分享到</a>
       
 
       
-        <a href="http://dmonster.top/2018/08/07/mysql存储引擎/#ds-thread" class="article-comment-link">评论</a>
+        <a href="http://dmonster.top/2018/08/10/linux内核相关/#ds-thread" class="article-comment-link">评论</a>
       
 
       
@@ -172,19 +168,10 @@ xxx xxx xxx
     
 <nav id="article-nav">
   
-    <a href="/2018/08/07/mysql-binlog日志/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">
-        
-          mysql binlog日志
-        
-      </div>
-    </a>
   
-  
-    <a href="/2018/08/06/nginx搭建简易的文件服务器/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2018/08/07/mysql-binlog日志/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">nginx搭建简易的文件服务器</div>
+      <div class="article-nav-title">mysql binlog日志</div>
     </a>
   
 </nav>
@@ -194,7 +181,7 @@ xxx xxx xxx
 
 
   <section id="comments">
-    <div id="ds-thread" class="ds-thread" data-thread-key="2018/08/07/mysql存储引擎/" data-title="mysql存储引擎" data-url="http://dmonster.top/2018/08/07/mysql存储引擎/"></div>
+    <div id="ds-thread" class="ds-thread" data-thread-key="2018/08/10/linux内核相关/" data-title="linux内核相关" data-url="http://dmonster.top/2018/08/10/linux内核相关/"></div>
   </section>
 </section>
       
