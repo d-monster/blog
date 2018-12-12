@@ -75,6 +75,135 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-zabbix搭建" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/08/zabbix搭建/" class="article-date">
+  <time datetime="2018-11-08T05:49:50.000Z" itemprop="datePublished">2018-11-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/zabbix/">zabbix</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/11/08/zabbix搭建/">zabbix搭建</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <!-- Table of Contents -->
+      
+        <h2 id="安装php"><a href="#安装php" class="headerlink" title="安装php"></a>安装php</h2><p>yum安装了几次都有各种各样的库安装不上，所以还是老老实实到官网wget一个吧 <a href="http://www.php.net/downloads.php" target="_blank" rel="noopener">http://www.php.net/downloads.php</a> </p>
+<ol>
+<li><p>wget下之后解压，进入php目录，配置：</p>
+<p> ./configure –prefix=/usr/local/php-5.5.0 –with-config-file-path=/usr/local/php-5.5.0/etc –with-bz2 –with-curl –enable-ftp –enable-sockets –disable-ipv6 –with-gd –with-jpeg-dir=/usr/local –with-png-dir=/usr/local –with-freetype-dir=/usr/local –enable-gd-native-ttf –with-iconv-dir=/usr/local –enable-mbstring –enable-calendar –with-gettext –with-libxml-dir=/usr/local –with-zlib –with-pdo-mysql=mysqlnd –with-mysqli=mysqlnd –with-mysql=mysqlnd –enable-dom –enable-xml –enable-fpm –with-libdir=lib64<br> make<br> make install<br>最后把php-fpm开启就可以了（端口9000）</p>
+</li>
+</ol>
+<h2 id="安装mysql"><a href="#安装mysql" class="headerlink" title="安装mysql"></a>安装mysql</h2><p>不废话了</p>
+<h2 id="安装nginx-apache"><a href="#安装nginx-apache" class="headerlink" title="安装nginx/apache"></a>安装nginx/apache</h2><p>只要是一个服务端中间件跑web页面就可以，我用的centos，就用自带的apache好了，直接把.php文件放到html目录下就好了</p>
+<h2 id="安装zabbix"><a href="#安装zabbix" class="headerlink" title="安装zabbix"></a>安装zabbix</h2><p>这里安装的是zabbix4.0，具体的步骤官网比较全，但是比较乱，这里整理一下，推荐源码安装</p>
+<h3 id="新建zabbix用户"><a href="#新建zabbix用户" class="headerlink" title="新建zabbix用户"></a>新建zabbix用户</h3><pre><code>groupadd zabbix
+useradd -g zabbix zabbix
+</code></pre><h2 id="下载安装zabbix"><a href="#下载安装zabbix" class="headerlink" title="下载安装zabbix"></a>下载安装zabbix</h2><p>解压后</p>
+<pre><code>./configure --enable-server --enable-agent --with-mysql --enable-ipv6 --with-net-snmp --with-libcurl --with-libxml2
+make install
+zabbix_server //启动zabbix
+</code></pre><h2 id="导入数据库"><a href="#导入数据库" class="headerlink" title="导入数据库"></a>导入数据库</h2><p>因为zabbix需要一个数据库来存放抓取到的监控数据所以需要导入zabbix的给你创建好的一个数据库</p>
+<pre><code>mysql&gt; create database zabbix character set utf8 collate utf8_bin;
+mysql&gt; grant all privileges on zabbix.* to zabbix@localhost identified by &apos;&lt;password&gt;&apos;;
+cd database/mysql
+mysql -uzabbix -p&lt;password&gt; zabbix &lt; schema.sql
+//官方文档里写了，如果你只是要创建zabbix proxy的数据库，那么就不需要下面两个表了
+mysql -uzabbix -p&lt;password&gt; zabbix &lt; images.sql
+mysql -uzabbix -p&lt;password&gt; zabbix &lt; data.sql
+</code></pre><h2 id="导入web页面"><a href="#导入web页面" class="headerlink" title="导入web页面"></a>导入web页面</h2><p>用apache的话很简单，只要把php文件cp到html目录下即可</p>
+<pre><code>centos：
+mkdir /var/www/html/zabbix
+cd 源码目录下/frontends/php
+cp -a . /var/www/html/zabbix
+</code></pre><h2 id="检查"><a href="#检查" class="headerlink" title="检查"></a>检查</h2><p>这时候你至少要有3的重要的端口是监听的</p>
+<ol>
+<li>9000 php</li>
+<li>80 web</li>
+<li>3306 mysql</li>
+</ol>
+<h2 id="配置zabbix"><a href="#配置zabbix" class="headerlink" title="配置zabbix"></a>配置zabbix</h2><p>这时候浏览器登陆你的zabbixweb页面，不出意外会出来这个sha diao 东西<br><img src="https://i.imgur.com/Bd1pb8E.png" alt=""></p>
+<p>按照他标红的建议参数配置/etc/php.ini文件，大概是这几个</p>
+<pre><code>max_execution_time = 300 
+memory_limit = 128M 
+post_max_size = 16M 
+upload_max_filesize = 2M 
+max_input_time = 300 
+date.timezone = &quot;Asia/Shanghai&quot;
+</code></pre><p>然后你会发现有好多依赖库没有安装，你可以一个一个按照他需要的装上也可以</p>
+<pre><code>yum install php*
+</code></pre><h2 id="常见报错"><a href="#常见报错" class="headerlink" title="常见报错"></a>常见报错</h2><ol>
+<li><p>安装zabbix时./configure 会出来一系列问题</p>
+<ol>
+<li><p>configure: error: Not found mysqlclient library</p>
+<pre><code>yum -y install mysql-devel
+</code></pre></li>
+<li><p>onfigure: error: Invalid Net-SNMP directory - unable to find net-snmp-config</p>
+<pre><code>yum -y install libcurl-devel
+yum -y install net-snmp-devel
+</code></pre></li>
+<li><p>configure: error: LIBXML2 library not found </p>
+<pre><code>yum -y install libxml2-devel
+</code></pre></li>
+<li><p>configure: error: unixODBC library not found</p>
+<pre><code>yum -y install unixODBC-devel
+</code></pre></li>
+<li><p>Invalid OPENIPMI directory - unable to find ipmiif.h</p>
+<pre><code>yum -y install OpenIPMI-devel
+</code></pre></li>
+<li><p>Curl library not found   </p>
+<pre><code>yum -y install curl-devel
+</code></pre></li>
+<li><p>configure: error: Unable to use libevent (libevent check failed) </p>
+<pre><code>yum install libevent-devel -y
+</code></pre></li>
+</ol>
+</li>
+<li><p>安装完成登陆web后显示 zabbix server is not running</p>
+<p> 说明你的zabbix没有起来，思路：</p>
+<ol>
+<li>看10051端口（zabbix_server的端口）有没有起来</li>
+<li><p>看/tmp/zabbix_server.log日志报什么错</p>
+<p> 我是日志报错是显示mysql没登上，没用密码，所以找到zabbix_server.conf文件，添加一条DBPassword=password，重启就可以了</p>
+</li>
+</ol>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://dmonster.top/2018/11/08/zabbix搭建/" data-id="cjpkk4so4002mc8ugs89ca5if" class="article-share-link" data-share="baidu" data-title="zabbix搭建">分享到</a>
+      
+
+      
+        <a href="http://dmonster.top/2018/11/08/zabbix搭建/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-事务的隔离级别及脏读，幻读" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/09/20/事务的隔离级别及脏读，幻读/" class="article-date">
@@ -109,7 +238,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/09/20/事务的隔离级别及脏读，幻读/" data-id="cjp80dt8q0028p8ugiaffs5xp" class="article-share-link" data-share="baidu" data-title="事务的隔离级别及脏读，幻读">分享到</a>
+        <a data-url="http://dmonster.top/2018/09/20/事务的隔离级别及脏读，幻读/" data-id="cjpkk4so7002pc8ug7zlv5dok" class="article-share-link" data-share="baidu" data-title="事务的隔离级别及脏读，幻读">分享到</a>
       
 
       
@@ -195,7 +324,7 @@ rpm -Uvh http://www.elrepo.org/elrepo-release-6-8.el6.elrepo.noarch.rpm   #cento
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/08/10/linux内核相关/" data-id="cjp80dt70000xp8ug2j9nel3a" class="article-share-link" data-share="baidu" data-title="linux内核相关">分享到</a>
+        <a data-url="http://dmonster.top/2018/08/10/linux内核相关/" data-id="cjpkk4slz000xc8ug9rmjknqt" class="article-share-link" data-share="baidu" data-title="linux内核相关">分享到</a>
       
 
       
@@ -288,7 +417,7 @@ rpm -Uvh http://www.elrepo.org/elrepo-release-6-8.el6.elrepo.noarch.rpm   #cento
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/08/07/mysql-binlog日志/" data-id="cjp80dt7q001ip8ugzi605okf" class="article-share-link" data-share="baidu" data-title="mysql binlog日志">分享到</a>
+        <a data-url="http://dmonster.top/2018/08/07/mysql-binlog日志/" data-id="cjpkk4sm30011c8ug41qbvyxp" class="article-share-link" data-share="baidu" data-title="mysql binlog日志">分享到</a>
       
 
       
@@ -377,7 +506,7 @@ xxx xxx xxx
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/08/07/mysql存储引擎/" data-id="cjp80dt760012p8ugevn52roc" class="article-share-link" data-share="baidu" data-title="mysql存储引擎">分享到</a>
+        <a data-url="http://dmonster.top/2018/08/07/mysql存储引擎/" data-id="cjpkk4smh001cc8ugp284xhkc" class="article-share-link" data-share="baidu" data-title="mysql存储引擎">分享到</a>
       
 
       
@@ -440,7 +569,7 @@ location / {
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/08/06/nginx搭建简易的文件服务器/" data-id="cjp80dt7a0015p8ug8wg0e7d2" class="article-share-link" data-share="baidu" data-title="nginx搭建简易的文件服务器">分享到</a>
+        <a data-url="http://dmonster.top/2018/08/06/nginx搭建简易的文件服务器/" data-id="cjpkk4sn2001rc8ugr89zzzvn" class="article-share-link" data-share="baidu" data-title="nginx搭建简易的文件服务器">分享到</a>
       
 
       
@@ -520,7 +649,7 @@ location / {
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/07/16/crontab-ssh-rsync/" data-id="cjp80dt68000gp8ugvi4rqln9" class="article-share-link" data-share="baidu" data-title="crontab+ssh+rsync">分享到</a>
+        <a data-url="http://dmonster.top/2018/07/16/crontab-ssh-rsync/" data-id="cjpkk4slj000mc8ugnosh9hr5" class="article-share-link" data-share="baidu" data-title="crontab+ssh+rsync">分享到</a>
       
 
       
@@ -653,7 +782,7 @@ traceroute to 117.50.43.183 (117.50.43.183), 30 hops max, 60 byte packets
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/07/12/ping-traceroute-mtr/" data-id="cjp80dt8f0020p8ugn535nawo" class="article-share-link" data-share="baidu" data-title="ping,traceroute,mtr">分享到</a>
+        <a data-url="http://dmonster.top/2018/07/12/ping-traceroute-mtr/" data-id="cjpkk4snb001zc8ugzp6lpoxd" class="article-share-link" data-share="baidu" data-title="ping,traceroute,mtr">分享到</a>
       
 
       
@@ -735,7 +864,7 @@ traceroute to 117.50.43.183 (117.50.43.183), 30 hops max, 60 byte packets
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/07/05/nginx负载均衡/" data-id="cjp80dt7z001pp8ugyk6nmb8a" class="article-share-link" data-share="baidu" data-title="nginx负载均衡">分享到</a>
+        <a data-url="http://dmonster.top/2018/07/05/nginx负载均衡/" data-id="cjpkk4sn6001vc8ugqz0hd227" class="article-share-link" data-share="baidu" data-title="nginx负载均衡">分享到</a>
       
 
       
@@ -928,7 +1057,7 @@ location /html/ {
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2018/07/04/nginx搭建web服务器/" data-id="cjp80dt7k001dp8ug9x5jozc9" class="article-share-link" data-share="baidu" data-title="nginx搭建web服务器">分享到</a>
+        <a data-url="http://dmonster.top/2018/07/04/nginx搭建web服务器/" data-id="cjpkk4smx001nc8ughg55vhui" class="article-share-link" data-share="baidu" data-title="nginx搭建web服务器">分享到</a>
       
 
       
@@ -936,130 +1065,6 @@ location /html/ {
       
 
       
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-mysql主从复制及读写分离" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/07/03/mysql主从复制及读写分离/" class="article-date">
-  <time datetime="2018-07-03T08:36:53.000Z" itemprop="datePublished">2018-07-03</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/mysql/">mysql</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/07/03/mysql主从复制及读写分离/">mysql主从复制及读写分离</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      <!-- Table of Contents -->
-      
-        <h1 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h1><p><img src="https://images2015.cnblogs.com/blog/1043616/201612/1043616-20161213151808011-1732852037.jpg" alt=""></p>
-<h2 id="主"><a href="#主" class="headerlink" title="主"></a>主</h2><ol>
-<li><p>修改mysql配置文件</p>
-<pre><code>[mysqld]
-log-bin=mysql-bin        //开启binlog日志
-server-id=1            //设置唯一id
-</code></pre></li>
-<li><p>重启mysql</p>
-<pre><code>service mysqld restart
-</code></pre></li>
-<li><p>创建用于同步的用户账号</p>
-<p> 登陆mysql</p>
-<pre><code>CREATE USER &apos;repl&apos;@&apos;123.456.7.89&apos; IDENTIFIED BY &apos;slavepass&apos;;        //创建用户，其中repl为用户名，123.456.7.89为该用户名所在从库的ip，若有多个可用正则表达式匹配
-GRANT REPLICATION SLAVE ON *.* TO &apos;repl&apos;@&apos;123.456.7.89&apos;;        //分配权限
-flush privileges;        //刷新权限
-</code></pre></li>
-<li><p>查看master状态，记录binlog文件名和position位置</p>
-<pre><code>mysql&gt; show master status;
-+------------------+----------+--------------+------------------+-------------------+
-| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
-+------------------+----------+--------------+------------------+-------------------+
-| mysql-bin.000001 |      154 |              |                  |                   |
-+------------------+----------+--------------+------------------+-------------------+
-1 row in set (0.00 sec)
-</code></pre></li>
-</ol>
-<h2 id="从"><a href="#从" class="headerlink" title="从"></a>从</h2><ol>
-<li><p>修改mysql配置文件</p>
-<pre><code>[mysqld]
-server-id=2     //设置server-id
-</code></pre></li>
-<li><p>重启mysql</p>
-</li>
-<li><p>登陆mysql执行同步sql语句</p>
-<pre><code>mysql&gt; CHANGE MASTER TO
-    -&gt;     MASTER_HOST=&apos;a.b.c.d&apos;,     //主库ip地址
-    -&gt;     MASTER_USER=&apos;repl&apos;,
-    -&gt;     MASTER_PASSWORD=&apos;slavepass&apos;,
-    -&gt;     MASTER_LOG_FILE=&apos;mysql-bin.000001&apos;,
-    -&gt;     MASTER_LOG_POS=154;
-</code></pre></li>
-<li><p>启动slave同步</p>
-<pre><code>mysql&gt;start slave;
-</code></pre></li>
-<li><p>查看slave状态</p>
-<pre><code>mysql&gt; show slave status\G;
-*************************** 1. row ***************************
-       Slave_IO_State: Waiting for master to send event
-          Master_Host: a.b.c.d
-          Master_User: repl
-          Master_Port: 3306
-        Connect_Retry: 60
-      Master_Log_File: mysql-bin.00001
-  Read_Master_Log_Pos: 11662
-       Relay_Log_File: mysqld-relay-bin.000022
-        Relay_Log_Pos: 11765
-Relay_Master_Log_File: mysql-bin.00001
-     Slave_IO_Running: Yes
-    Slave_SQL_Running: Yes
-      Replicate_Do_DB: 
-  Replicate_Ignore_DB: 
-...
-</code></pre><p> 当Slave_IO_Running    和    Slave_SQL_Running都为yes时主从同步设置就成功了</p>
-</li>
-</ol>
-<h2 id="其他配置"><a href="#其他配置" class="headerlink" title="其他配置"></a>其他配置</h2><ul>
-<li><p>在my.cnf中</p>
-<pre><code>binlog-ignore-db = db_name  //设置不同步库
-binlog-do-db = db_name    //只同步哪些库，其他不同步
-</code></pre><p>  在查看master状态时，可以看见以上配置的结果</p>
-</li>
-</ul>
-<h1 id="读写分离"><a href="#读写分离" class="headerlink" title="读写分离"></a>读写分离</h1><p><img src="http://heylinux.com/wp-content/uploads/2011/06/mysql-master-salve-proxy.jpg" alt=""></p>
-<h2 id="关于读写分离中slave的选择"><a href="#关于读写分离中slave的选择" class="headerlink" title="关于读写分离中slave的选择"></a>关于读写分离中slave的选择</h2><p>应用层中不可能因为底层架构的问题而修改源码，所以万一选择的一台slave挂了就没办法了，所以：<br><img src="http://s3.51cto.com/wyfs02/M02/4C/46/wKioL1Q6Z3aj0qD3AAFTRVV5DP0026.jpg" alt=""><br>其中对proxy来说，slave的选择可以交给另外一个组件，比如haproxy来完成</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://dmonster.top/2018/07/03/mysql主从复制及读写分离/" data-id="cjp80dt9f002sp8ugy35amplb" class="article-share-link" data-share="baidu" data-title="mysql主从复制及读写分离">分享到</a>
-      
-
-      
-        <a href="http://dmonster.top/2018/07/03/mysql主从复制及读写分离/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
-
     </footer>
   </div>
   
@@ -1080,7 +1085,7 @@ binlog-do-db = db_name    //只同步哪些库，其他不同步
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nginx/">nginx</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/安全/">安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">11</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nginx/">nginx</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/zabbix/">zabbix</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/安全/">安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">11</span></li></ul>
     </div>
   </div>
 
@@ -1098,7 +1103,7 @@ binlog-do-db = db_name    //只同步哪些库，其他不同步
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -1108,6 +1113,10 @@ binlog-do-db = db_name    //只同步哪些库，其他不同步
     <h3 class="widget-title">近期文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/11/08/zabbix搭建/">zabbix搭建</a>
+          </li>
         
           <li>
             <a href="/2018/09/20/事务的隔离级别及脏读，幻读/">事务的隔离级别及脏读，幻读</a>
@@ -1123,10 +1132,6 @@ binlog-do-db = db_name    //只同步哪些库，其他不同步
         
           <li>
             <a href="/2018/08/07/mysql存储引擎/">mysql存储引擎</a>
-          </li>
-        
-          <li>
-            <a href="/2018/08/06/nginx搭建简易的文件服务器/">nginx搭建简易的文件服务器</a>
           </li>
         
       </ul>

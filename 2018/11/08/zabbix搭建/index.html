@@ -4,20 +4,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>ISIS | dmonster&#39;s blog</title>
+  <title>zabbix搭建 | dmonster&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="IS-IS 中间系统到中间系统（属于igps内部网关协议集），link state链路状态协议（如ospf） 发展历程   有链接      cons    ip网络标识 -&amp;gt; tcp -&amp;gt; 路由协议 无连接    clns    clnp无连接的网络协议，是clns网络标识 -&amp;gt; clns无连接的网络服务机制，后改名为udp -&amp;gt; 路由协议（IS-IS/集成的IS-IS/">
-<meta name="keywords" content="笔记,CCIE">
+  <meta name="description" content="安装phpyum安装了几次都有各种各样的库安装不上，所以还是老老实实到官网wget一个吧 http://www.php.net/downloads.php   wget下之后解压，进入php目录，配置：  ./configure –prefix=/usr/local/php-5.5.0 –with-config-file-path=/usr/local/php-5.5.0/etc –with-bz">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ISIS">
-<meta property="og:url" content="http://dmonster.top/2017/11/25/ISIS/index.html">
+<meta property="og:title" content="zabbix搭建">
+<meta property="og:url" content="http://dmonster.top/2018/11/08/zabbix搭建/index.html">
 <meta property="og:site_name" content="dmonster&#39;s blog">
-<meta property="og:description" content="IS-IS 中间系统到中间系统（属于igps内部网关协议集），link state链路状态协议（如ospf） 发展历程   有链接      cons    ip网络标识 -&amp;gt; tcp -&amp;gt; 路由协议 无连接    clns    clnp无连接的网络协议，是clns网络标识 -&amp;gt; clns无连接的网络服务机制，后改名为udp -&amp;gt; 路由协议（IS-IS/集成的IS-IS/">
+<meta property="og:description" content="安装phpyum安装了几次都有各种各样的库安装不上，所以还是老老实实到官网wget一个吧 http://www.php.net/downloads.php   wget下之后解压，进入php目录，配置：  ./configure –prefix=/usr/local/php-5.5.0 –with-config-file-path=/usr/local/php-5.5.0/etc –with-bz">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-06-26T09:40:11.025Z">
+<meta property="og:image" content="https://i.imgur.com/Bd1pb8E.png">
+<meta property="og:updated_time" content="2018-12-12T02:29:44.457Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ISIS">
-<meta name="twitter:description" content="IS-IS 中间系统到中间系统（属于igps内部网关协议集），link state链路状态协议（如ospf） 发展历程   有链接      cons    ip网络标识 -&amp;gt; tcp -&amp;gt; 路由协议 无连接    clns    clnp无连接的网络协议，是clns网络标识 -&amp;gt; clns无连接的网络服务机制，后改名为udp -&amp;gt; 路由协议（IS-IS/集成的IS-IS/">
+<meta name="twitter:title" content="zabbix搭建">
+<meta name="twitter:description" content="安装phpyum安装了几次都有各种各样的库安装不上，所以还是老老实实到官网wget一个吧 http://www.php.net/downloads.php   wget下之后解压，进入php目录，配置：  ./configure –prefix=/usr/local/php-5.5.0 –with-config-file-path=/usr/local/php-5.5.0/etc –with-bz">
+<meta name="twitter:image" content="https://i.imgur.com/Bd1pb8E.png">
   
     <link rel="alternative" href="/atom.xml" title="dmonster&#39;s blog" type="application/atom+xml">
   
@@ -75,14 +76,14 @@
   </div>
 </header>
     <div class="outer">
-      <section id="main"><article id="post-ISIS" class="article article-type-post" itemscope itemprop="blogPost">
+      <section id="main"><article id="post-zabbix搭建" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/11/25/ISIS/" class="article-date">
-  <time datetime="2017-11-25T03:43:04.000Z" itemprop="datePublished">2017-11-25</time>
+    <a href="/2018/11/08/zabbix搭建/" class="article-date">
+  <time datetime="2018-11-08T05:49:50.000Z" itemprop="datePublished">2018-11-08</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/网络/">网络</a>
+    <a class="article-category-link" href="/categories/zabbix/">zabbix</a>
   </div>
 
   </div>
@@ -93,7 +94,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      ISIS
+      zabbix搭建
     </h1>
   
 
@@ -103,166 +104,89 @@
       
       <!-- Table of Contents -->
       
-        <h1 id="IS-IS"><a href="#IS-IS" class="headerlink" title="IS-IS"></a>IS-IS</h1><ol>
-<li>中间系统到中间系统（属于igps内部网关协议集），link state链路状态协议（如ospf）</li>
-<li><p>发展历程 </p>
-<ul>
-<li>有链接      cons    ip网络标识 -&gt; tcp -&gt; 路由协议</li>
-<li>无连接    clns    clnp无连接的网络协议，是clns网络标识 -&gt; clns无连接的网络服务机制，后改名为udp -&gt; 路由协议（IS-IS/集成的IS-IS/双栈的IS-IS）</li>
-</ul>
-</li>
-<li><p>clnp标识</p>
+        <div id="toc" class="toc-article">
+          <strong class="toc-title">文章目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装php"><span class="toc-number">1.</span> <span class="toc-text">安装php</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装mysql"><span class="toc-number">2.</span> <span class="toc-text">安装mysql</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装nginx-apache"><span class="toc-number">3.</span> <span class="toc-text">安装nginx/apache</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装zabbix"><span class="toc-number">4.</span> <span class="toc-text">安装zabbix</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#新建zabbix用户"><span class="toc-number">4.1.</span> <span class="toc-text">新建zabbix用户</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#下载安装zabbix"><span class="toc-number">5.</span> <span class="toc-text">下载安装zabbix</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#导入数据库"><span class="toc-number">6.</span> <span class="toc-text">导入数据库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#导入web页面"><span class="toc-number">7.</span> <span class="toc-text">导入web页面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#检查"><span class="toc-number">8.</span> <span class="toc-text">检查</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置zabbix"><span class="toc-number">9.</span> <span class="toc-text">配置zabbix</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见报错"><span class="toc-number">10.</span> <span class="toc-text">常见报错</span></a></li></ol>
+        </div>
+      
+        <h2 id="安装php"><a href="#安装php" class="headerlink" title="安装php"></a>安装php</h2><p>yum安装了几次都有各种各样的库安装不上，所以还是老老实实到官网wget一个吧 <a href="http://www.php.net/downloads.php" target="_blank" rel="noopener">http://www.php.net/downloads.php</a> </p>
 <ol>
-<li>NET网络实体标识（类似ip+mac）</li>
-<li>NASP网络服务接入点（类似ip+mac+port_num端口号）</li>
-<li><p>CLNP标识格式</p>
-<pre><code>AFI.0000.sys-id.00
-地址格式授权组织.域标识（AS）区域标识.系统id（mac地址）.端口号
-</code></pre><p> 最后一部分若为00则为NET，若为非00则为NSAP，<br> IS-IS启用的时候必须要有一个NET地址</p>
+<li><p>wget下之后解压，进入php目录，配置：</p>
+<p> ./configure –prefix=/usr/local/php-5.5.0 –with-config-file-path=/usr/local/php-5.5.0/etc –with-bz2 –with-curl –enable-ftp –enable-sockets –disable-ipv6 –with-gd –with-jpeg-dir=/usr/local –with-png-dir=/usr/local –with-freetype-dir=/usr/local –enable-gd-native-ttf –with-iconv-dir=/usr/local –enable-mbstring –enable-calendar –with-gettext –with-libxml-dir=/usr/local –with-zlib –with-pdo-mysql=mysqlnd –with-mysqli=mysqlnd –with-mysql=mysqlnd –enable-dom –enable-xml –enable-fpm –with-libdir=lib64<br> make<br> make install<br>最后把php-fpm开启就可以了（端口9000）</p>
 </li>
 </ol>
-</li>
-<li><p>IS-IS术语</p>
+<h2 id="安装mysql"><a href="#安装mysql" class="headerlink" title="安装mysql"></a>安装mysql</h2><p>不废话了</p>
+<h2 id="安装nginx-apache"><a href="#安装nginx-apache" class="headerlink" title="安装nginx/apache"></a>安装nginx/apache</h2><p>只要是一个服务端中间件跑web页面就可以，我用的centos，就用自带的apache好了，直接把.php文件放到html目录下就好了</p>
+<h2 id="安装zabbix"><a href="#安装zabbix" class="headerlink" title="安装zabbix"></a>安装zabbix</h2><p>这里安装的是zabbix4.0，具体的步骤官网比较全，但是比较乱，这里整理一下，推荐源码安装</p>
+<h3 id="新建zabbix用户"><a href="#新建zabbix用户" class="headerlink" title="新建zabbix用户"></a>新建zabbix用户</h3><pre><code>groupadd zabbix
+useradd -g zabbix zabbix
+</code></pre><h2 id="下载安装zabbix"><a href="#下载安装zabbix" class="headerlink" title="下载安装zabbix"></a>下载安装zabbix</h2><p>解压后</p>
+<pre><code>./configure --enable-server --enable-agent --with-mysql --enable-ipv6 --with-net-snmp --with-libcurl --with-libxml2
+make install
+zabbix_server //启动zabbix
+</code></pre><h2 id="导入数据库"><a href="#导入数据库" class="headerlink" title="导入数据库"></a>导入数据库</h2><p>因为zabbix需要一个数据库来存放抓取到的监控数据所以需要导入zabbix的给你创建好的一个数据库</p>
+<pre><code>mysql&gt; create database zabbix character set utf8 collate utf8_bin;
+mysql&gt; grant all privileges on zabbix.* to zabbix@localhost identified by &apos;&lt;password&gt;&apos;;
+cd database/mysql
+mysql -uzabbix -p&lt;password&gt; zabbix &lt; schema.sql
+//官方文档里写了，如果你只是要创建zabbix proxy的数据库，那么就不需要下面两个表了
+mysql -uzabbix -p&lt;password&gt; zabbix &lt; images.sql
+mysql -uzabbix -p&lt;password&gt; zabbix &lt; data.sql
+</code></pre><h2 id="导入web页面"><a href="#导入web页面" class="headerlink" title="导入web页面"></a>导入web页面</h2><p>用apache的话很简单，只要把php文件cp到html目录下即可</p>
+<pre><code>centos：
+mkdir /var/www/html/zabbix
+cd 源码目录下/frontends/php
+cp -a . /var/www/html/zabbix
+</code></pre><h2 id="检查"><a href="#检查" class="headerlink" title="检查"></a>检查</h2><p>这时候你至少要有3的重要的端口是监听的</p>
 <ol>
-<li>ES终端设备</li>
-<li>IS：router</li>
-<li>clnp无连接网络协议 </li>
-<li>clns无连接网络服务</li>
-<li>dis指定中间系统（类似DR）</li>
-<li>IS-IS中路由器的类型（IS-IS router type）<ol>
-<li>所有启用IS-IS的路由器默认类型为L1/L2（类似ABR）</li>
-<li>L1:区域内路由器<br>3 .L2:骨干区域路由器</li>
+<li>9000 php</li>
+<li>80 web</li>
+<li>3306 mysql</li>
 </ol>
-</li>
-<li><p>IS-IS neighbor type </p>
+<h2 id="配置zabbix"><a href="#配置zabbix" class="headerlink" title="配置zabbix"></a>配置zabbix</h2><p>这时候浏览器登陆你的zabbixweb页面，不出意外会出来这个sha diao 东西<br><img src="https://i.imgur.com/Bd1pb8E.png" alt=""></p>
+<p>按照他标红的建议参数配置/etc/php.ini文件，大概是这几个</p>
+<pre><code>max_execution_time = 300 
+memory_limit = 128M 
+post_max_size = 16M 
+upload_max_filesize = 2M 
+max_input_time = 300 
+date.timezone = &quot;Asia/Shanghai&quot;
+</code></pre><p>然后你会发现有好多依赖库没有安装，你可以一个一个按照他需要的装上也可以</p>
+<pre><code>yum install php*
+</code></pre><h2 id="常见报错"><a href="#常见报错" class="headerlink" title="常见报错"></a>常见报错</h2><ol>
+<li><p>安装zabbix时./configure 会出来一系列问题</p>
 <ol>
-<li>L1/L2</li>
-<li>L2</li>
-<li><p>L1</p>
-<pre><code>相同区域id            不同区域id          
-L1-L1-L1/L2            L1--/--L1/L2
-L1-L1-L1            L1--/--L1
-L1--/--L2            L1--/--L2
-//L1设备只能跟相同区域内带L1角色的设备形成L1邻居关系即区域内邻居关系
-L1/L2--L1或L2--L1/L2        L1/L2--L2--L1/L2
-//L1是区域内邻居关系，L2首先是区域间邻居关系，但也可以是区域内邻居关系
-L1/L2--L2--L2        L1/L2--L2--L2
+<li><p>configure: error: Not found mysqlclient library</p>
+<pre><code>yum -y install mysql-devel
+</code></pre></li>
+<li><p>onfigure: error: Invalid Net-SNMP directory - unable to find net-snmp-config</p>
+<pre><code>yum -y install libcurl-devel
+yum -y install net-snmp-devel
+</code></pre></li>
+<li><p>configure: error: LIBXML2 library not found </p>
+<pre><code>yum -y install libxml2-devel
+</code></pre></li>
+<li><p>configure: error: unixODBC library not found</p>
+<pre><code>yum -y install unixODBC-devel
+</code></pre></li>
+<li><p>Invalid OPENIPMI directory - unable to find ipmiif.h</p>
+<pre><code>yum -y install OpenIPMI-devel
+</code></pre></li>
+<li><p>Curl library not found   </p>
+<pre><code>yum -y install curl-devel
+</code></pre></li>
+<li><p>configure: error: Unable to use libevent (libevent check failed) </p>
+<pre><code>yum install libevent-devel -y
 </code></pre></li>
 </ol>
 </li>
-<li><p>IS-IS特性</p>
+<li><p>安装完成登陆web后显示 zabbix server is not running</p>
+<p> 说明你的zabbix没有起来，思路：</p>
 <ol>
-<li>IS-IS中dis特点<br>ospf中dr作用    1.减少不必要的邻接关系；<pre><code>2.统筹发送更新过程
-</code></pre><ol>
-<li>dis的选举     先比较优先级（默认是64，最大127，大则优）<pre><code>再比较sys-id
-</code></pre></li>
-<li>没有bdis，且dis可以虽已被替代</li>
-<li>所有非dis之间都可以形成正常邻接关系</li>
-</ol>
+<li>看10051端口（zabbix_server的端口）有没有起来</li>
+<li><p>看/tmp/zabbix_server.log日志报什么错</p>
+<p> 我是日志报错是显示mysql没登上，没用密码，所以找到zabbix_server.conf文件，添加一条DBPassword=password，重启就可以了</p>
 </li>
-<li>IS-IS中区域的特点 IS-IS也是层次化的设计，骨干层，常规层，同样也有骨干区域和常规区域        <ol>
-<li>不要求骨干区域编号一定是0</li>
-<li>不要求所有常规区域和骨干区域连接</li>
-</ol>
-</li>
-<li>IS-IS区域的边界是在路由器，ospf是在接口，ospf中更改区域号必定终端网络，IS-IS中可以先启好区域在删除原有区域</li>
-<li>ospf中拥有特殊区域stub nssa， IS-IS区域内设备只要路由器角色改为L1，他所连接的L1/L2设备自动给他一条缺省，并且不会将区域间路由和外部路由放入区域内</li>
-</ol>
-</li>
-<li><p>is-is路劲度量值计算，计算方法和ospf一样，cost ，默认情况下所有接口都被赋予10的开销</p>
-</li>
-<li><p>IS-IS的消息和消息类型</p>
-<ol>
-<li>IIH：IS-IS hello 分为L1和L2</li>
-<li>LSP： link state pdu 分为L1和L2</li>
-</ol>
-<p>IS-IS数据库也分L1和L2</p>
-</li>
-<li><p>IS-IS的配置</p>
-<ul>
-<li><p>步骤1：启用Is-IS平设定NET地址</p>
-<pre><code>router isis
-net 49.0.0000.0000.00000001.00
-log-adjacency-changes//让控制台以日志的形式提醒IS-IS邻接关系的变化
-</code></pre></li>
-<li><p>步骤2：接口加入IS-IS</p>
-<pre><code>interface &lt;intf-id&gt;
-ip router isis
-</code></pre></li>
-</ul>
-</li>
-<li><p>IS-IS的查看</p>
-<ol>
-<li><p>查看路由表中IsIS的条目</p>
-<pre><code>show ip route isis
-: i L1 区域内路由
-    i L2 区域间路由/外部路由
-</code></pre><p>IS-IS管理距离全是115</p>
-</li>
-<li><p>查看邻接关系是否建立，以及邻接关系的类型</p>
-<pre><code>show clns neighbor
-</code></pre></li>
-<li><p>查看dis  (circuit id ==dis)</p>
-<pre><code>show isis neighbor
-</code></pre></li>
-</ol>
-</li>
-<li><p>改路由器的类型</p>
-<pre><code>router isis 
-is-type level-1 //将路由器类型改为L1
-</code></pre></li>
-<li><p>修改优先级和开销</p>
-<pre><code>interface x 
-isis priority 127   //优先级
-
-isis metric x        //开销
-</code></pre></li>
-<li><p>IS-IS重分发</p>
-<p>外部网络进入IS-IS默认是L2类型，默认开销是10</p>
-<pre><code>router isis
-redistribute &lt;协议&gt; metric &lt;指定外部路由初始度量值&gt; &lt;level-1/level-2/level-1-2&gt; //指定外部路由是什么类型进入isis
-
-redistribute ospf pid metric-type &lt;external ospf 的外部路由/internal ospf 的区域内或区域间路由&gt;
-</code></pre><p>路由器角色为L1，那么重分发不允许做在这样的设备上，如果L1设备需要配置上重分发，那么务必在后加上level-1</p>
-</li>
-<li><p>IS-IS的手动汇总</p>
-<p>汇总配置在L1/L2角色上，汇总后路由默认类型为L2，开销为10</p>
-<p>L1设备上默认无法对本地isisL1路由直接汇总，本地L1网络以外部路由形式进入，再对L1路由汇总</p>
-<pre><code>router isis
-summary-address &lt;汇总后的网络&gt; &lt;汇总后的子网掩码&gt; level-1/level-2
-</code></pre></li>
-<li><p>IS-IS认证</p>
-<ol>
-<li><p>链路认证</p>
-<p> 该认证是通过iih完成的，所以认证不通过影响邻接关系建立</p>
-<pre><code>interface x
-isis password xxx
-</code></pre></li>
-<li><p>区域认证</p>
-<p> 该认证是利用lsp完成的，认证不通过只影响陆游的学习，不影响邻接关系</p>
-<pre><code>router isis
-area-password xxxx
-</code></pre></li>
-<li><p>域认证</p>
-<pre><code>router isis
-domanin-password xxxx
-</code></pre><p> 该认证作用于区域间，如果不通过不影响邻接关系，只影响路由学习</p>
-</li>
-</ol>
-</li>
-<li><p>IS-IS路由泄露</p>
-<p>L1/L2默认不允许L2数据库信息进入L1数据库，变成更新发送</p>
-<p>路由泄露的配置流程</p>
-<p>步骤1：L1/L2设备上编写acl，匹配泄漏的目标路由</p>
-<p>步骤2：L1/L2设备上编写router-map引用acl</p>
-<p>步骤3：L1/L2设备上做isis到isis的重分发，并且指定是利用router-map完成L2数据条目到L1数据库条目的泄漏 </p>
-<pre><code>redistribute isis ip level-2 into level-1 route-map 2T1
-</code></pre></li>
-<li><p>IS-IS的不同区域迁移</p>
-<p>IS-IS允许一个设备属于不同的区域</p>
-<pre><code>router isis
-net ...........(此条命令可被复敲，不会覆盖)
-</code></pre></li>
 </ol>
 </li>
 </ol>
@@ -271,35 +195,24 @@ net ...........(此条命令可被复敲，不会覆盖)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/11/25/ISIS/" data-id="cjpkk4skx000ac8ugj25fu5ec" class="article-share-link" data-share="baidu" data-title="ISIS">分享到</a>
+        <a data-url="http://dmonster.top/2018/11/08/zabbix搭建/" data-id="cjpkk4so4002mc8ugs89ca5if" class="article-share-link" data-share="baidu" data-title="zabbix搭建">分享到</a>
       
 
       
-        <a href="http://dmonster.top/2017/11/25/ISIS/#ds-thread" class="article-comment-link">评论</a>
+        <a href="http://dmonster.top/2018/11/08/zabbix搭建/#ds-thread" class="article-comment-link">评论</a>
       
 
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CCIE/">CCIE</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
-
     </footer>
   </div>
   
     
 <nav id="article-nav">
   
-    <a href="/2017/12/02/网络安全/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">
-        
-          网络安全
-        
-      </div>
-    </a>
   
-  
-    <a href="/2017/11/25/多播/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2018/09/20/事务的隔离级别及脏读，幻读/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">多播</div>
+      <div class="article-nav-title">事务的隔离级别及脏读，幻读</div>
     </a>
   
 </nav>
@@ -309,7 +222,7 @@ net ...........(此条命令可被复敲，不会覆盖)
 
 
   <section id="comments">
-    <div id="ds-thread" class="ds-thread" data-thread-key="2017/11/25/ISIS/" data-title="ISIS" data-url="http://dmonster.top/2017/11/25/ISIS/"></div>
+    <div id="ds-thread" class="ds-thread" data-thread-key="2018/11/08/zabbix搭建/" data-title="zabbix搭建" data-url="http://dmonster.top/2018/11/08/zabbix搭建/"></div>
   </section>
 </section>
       

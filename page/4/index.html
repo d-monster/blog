@@ -75,6 +75,315 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-python学习笔记" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/19/python学习笔记/" class="article-date">
+  <time datetime="2017-04-19T15:23:51.000Z" itemprop="datePublished">2017-04-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python3/">python3</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/19/python学习笔记/">pyhon学习笔记</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <!-- Table of Contents -->
+      
+        <h1 id="元组"><a href="#元组" class="headerlink" title="元组"></a>元组</h1><p>元组是不可变序列。</p>
+<ul>
+<li>空元组：() </li>
+<li>一个值的元组： 1, 或(1,)  //其中逗号不可省略</li>
+<li><p>多个值的元组： 1, 2, 3 或 (1, 2, 3) </p>
+<pre><code>2*(2+3) 输出10 //没有逗号，普通的值计算
+2*(2+3,) 输出(5, 5) //有逗号，表示是一个元组，相乘后得到一个新的元组，有两个值
+</code></pre></li>
+<li>创建一个新元组： X = 1,2,3</li>
+<li>访问元祖元素： X[1] //输出2</li>
+<li><p>tuple函数：<br>  将序列转换为元组：</p>
+<pre><code>tuple([1, 2, 3])  输出(1,2,3)            //列表
+tuple(&apos;abc&apos;)      输出(&apos;a&apos;,&apos;b&apos;,&apos;c&apos;)     //字符串
+tuple((1,2,3))      输出(1,2,3)         //元组
+</code></pre></li>
+</ul>
+<h1 id="字典"><a href="#字典" class="headerlink" title="字典"></a>字典</h1><p>键/值对之间用冒号隔开，项之间用逗号隔开，整个字典用大括号括起来。</p>
+<pre><code>phonebook = {&apos;宁波&apos;:&apos;0574&apos;,&apos;台州&apos;:&apos;0576&apos;,&apos;杭州&apos;:&apos;0571&apos;}
+phonebook[&apos;宁波&apos;]     //输出:&apos;0574&apos;
+</code></pre><ul>
+<li><p>dict()函数</p>
+<p>  可以使用该函数通过其他映射或（键，值）对序列建立字典</p>
+<pre><code>items=[(&apos;name&apos;,&apos;Alice&apos;),(&apos;age&apos;,28)]
+d=dict(items)
+print d  //输出字典：{&apos;age&apos;: 28, &apos;name&apos;: &apos;Alice&apos;} 
+</code></pre><p>  或者用关键字参数形式</p>
+<pre><code>d=dict(name=&apos;Alice&apos;,age=28)
+print d  //输出字典：{&apos;age&apos;: 28, &apos;name&apos;: &apos;Alice&apos;}
+</code></pre></li>
+<li>字典的基本操作与元组类似，但是字典是无序的且值可变<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1></li>
+</ul>
+<h2 id="匿名函数：Lambda"><a href="#匿名函数：Lambda" class="headerlink" title="匿名函数：Lambda"></a>匿名函数：Lambda</h2><ul>
+<li><p>匿名函数：</p>
+<p>  lambda函数是一种快速定义单行的最小函数，是从lisp借用来的，可以在任何需要函数的地方</p>
+</li>
+<li><p>使用lambda的好处：</p>
+<ol>
+<li>使用python写一些执行脚本时，使用lambda可以省去定义函数的过程，让代码更加精简</li>
+<li>对于一些抽象的，不会别的地方再复用的函数，有时候给函数起名字也很难，但是使用lambda不需要考虑命名问题</li>
+<li>使用lambda在某些时候让代码更容易理解</li>
+</ol>
+</li>
+<li><p>lambda基础：</p>
+<ul>
+<li>lambda语句中，冒号前是参数，可以有多个，用逗号隔开，冒号右边的返回值。</li>
+<li><p>lambda语句构建的其实是一个函数对象：</p>
+<pre><code>g = lambda x ： x**2
+print g
+</code></pre></li>
+<li><p>执行匿名函数lambda：reduce(lambda x,y : x*y , range(1,6)) 求6的阶乘</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="循环结构"><a href="#循环结构" class="headerlink" title="循环结构"></a>循环结构</h2><ul>
+<li><p>for 循环</p>
+<pre><code>for x in 序列
+    执行代码
+</code></pre></li>
+<li><p>range()函数</p>
+<pre><code>range(初始值，终止值，进步值) //指定终止值不包括在内
+</code></pre><h2 id="分支结构"><a href="#分支结构" class="headerlink" title="分支结构"></a>分支结构</h2></li>
+</ul>
+<p>python中没有switch语句，通过字典合资点的get（）函数实现分支结构</p>
+<p>例：</p>
+<pre><code>from __future__ import division
+    //可解决以上问题
+
+def jia(x,y):
+return x+y
+
+def jian(x,y):
+return x-y
+
+def cheng(x,y):
+return x*y
+
+def chu(x,y):
+return x/y
+
+def operator(x,o,y):
+if o==&quot;+&quot;:
+jia(x,y)
+elif o == &quot;-&quot;:
+jian(x,y)
+elif o == &quot;*&quot;:
+cheng(x,y)
+elif o == &quot;/&quot;:
+chu(x,y)
+else:
+pass
+
+operator(2,&apos;+&apos;,4)
+</code></pre><p>如果是除法，先判断加减乘，效率低下，如果输入错误，会做四次无用的判断</p>
+<p>switch直接判断条件，如果满足，直接执行</p>
+<pre><code>operator = {&quot;+&quot;:jia, &quot;-&quot;:jian,&quot;*&quot;:cheng, &quot;/&quot;:chu}
+print operator{&quot;+&quot;} // 对应jia的函数对象
+
+等同于 print jia
+</code></pre><p>所以</p>
+<pre><code>print operator{&quot;+&quot;} (2,3)
+
+等同于 print jia (2,3)
+</code></pre><p>省去判断，如果没有对应的key则报错</p>
+<p>所以用get方法，没有对应的key也不会报错</p>
+<pre><code>print operator.get(&quot;%&quot;)(3,2) //不会报错
+
+def f(x,o,y):
+print operator.get(o)(x,y)
+
+调用
+f(3,&quot;+&quot;,2) //输出5 无需判断即可完成
+
+operator.get(o)(x,y,*args,**kwargs)
+</code></pre><p>参数更灵活</p>
+<p>if能完成的一般都可以用字典实现.</p>
+<ul>
+<li><p>用字典+函数 实现switch： {1：case1,2:case2}.get()</p>
+<pre><code>x=1
+y=2
+operator=&quot;/&quot;
+result = {&quot;+&quot;:x+y, &quot;-&quot;:x-y, &quot;*&quot;:x*y, &quot;/&quot;x/y}
+print result.get(operator)
+//实现函数相同的功能
+</code></pre></li>
+</ul>
+<h2 id="内置函数"><a href="#内置函数" class="headerlink" title="内置函数"></a>内置函数</h2><ul>
+<li>max(l) //返回最大值 l为列表</li>
+<li>min(l) //返回最小值</li>
+<li>len(l) //l 的长度，l 为序列</li>
+<li>divmod(5,2) // 5/2 返回元组(2,1) 商为2 余数为1</li>
+<li>cmp(x，y) //比较两个对象x和y!如果x &lt; y ,返回负数；x == y, 返回0；x &gt; y,返回正数。</li>
+<li>help(pow) //查找该函数用处</li>
+<li>pow(2,3) //返回2^3 = 8</li>
+<li>round(10) //10.0</li>
+<li>callable(f) //测试某个函数可否被调用,如果f没被定义，则不可调用</li>
+<li>isinstance(obj, class_or_tuple) //判断对象的类型！</li>
+<li>range() //创造range()对象用于迭代！</li>
+<li>type(object) //查看对象类型！</li>
+<li>int（）,long(),float(),complex(),list(),tuple(),hex() //转化函数</li>
+<li>chr(n) //当传入序号n时，返回n所代表的ASCII码字符的字符串</li>
+<li><p>ord(c) //返回单字符字符串的int值（ASCII码值）！</p>
+</li>
+<li><p>string函数：只用于字符串的操作</p>
+<pre><code>str.capitalize() //首字母大写
+
+s = &apos;hello world&apos;
+capitalize(s) //错误
+s.capitalize() //正确，返回Hello world
+</code></pre><p>  capitalize是class中的一个方法，s是string class的一个对象</p>
+</li>
+<li><p>str.replace() //替换</p>
+<pre><code>s.replace(&quot;hello&quot;,&quot;good&quot;) //返回good world
+</code></pre><p>  s 的值不变，返回值改变</p>
+<pre><code>ss = &quot;123123123&quot;
+ss.replace(&apos;1&apos;,&apos;x&apos;) //&apos;x23x23x23
+ss.replace(&apos;1&apos;,&apos;x&apos;,1/2/3)&apos; //1/2/3表示替换的次数，从前往后
+</code></pre></li>
+<li><p>str.split() //用于切割</p>
+<pre><code>ip = &quot;192.168.1.123&quot;
+ip.split(&apos;.&apos;) //返回列表[192&apos;,&apos;168&apos;. ..]
+ip.spliy(&apos;.&apos;,count)//count表示切割的次数，从前往后
+</code></pre></li>
+<li><p>import string //引入string模块</p>
+<pre><code>string.replace(s,hello&apos;,&apos;good&apos;) // &apos;good world&apos;
+两种方式
+</code></pre></li>
+</ul>
+<h2 id="序列处理函数"><a href="#序列处理函数" class="headerlink" title="序列处理函数"></a>序列处理函数</h2><ul>
+<li><p>len</p>
+<pre><code>len(123) //出错 对象只能是序列
+len() max() min()
+</code></pre></li>
+<li><p>filter():</p>
+<pre><code>def f(x):
+if x &gt; 5:
+return True
+
+f(10) //True
+l = range(10)
+fileter(f, l) //f 函数作用于 l 返回True时会吧结果保留下来 [6,7,8,9]
+</code></pre></li>
+<li><p>zip()</p>
+<pre><code>z = zip([&apos;a&apos;,&apos;b&apos;,&apos;c&apos;],[&apos;x&apos;,&apos;y&apos;,&apos;z&apos;])
+&gt;&gt;&gt;next(z)
+(&apos;a&apos;,&apos;x&apos;)
+&gt;&gt;&gt;next(z)
+(&apos;b&apos;,&apos;y&apos;)
+</code></pre></li>
+<li><p>map()</p>
+<pre><code>map(None,name,age,tel,test) 
+//map遍历事如果某个列表元素不够，用None代替，None可以用函数代替
+</code></pre></li>
+</ul>
+<h2 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h2><p>模块是python组织代码的基本方式，即.py文件</p>
+<ul>
+<li><p>使用方法：</p>
+<ul>
+<li>导入模块名即文件名： import xxx</li>
+<li><p>引用： xxx.方法</p>
+</li>
+<li><p>A调用B(B中含执行函数，不希望),在B中写：</p>
+<pre><code>if __name__ = &quot;__main__ &quot; 
+operator(2,&apos;*&apos;,3)
+//如果__name__ = __main__则调用执行函数
+//（直接调用 __name__ = __main__，间接调用 __name__ = xxx）
+</code></pre></li>
+<li><p>导入先后顺序：先在当前目录中找</p>
+</li>
+</ul>
+</li>
+<li><p>包</p>
+<p>  python模块可按目录组织为包</p>
+<ul>
+<li>当前目录创建 __init__.py文件，上级目录即可成为一个包</li>
+<li>使用时需从上级目录逐级访问</li>
+</ul>
+</li>
+</ul>
+<h1 id="文件"><a href="#文件" class="headerlink" title="文件"></a>文件</h1><p>对象方法</p>
+<ul>
+<li><p>打开</p>
+<pre><code>f = open(&apos;文件目录&apos;)
+</code></pre></li>
+<li><p>关闭： </p>
+<pre><code>f = close()
+</code></pre></li>
+<li><p>读取： </p>
+<pre><code>f = read()
+</code></pre><ul>
+<li>f.readline() //每次读取一行，没有数据则返回空字符串</li>
+<li>f.readlines() //把每个数据作为列表中的一个数据，返回列表</li>
+<li>f.next() //和readline()迭代一样，但是结束时会停止</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>写入</p>
+<pre><code>f = open(&apos;文件目录&apos;,&apos;r+&apos;)
+f.write(&apos;写入的内容&apos;)
+</code></pre><ul>
+<li>f.writelines(列表) //写入多行数据</li>
+<li>f.flush() //断点续传，提交<br>（注意文件中指针的位置）</li>
+<li>a：在文件末尾写入</li>
+<li>a+： 在文件末尾读写</li>
+<li>r： 只读</li>
+<li>r+：读写</li>
+<li>w：重新写入</li>
+<li>w+：重新读写</li>
+</ul>
+</li>
+<li><p>f.seek(偏移量,选项) </p>
+<ul>
+<li>选项 = 0，文件指针指向从文件头部到‘偏移量字’节处</li>
+<li>选项 = 1，文件指针指向从文件的当前位置向后移动‘偏移量’字节</li>
+<li>选项 = 2，文件指针指向从文件的尾部向前移动‘偏移量’字节处</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://dmonster.top/2017/04/19/python学习笔记/" data-id="cjpkk4snl0027c8ugz898g1jg" class="article-share-link" data-share="baidu" data-title="pyhon学习笔记">分享到</a>
+      
+
+      
+        <a href="http://dmonster.top/2017/04/19/python学习笔记/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-python爬虫入门实验" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/04/19/python爬虫入门实验/" class="article-date">
@@ -129,7 +438,7 @@ print getImg(html)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/04/19/python爬虫入门实验/" data-id="cjp80dt8u002bp8ug1dr1r9nm" class="article-share-link" data-share="baidu" data-title="python爬虫入门实验">分享到</a>
+        <a data-url="http://dmonster.top/2017/04/19/python爬虫入门实验/" data-id="cjpkk4snu002fc8ug7mtvv7fa" class="article-share-link" data-share="baidu" data-title="python爬虫入门实验">分享到</a>
       
 
       
@@ -322,7 +631,7 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/04/19/正则表达式/" data-id="cjp80dt94002jp8ugeh491hhi" class="article-share-link" data-share="baidu" data-title="正则表达式">分享到</a>
+        <a data-url="http://dmonster.top/2017/04/19/正则表达式/" data-id="cjpkk4sof002xc8ugk5wq1qhy" class="article-share-link" data-share="baidu" data-title="正则表达式">分享到</a>
       
 
       
@@ -435,7 +744,7 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/04/13/hexo+github创建自己的博客/" data-id="cjp80dt6q000pp8ug1m4acfsr" class="article-share-link" data-share="baidu" data-title="hexo+github搭建自己的博客">分享到</a>
+        <a data-url="http://dmonster.top/2017/04/13/hexo+github创建自己的博客/" data-id="cjpkk4slv000uc8ugt7kxpflp" class="article-share-link" data-share="baidu" data-title="hexo+github搭建自己的博客">分享到</a>
       
 
       
@@ -743,7 +1052,7 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://dmonster.top/2017/04/06/网络渗透与深度防御笔记/" data-id="cjp80dt9j002vp8ugvqdtt9el" class="article-share-link" data-share="baidu" data-title="网络渗透与深度防御笔记">分享到</a>
+        <a data-url="http://dmonster.top/2017/04/06/网络渗透与深度防御笔记/" data-id="cjpkk4sou0036c8ugmudkebom" class="article-share-link" data-share="baidu" data-title="网络渗透与深度防御笔记">分享到</a>
       
 
       
@@ -773,7 +1082,7 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nginx/">nginx</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/安全/">安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">11</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nginx/">nginx</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/zabbix/">zabbix</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/安全/">安全</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">11</span></li></ul>
     </div>
   </div>
 
@@ -791,7 +1100,7 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -801,6 +1110,10 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
     <h3 class="widget-title">近期文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/11/08/zabbix搭建/">zabbix搭建</a>
+          </li>
         
           <li>
             <a href="/2018/09/20/事务的隔离级别及脏读，幻读/">事务的隔离级别及脏读，幻读</a>
@@ -816,10 +1129,6 @@ regex.sub(r&apos;(\2) \3-\4&apos;,&apos;+1 213-867-5309&apos;) //匹配到 (213)
         
           <li>
             <a href="/2018/08/07/mysql存储引擎/">mysql存储引擎</a>
-          </li>
-        
-          <li>
-            <a href="/2018/08/06/nginx搭建简易的文件服务器/">nginx搭建简易的文件服务器</a>
           </li>
         
       </ul>
