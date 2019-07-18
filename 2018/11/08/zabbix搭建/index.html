@@ -14,9 +14,7 @@
 <meta property="og:description" content="安装phpyum安装了几次都有各种各样的库安装不上，所以还是老老实实到官网wget一个吧 http://www.php.net/downloads.php   wget下之后解压，进入php目录，配置：  ./configure –prefix=/usr/local/php-5.5.0 –with-config-file-path=/usr/local/php-5.5.0/etc –with-bz">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://i.imgur.com/Bd1pb8E.png">
-<meta property="og:image" content="http://dmonster.top/2018/11/08/zabbix搭建/zabbix1.png">
-<meta property="og:image" content="https://i.imgur.com/zfz70O9.png">
-<meta property="og:updated_time" content="2019-07-18T07:00:32.180Z">
+<meta property="og:updated_time" content="2019-07-18T07:41:30.451Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="zabbix搭建">
 <meta name="twitter:description" content="安装phpyum安装了几次都有各种各样的库安装不上，所以还是老老实实到官网wget一个吧 http://www.php.net/downloads.php   wget下之后解压，进入php目录，配置：  ./configure –prefix=/usr/local/php-5.5.0 –with-config-file-path=/usr/local/php-5.5.0/etc –with-bz">
@@ -145,7 +143,7 @@ cp -a . /var/www/html/zabbix
 <li>80 web</li>
 <li>3306 mysql</li>
 </ol>
-<h2 id="配置zabbix"><a href="#配置zabbix" class="headerlink" title="配置zabbix"></a>配置zabbix</h2><p>这时候浏览器登陆你的zabbixweb页面，不出意外会出来这个sha diao 东西<br>this<br><img src="https://i.imgur.com/Bd1pb8E.png" alt=""><br><img src="zabbix1.png" alt="shit"><br><img src="https://i.imgur.com/zfz70O9.png" alt=""></p>
+<h2 id="配置zabbix"><a href="#配置zabbix" class="headerlink" title="配置zabbix"></a>配置zabbix</h2><p>这时候浏览器登陆你的zabbixweb页面，不出意外会出来这个sha diao 东西<br>this<br><img src="https://i.imgur.com/Bd1pb8E.png" alt=""></p>
 <p>按照他标红的建议参数配置/etc/php.ini文件，大概是这几个</p>
 <pre><code>max_execution_time = 300 
 memory_limit = 128M 
